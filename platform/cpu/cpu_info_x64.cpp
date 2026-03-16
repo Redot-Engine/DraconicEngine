@@ -32,7 +32,7 @@ namespace draconic::platform::cpu {
             return (get_xcr0() & 0x6ULL) == 0x6ULL;
         }
 
-        // full ZMM statae is required for AVX512.
+        // full ZMM state is required for AVX512.
         bool os_has_zmm() noexcept {
             return (get_xcr0() & 0xE6ULL) == 0xE6ULL;
         }

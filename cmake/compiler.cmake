@@ -12,6 +12,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Release")
     endif()
 else()
     message(STATUS "IPO / LTO disabled")
+    add_compile_definitions(DEBUG)
 endif()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
