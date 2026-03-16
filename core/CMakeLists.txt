@@ -1,0 +1,3 @@
+add_modules_library(definitions)
+add_modules_library(math)
+target_link_libraries(math PUBLIC definitions)
