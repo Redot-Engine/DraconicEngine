@@ -33,8 +33,7 @@
       "description": "Release configuration, including C# support",
       "binaryDir": "${sourceDir}/cmake-build-release",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release",
-        "USE_LTO": "ON"
+        "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
