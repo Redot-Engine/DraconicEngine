@@ -14,5 +14,7 @@ else()
     message(STATUS "IPO / LTO disabled")
 endif()
 
-# temporarily adding this in, we can fix this later.
-add_compile_options(-mavx2 -mfma)
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    # TODO: Make SIMD level configurable or detect at runtime
+    add_compile_options(-mavx2 -mfma)
+endif()
