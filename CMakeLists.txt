@@ -8,5 +8,5 @@ enable_testing()
 include(cmake/compiler.cmake)
 include(cmake/modules.cmake)
 
-add_modules_library(core)
+add_modules_library(core SHARED)
 target_link_libraries(core PUBLIC definitions math)

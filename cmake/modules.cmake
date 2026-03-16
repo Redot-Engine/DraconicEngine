@@ -13,6 +13,14 @@ if (CMAKE_TESTING_ENABLED)
 endif()
 
 function(add_modules_library)
+    cmake_parse_arguments(
+            MOD_LIB # prefix for all variables
+            "STATIC;SHARED" # tags for flags (only defined ones will be true)
+            "" # tags for single values
+            "" # tags for lists
+            "${ARGN}"
+    )
+
     set(LIB_PATH ${ARGV0})
 
     if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${LIB_PATH}")
@@ -35,9 +43,13 @@ function(add_modules_library)
         list(REMOVE_ITEM CPP_SRC_FILES ${CPP_UNIT_TESTS})
     endif()
 
-    message(STATUS "Adding modules library ${LIB_TARGET}")
-
-    add_library(${LIB_TARGET} STATIC)
+    if (MOD_LIB_SHARED)
+        message(STATUS "Adding shared modules library ${LIB_TARGET}")
+        add_library(${LIB_TARGET} SHARED)
+    else()
+        message(STATUS "Adding static modules library ${LIB_TARGET}")
+        add_library(${LIB_TARGET} STATIC)
+    endif()
     target_compile_features(${LIB_TARGET} PUBLIC cxx_std_23)
     target_include_directories(${LIB_TARGET} PUBLIC ${PROJECT_SOURCE_DIR})
 
