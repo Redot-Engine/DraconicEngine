@@ -73,7 +73,7 @@ export namespace draco::math {
 
         if consteval {
             // compile time
-            return T{0.5} * (T{2} * from) + (a * weight) + (b * w2) + (c * w3);
+            return T{0.5} * (T{2.}*from + a*weight + b*w2 + c*w3);
         } else {
             // runtime
             return T{0.5} * std::fma(c, w3, std::fma(b, w2, std::fma(a, weight, T{2} * from)));
@@ -109,8 +109,7 @@ export namespace draco::math {
         T b2 = lerp(a2, a3, to_post_scale);
 
         // One more for the road.
-        T final_range = to_t == T{0.};
-        T final_scale = final_range ? T{.5} : t / to_t;
+        T final_scale = (to_t == T{0.}) ? T{.5} : t / to_t;
 
         return lerp(b1, b2, final_scale);
     }
