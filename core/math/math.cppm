@@ -42,12 +42,12 @@ export namespace draco::math {
     }
 
     template <std::floating_point T>
-    constexpr T rad_to_deg(T y) {
+    constexpr T rad_to_deg(T y) noexcept {
         return y * (T{180.} / std::numbers::pi_v<T>);
     }
 
     template <std::floating_point T>
-    T pow(T x, T y) noexcept {
+    T pow(T x, T y) {
         return static_cast<T>(std::pow(x, y));
     }
 
