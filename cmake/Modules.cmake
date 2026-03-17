@@ -1,13 +1,17 @@
 include_guard(GLOBAL)
 
+set(NATIVE_SOURCE_DIR "${PROJECT_SOURCE_DIR}/engine/native")
+
+set(NATIVE_THIRD_PARTY_DIR "${NATIVE_SOURCE_DIR}/thirdparty")
+
 if (CMAKE_TESTING_ENABLED)
     message(STATUS "Bootstrapping unit tests module boost.ut")
-    add_library(boost_ut_main ${PROJECT_SOURCE_DIR}/boost/ut_main.cpp)
+    add_library(boost_ut_main "${NATIVE_THIRD_PARTY_DIR}/boost/ut_main.cpp")
     target_sources(boost_ut_main
         PUBLIC
         FILE_SET CXX_MODULES
-        BASE_DIRS "${PROJECT_SOURCE_DIR}/boost"
-        FILES "${PROJECT_SOURCE_DIR}/boost/ut.cppm"
+        BASE_DIRS "${NATIVE_THIRD_PARTY_DIR}/boost"
+        FILES "${NATIVE_THIRD_PARTY_DIR}/boost/ut.cppm"
     )
     target_compile_features(boost_ut_main PUBLIC cxx_std_23)
 endif()
@@ -51,7 +55,7 @@ function(add_modules_library)
         add_library(${LIB_TARGET} STATIC)
     endif()
     target_compile_features(${LIB_TARGET} PUBLIC cxx_std_23)
-    target_include_directories(${LIB_TARGET} PUBLIC ${PROJECT_SOURCE_DIR})
+    target_include_directories(${LIB_TARGET} PUBLIC ${NATIVE_SOURCE_DIR})
 
     target_sources(${LIB_TARGET}
         PUBLIC

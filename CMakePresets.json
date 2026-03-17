@@ -3,7 +3,7 @@
   "cmakeMinimumRequired": {
     "major": 4,
     "minor": 0,
-    "patch": 2
+    "patch": 3
   },
   "configurePresets": [
     {
@@ -31,7 +31,7 @@
       "inherits": "default",
       "displayName": "Release",
       "description": "Release configuration, including C# support",
-      "binaryDir": "${sourceDir}/cmake-build-release",
+      "binaryDir": "${sourceDir}/build/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
@@ -41,7 +41,7 @@
       "inherits": "default",
       "displayName": "Debug",
       "description": "Debug configuration, including C# support",
-      "binaryDir": "${sourceDir}/cmake-build-debug",
+      "binaryDir": "${sourceDir}/build/debug",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
       }

@@ -5,3 +5,5 @@ bits/
 cmake-build-*/
 bin/
 build/
+
+CMakeUserPresets.json
