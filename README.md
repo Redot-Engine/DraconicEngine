@@ -1,7 +1,7 @@
 # Draconic Engine
 
 <p align="center">
-  <a href="https://redotengine.org">
+  <a href="https://draconicengine.org">
     <img src="assets/draconic_logo_text.png" width="400" alt="Draconic Engine Logo">
   </a>
 </p>
