@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://redotengine.org">
-    <img src="logo.png" width="400" alt="Draconic Engine Logo">
+    <img src="assets/draconic_logo_text.png" width="400" alt="Draconic Engine Logo">
   </a>
 </p>
 
