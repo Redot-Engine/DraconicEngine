@@ -16,6 +16,8 @@ else()
 endif()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    # TODO: Make SIMD level configurable or detect at runtime
-    add_compile_options(-mavx2 -mfma)
+    if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+        # TODO: Make SIMD level configurable or detect at runtime
+        add_compile_options(-mavx2 -mfma)
+    endif()
 endif()
