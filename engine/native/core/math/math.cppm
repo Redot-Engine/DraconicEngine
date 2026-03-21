@@ -26,9 +26,14 @@ export namespace draco::math {
 
     template <arithmetic T>
     constexpr T abs(T value) noexcept {
-        if constexpr (std::floating_point<T> || std::signed_integral<T>) {
-            // Manually compute abs for signed types.
-            // Also avoids potential int8_t -> int issues.
+        // Manually compute abs for signed types.
+        // Also avoids potential int8_t -> int issues.
+        if constexpr (std::floating_point<T>) {
+            return value < T{0} ? -value : value;
+        } else if constexpr (std::signed_integral<T>) {
+            if (value == std::numeric_limits<T>::min()) {
+                return std::numeric_limits<T>::max(); // define saturating behavior explicitly
+            }
             return value < T{0} ? -value : value;
         } else {
             // unsigned is always positive! :^)
