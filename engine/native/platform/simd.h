@@ -57,21 +57,16 @@
 #endif
 
 // assume and unreachable.
-#if USING_COMPILER_MSVC
-    // TODO: CMakeLists needs to support some kind of debug or something here.
-    #if DEBUG
+#ifdef DEBUG
+    #if USING_COMPILER_MSVC
         #define ASSUME(x) do { if (!(x)) __debugbreak(); } while (0)
         #define UNREACHABLE() __debugbreak()
     #else
-        #define ASSUME(x) __assume(x)
-        #define UNREACHABLE() __assume(false)
-    #endif
-#else
-    #if DEBUG
         #define ASSUME(x) do { if (!(x)) __builtin_trap(); } while (0)
         #define UNREACHABLE() __builtin_trap()
-    #else
-        #define ASSUME(x) do { if (!(x)) __builtin_unreachable(); } while (0)
-        #define UNREACHABLE() __builtin_unreachable()
     #endif
+#else
+    // TODO: just use [[assume]] in the code
+    #define ASSUME(x) [[assume(x)]]   // C++23 — GCC≥13, Clang≥19, MSVC≥17.3
+    #define UNREACHABLE() ASSUME(false)
 #endif
