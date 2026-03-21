@@ -141,7 +141,7 @@ export namespace draco::math {
 
             return _mm_cvtss_f32(sum);
         #elif ARCH_ARM64
-            // TODO: setup NEON SIMD.
+            #error "ARM64 NEON support not yet implemented."
         #else
             // scalar.
             return a.x*b.x + a.y*b.y + a.z*b.z + a.w*b.w;
