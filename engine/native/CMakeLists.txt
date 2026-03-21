@@ -1,6 +1,3 @@
-
-enable_testing()
-
 include(Compiler)
 include(Modules)
 
