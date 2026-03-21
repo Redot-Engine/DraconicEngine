@@ -16,9 +16,9 @@ export namespace draco {
 
     // Whether the default value of a type is just all-0 bytes.
     // This can most commonly be exploited by using memset for these types instead of loop-construct.
-    // Trivially constructible types are also zero-constructible.
+    // Must be explicitly specialized to mark a type as such.
     template <typename T>
-    struct is_zero_constructible : std::is_trivially_constructible<std::decay_t<T>> {};
+    struct is_zero_constructible : std::false_type {};
 
     template <typename T>
     constexpr bool is_zero_constructible_v = is_zero_constructible<T>::value;
