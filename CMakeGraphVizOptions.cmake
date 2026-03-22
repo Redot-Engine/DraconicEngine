@@ -1,0 +1,5 @@
+set(GRAPHVIZ_GRAPH_NAME "Draconic Engine dependency graph")
+set(GRAPHVIZ_GRAPH_HEADER "node [ fontsize = \"10\" ];")
+set(GRAPHVIZ_EXECUTABLES FALSE)
+set(GRAPHVIZ_EXTERNAL_LIBS FALSE)
+set(GRAPHVIZ_IGNORE_TARGETS "CMAKE_.*;test_.*|.*_test$")

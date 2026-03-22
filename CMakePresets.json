@@ -1,0 +1,50 @@
+{
+  "version": 10,
+  "cmakeMinimumRequired": {
+    "major": 4,
+    "minor": 0,
+    "patch": 3
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "hidden": true,
+      "displayName": "Default Config",
+      "description": "Base configuration",
+      "generator": "Ninja",
+      "graphviz": "graph/deps.dot",
+      "warnings": {
+        "unusedCli": false,
+        "dev": false
+      },
+      "cacheVariables": {
+        "CMAKE_EXPERIMENTAL_CXX_IMPORT_STD": "d0edc3af-4c50-42ea-a356-e2862fe7a444",
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "CMAKE_CXX_MODULE_STD": "1",
+        "CMAKE_CXX_FLAGS_INIT": "-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "default",
+      "displayName": "Release",
+      "description": "Release configuration, including C# support",
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "default",
+      "displayName": "Debug",
+      "description": "Debug configuration, including C# support",
+      "binaryDir": "${sourceDir}/build/debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ]
+}
