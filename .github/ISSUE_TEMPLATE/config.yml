@@ -1,0 +1,14 @@
+blank_issues_enabled: true # Let's have true for now until we have a issue template
+
+contact_links:
+  - name: Draconic proposals
+    url: https://github.com/Redot-Engine/draconic-proposals
+    about: Please submit feature proposals on the Draconic proposals repository, not here.
+
+  - name: Draconic documentation repository
+    url: https://github.com/Redot-Engine/draconic-docs
+    about: Please report issues with documentation on the Draconic documentation repository, not here.
+
+  - name: Draconic community channels
+    url: https://draconicengine.org/community
+    about: Please ask for technical support on one of the other community channels, not here.
