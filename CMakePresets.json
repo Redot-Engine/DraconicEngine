@@ -2,8 +2,8 @@
   "version": 10,
   "cmakeMinimumRequired": {
     "major": 4,
-    "minor": 0,
-    "patch": 3
+    "minor": 2,
+    "patch": 0
   },
   "configurePresets": [
     {
@@ -18,7 +18,6 @@
         "dev": false
       },
       "cacheVariables": {
-        "CMAKE_EXPERIMENTAL_CXX_IMPORT_STD": "d0edc3af-4c50-42ea-a356-e2862fe7a444",
         "CMAKE_CXX_STANDARD": "23",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
