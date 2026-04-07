@@ -1,4 +1,5 @@
 .vscode/
+.vs/
 .idea/
 
 bits/
@@ -8,3 +9,4 @@ build/
 graph/
 
 CMakeUserPresets.json
+*.pdb

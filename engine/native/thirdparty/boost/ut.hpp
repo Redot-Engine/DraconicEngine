@@ -17,6 +17,7 @@
 #endif
 
 #if defined(_MSC_VER)
+#include <stdlib.h>
 #pragma push_macro("min")
 #pragma push_macro("max")
 #undef min
@@ -3077,16 +3078,16 @@ struct suite {
   }
 };
 
-[[maybe_unused]] inline auto log = detail::log{};
-[[maybe_unused]] inline auto that = detail::that_{};
+[[maybe_unused]] auto log = detail::log{};
+[[maybe_unused]] auto that = detail::that_{};
 [[maybe_unused]] constexpr auto test = [](const auto name) {
   return detail::test{"test", name};
 };
 [[maybe_unused]] constexpr auto should = test;
-[[maybe_unused]] inline auto tag = [](const auto name) {
+[[maybe_unused]] auto tag = [](const auto name) {
   return detail::tag{{name}};
 };
-[[maybe_unused]] inline auto skip = tag("skip");
+[[maybe_unused]] auto skip = tag("skip");
 template <class T = void>
 [[maybe_unused]] constexpr auto type = detail::type_<T>();
 
