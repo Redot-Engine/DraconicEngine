@@ -38,6 +38,87 @@ suite<"core.math.vector4"> vector4_tests = [] {
         expect(v[3] == 4.0f);
     };
 
+    "construct_from_vectors"_test = [] {
+        using draco::math::Vector2;
+        using draco::math::Vector3;
+        using draco::math::Vector4;
+
+        Vector2 a{1.0f, 2.0f};
+        Vector3 b{3.0f, 4.0f, 5.0f};
+
+        Vector4 c(a, 6.0f, 7.0f);
+        Vector4 d(6.0f, a, 7.0f);
+        Vector4 e(6.0f, 7.0f, a);
+        Vector4 f(a, a);
+        Vector4 g(b, 6.0f);
+        Vector4 h(6.0f, b);
+        Vector4 i(a);
+        Vector4 j(b);
+        
+        expect(c[0] == 1.0f);
+        expect(c[1] == 2.0f);
+        expect(c[2] == 6.0f);
+        expect(c[3] == 7.0f);
+        
+        expect(d[0] == 6.0f);
+        expect(d[1] == 1.0f);
+        expect(d[2] == 2.0f);
+        expect(d[3] == 7.0f);
+        
+        expect(e[0] == 6.0f);
+        expect(e[1] == 7.0f);
+        expect(e[2] == 1.0f);
+        expect(e[3] == 2.0f);
+        
+        expect(f[0] == 1.0f);
+        expect(f[1] == 2.0f);
+        expect(f[2] == 1.0f);
+        expect(f[3] == 2.0f);
+        
+        expect(g[0] == 3.0f);
+        expect(g[1] == 4.0f);
+        expect(g[2] == 5.0f);
+        expect(g[3] == 6.0f);
+        
+        expect(h[0] == 6.0f);
+        expect(h[1] == 3.0f);
+        expect(h[2] == 4.0f);
+        expect(h[3] == 5.0f);
+        
+        expect(i[0] == 1.0f);
+        expect(i[1] == 2.0f);
+        expect(i[2] == 0.0f);
+        expect(i[3] == 0.0f);
+        
+        expect(j[0] == 3.0f);
+        expect(j[1] == 4.0f);
+        expect(j[2] == 5.0f);
+        expect(j[3] == 0.0f);
+    };
+
+    "swizzle"_test = [] {
+        using draco::math::Vector2;
+        using draco::math::Vector3;
+        using draco::math::Vector4;
+        
+        Vector4 a{1.0f, 2.0f, 3.0f, 4.0f};
+        Vector4 b = a[0, 2, 1, 3];
+        Vector3 c = a[1, 2, 0];
+        Vector2 d = a[1, 0];
+
+        expect(b[0] == 1.0f);
+        expect(b[1] == 3.0f);
+        expect(b[2] == 2.0f);
+        expect(b[3] == 4.0f);
+
+        expect(c[0] == 2.0f);
+        expect(c[1] == 3.0f);
+        expect(c[2] == 1.0f);
+
+        expect(d[0] == 2.0f);
+        expect(d[1] == 1.0f);
+    };
+
     "swap"_test = [] {
         using draco::math::Vector4;
 
@@ -83,5 +164,56 @@ suite<"core.math.vector4"> vector4_tests = [] {
         constexpr float expected = 30.0f;
 
         expect(result == expected);
+    };
+
+    "length"_test = [] {
+        using draco::math::Vector4;
+        using draco::math::length;
+        using draco::math::length_sq;
+
+        Vector4 v{1.0f, 2.0f, 2.0f, 4.0f};
+
+        const float result = length(v);
+        const float result_sq = length_sq(v);
+        constexpr float expected = 5.0f;
+        constexpr float expected_sq = 25.0f;
+
+        expect(result == expected);
+        expect(result_sq == expected_sq);
+    };
+
+    "distance"_test = [] {
+        using draco::math::Vector4;
+        using draco::math::distance;
+        using draco::math::distance_sq;
+
+        Vector4 a{1.0f, 2.0f, 2.0f, 4.0f};
+        Vector4 b{3.0f, 6.0f, 7.0f, 10.0f};
+
+        const float result = distance(a, b);
+        const float result_sq = distance_sq(a, b);
+        constexpr float expected = 9.0f;
+        constexpr float expected_sq = 81.0f;
+
+        expect(result == expected);
+        expect(result_sq == expected_sq);
+    };
+
+    "normalize"_test = [] {
+        using draco::math::Vector4;
+        using draco::math::length;
+        using draco::math::normalize;
+        using draco::math::normalize_fast;
+
+        Vector4 a{2.0f, 4.0f, 5.0f, 6.0f};
+        Vector4 b(1e-20);
+
+        const Vector4 result = normalize(a);
+        const Vector4 result_fast = normalize_fast(a);
+        const Vector4 result_zero = normalize(b);
+
+        expect(length(result) == 1.0f);
+        expect(result == result_fast);
+        expect(result_zero == Vector4());
     };
 };

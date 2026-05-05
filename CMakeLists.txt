@@ -28,7 +28,13 @@ project(DraconicEngine LANGUAGES C CXX)
 # Only have safe global rules here
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_MODULE_STD ON)
+set(CMAKE_CXX_MODULE_STD "libc++")
+set(CMAKE_CXX_EXTENSIONS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON) # bgfx & deps give error if this isn't set, this is a temp workaround
+# Force all to use Clang or else a mismatch occurs
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 

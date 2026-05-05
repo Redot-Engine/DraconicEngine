@@ -42,6 +42,13 @@
     #define FORCEINLINE inline __attribute__((always_inline))
 #endif
 
+// Force used.
+#if USING_COMPILER_MSVC
+    #define FORCEUSED __declspec(dllexport)
+#else
+    #define FORCEUSED __attribute__((used))
+#endif
+
 // Restrict
 #if USING_COMPILER_MSVC
     #define RESTRICT __restrict

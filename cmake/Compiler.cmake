@@ -15,12 +15,6 @@ else()
     add_compile_definitions(DEBUG)
 endif()
 
-# Force Clang to use libc++
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-stdlib=libc++)
-    add_link_options(-stdlib=libc++)
-endif()
-
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     if (CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
         # TODO: Make SIMD level configurable or detect at runtime

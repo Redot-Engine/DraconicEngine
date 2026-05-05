@@ -1,6 +1,6 @@
 export module core.math;
 export import core.math.constants;
-export import core.math.vector4;
+export import core.math.types;
 export import core.defs;
 import std;
 
