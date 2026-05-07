@@ -1,36 +1,40 @@
+module;
+
+#include <limits>
+#include <cmath>
+
 export module core.math;
 export import core.math.constants;
 export import core.math.vector4;
 export import core.defs;
-import std;
 
 export namespace draco::math {
     template <arithmetic T>
     constexpr T sqr(T x) noexcept { return x*x; }
 
-    template <std::floating_point T>
+    template <floating_point T>
     [[nodiscard]] constexpr bool is_nan(T val) noexcept {
         // Only NaN does not equal itself.
         return val != val;
     }
 
-    template <std::floating_point T>
+    template <floating_point T>
     [[nodiscard]] constexpr bool is_inf(T val) noexcept {
-        return std::isinf(val);
+        return __builtin_isinf(val);
     }
 
-    template <std::floating_point T>
+    template <floating_point T>
     [[nodiscard]] constexpr bool is_finite(T val) noexcept {
-        return std::isfinite(val);
+        return __builtin_isfinite(val);
     }
 
     template <arithmetic T>
     constexpr T abs(T value) noexcept {
         // Manually compute abs for signed types.
         // Also avoids potential int8_t -> int issues.
-        if constexpr (std::floating_point<T>) {
+        if constexpr (floating_point<T>) {
             return value < T{0} ? -value : value;
-        } else if constexpr (std::signed_integral<T>) {
+        } else if constexpr (with_sign<T>) {
             if (value == std::numeric_limits<T>::min()) {
                 return std::numeric_limits<T>::max(); // define saturating behavior explicitly
             }
@@ -41,22 +45,22 @@ export namespace draco::math {
         }
     }
 
-    template <std::floating_point T>
+    template <floating_point T>
     constexpr T deg_to_rad(T y) noexcept {
-        return y * (std::numbers::pi_v<T> / T{180.});
+        return y * (T{PI} / T{180.});
     }
 
-    template <std::floating_point T>
+    template <floating_point T>
     constexpr T rad_to_deg(T y) noexcept {
-        return y * (T{180.} / std::numbers::pi_v<T>);
+        return y * (T{180.} / T{PI});
     }
 
-    template <std::floating_point T>
+    template <floating_point T>
     T pow(T x, T y) {
         return static_cast<T>(std::pow(x, y));
     }
 
-    template <std::floating_point T>
+    template <floating_point T>
     constexpr T lerp(T from, T to, T weight) noexcept {
         return std::lerp(from, to, weight);
     }
