@@ -12,7 +12,6 @@ module;
 
 export module core.math.vector4;
 import core.defs;
-//import std;
 
 export namespace draco::math {
 

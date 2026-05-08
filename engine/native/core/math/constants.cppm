@@ -1,5 +1,10 @@
 module;
 
+#include <concepts>
+#include <cstdint>
+#include <limits>
+#include <numbers>
+
 export module core.math.constants;
 import core.defs;
 
@@ -7,25 +12,25 @@ export namespace draco::math {
     // Limit the depth of recursive algorithms
     constexpr int MAX_RECURSIONS = 100;
 
-    constexpr double SQRT2 = 1.414213562373095048801688724209698079;
-    constexpr double SQRT3 = 1.732050807568877293527446341505872367;
+    constexpr double SQRT2 = std::numbers::sqrt2_v<double>;
+    constexpr double SQRT3 = std::numbers::sqrt3_v<double>;
     constexpr double SQRT12 = 1. / SQRT2;
-    constexpr double SQRT13 = 1. / SQRT3;
-    constexpr double LN2 = 0.693147180559945309417232121458176568;
-    constexpr double LN10 = 2.302585092994045684017991454684364208;
-    constexpr double PI = 3.141592653589793238462643383279502884;
+    constexpr double SQRT13 = std::numbers::inv_sqrt3_v<double>;
+    constexpr double LN2 = std::numbers::ln2_v<double>;
+    constexpr double LN10 = std::numbers::ln10_v<double>;
+    constexpr double PI = std::numbers::pi_v<double>;
     constexpr double TAU = 2. * PI;
-    constexpr double E = 2.718281828459045235360287471352662498;
-    constexpr double INF = __builtin_huge_val();
-    constexpr double NaN = __builtin_nan("");
+    constexpr double E = std::numbers::e_v<double>;
+    constexpr double INF = std::numeric_limits<double>::infinity();
+    constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
     constexpr double DB_CONVERSION_GAIN = 8.6858896380650365530225783783321;
     constexpr double GAIN_CONVERSION_DB = 0.11512925464970228420089957273422;
-    constexpr double UINT32_MAX_D = 1. / static_cast<double>(__INT_MAX__ * 2U + 1);
-    constexpr float  UINT32_MAX_F = 1.f / static_cast<float>(__INT_MAX__ * 2U + 1);
+    constexpr double UINT32_MAX_D = 1. / std::numeric_limits<uint32_t>::max();
+    constexpr float  UINT32_MAX_F = 1.f / std::numeric_limits<uint32_t>::max();
 
-    template<floating_point T> constexpr T CMP_EPSILON = T{0.000001};
-    template<floating_point T> constexpr T CMP_EPSILON2 = CMP_EPSILON<T> * CMP_EPSILON<T>;
+    template<std::floating_point T> constexpr T CMP_EPSILON = T{0.000001};
+    template<std::floating_point T> constexpr T CMP_EPSILON2 = CMP_EPSILON<T> * CMP_EPSILON<T>;
 
-    template<floating_point T> constexpr T CMP_NORMALIZE_TOLERANCE = T{0.000001};
-    template<floating_point T> constexpr T CMP_POINT_IN_PLANE_EPSILON = T{0.00001};
+    template<std::floating_point T> constexpr T CMP_NORMALIZE_TOLERANCE = T{0.000001};
+    template<std::floating_point T> constexpr T CMP_POINT_IN_PLANE_EPSILON = T{0.00001};
 }

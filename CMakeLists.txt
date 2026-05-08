@@ -25,11 +25,6 @@ endif()
 
 project(DraconicEngine LANGUAGES C CXX)
 
-# Only have safe global rules here
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_MODULE_STD ON)
-
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 include(CTest)

@@ -2,13 +2,13 @@ set(BGFX_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BGFX_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
 set(BGFX_INSTALL OFF CACHE BOOL "" FORCE)
 set(BGFX_LIBRARY_TYPE "STATIC")
-set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
 set(BX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bx CACHE STRING "" FORCE) 
 set(BIMG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bimg CACHE STRING "" FORCE) 
 set(BGFX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bgfx CACHE STRING "" FORCE) 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bx bx-build) 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bimg bimg-build) 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bx bx-build)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bimg bimg-build)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bgfx bgfx-build)
+
 
 target_link_libraries(bgfx PUBLIC bx bimg)
