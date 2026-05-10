@@ -20,7 +20,7 @@ endif()
 function(add_modules_library)
     cmake_parse_arguments(
             MOD_LIB # prefix for all variables
-            "STATIC;SHARED" # tags for flags (only defined ones will be true)
+            "STATIC;SHARED;PIC" # tags for flags (only defined ones will be true)
             "" # tags for single values
             "" # tags for lists
             "${ARGN}"
@@ -65,6 +65,10 @@ function(add_modules_library)
     )
 
     target_sources(${LIB_TARGET} PRIVATE ${CPP_SRC_FILES})
+
+    if (MOD_LIB_PIC)
+        set_target_properties(${LIB_TARGET} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    endif()
 
     if(CMAKE_TESTING_ENABLED)
         foreach(UNIT_TEST_FILE ${CPP_UNIT_TESTS})
