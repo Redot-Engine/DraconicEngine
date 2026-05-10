@@ -1,6 +1,6 @@
 module;
 
-#include <concepts>
+#include <type_traits>
 
 export module core.defs;
 export import core.version;

@@ -9,6 +9,7 @@ module;
 #endif
 
 #include <cmath>
+#include <type_traits>
 
 export module core.math.vector4;
 import core.defs;
@@ -96,7 +97,7 @@ export namespace draco::math {
     static_assert(sizeof(Vector4) == 16, "Vector4 must be 16 bytes");
     static_assert(alignof(Vector4) == 16, "Vector4 must be 16-byte aligned");
     static_assert(trivial<Vector4>, "Vector4 must be trivial");
-    //static_assert(std::is_standard_layout_v<Vector4>, "Vector4 must be standard layout");
+    static_assert(std::is_standard_layout_v<Vector4>, "Vector4 must be standard layout");
 
     [[nodiscard]] constexpr Vector4 operator+(const Vector4& a, const Vector4& b) noexcept {
         return { a.x+b.x, a.y+b.y, a.z+b.z, a.w+b.w };
