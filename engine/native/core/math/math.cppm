@@ -1,5 +1,6 @@
 module;
 
+#include <type_traits>
 #include <concepts>
 #include <limits>
 #include <cmath>
@@ -21,12 +22,12 @@ export namespace draco::math {
 
     template <std::floating_point T>
     [[nodiscard]] constexpr bool is_inf(T val) noexcept {
-        return __builtin_isinf(val);
+        return std::isinf(val);
     }
 
     template <std::floating_point T>
     [[nodiscard]] constexpr bool is_finite(T val) noexcept {
-        return __builtin_isfinite(val);
+        return std::isfinite(val);
     }
 
     template <arithmetic T>
