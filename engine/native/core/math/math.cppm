@@ -12,7 +12,7 @@ export import core.defs;
 
 export namespace draco::math {
     template <arithmetic T>
-    constexpr T sqr(T x) noexcept { return x*x; }
+    [[nodiscard]] constexpr T sqr(T x) noexcept { return x*x; }
 
     template <std::floating_point T>
     [[nodiscard]] constexpr bool is_nan(T val) noexcept {
@@ -31,7 +31,7 @@ export namespace draco::math {
     }
 
     template <arithmetic T>
-    constexpr T abs(T value) noexcept {
+    [[nodiscard]] constexpr T abs(T value) noexcept {
         // Manually compute abs for signed types.
         // Also avoids potential int8_t -> int issues.
         if constexpr (std::floating_point<T>) {
@@ -48,27 +48,27 @@ export namespace draco::math {
     }
 
     template <std::floating_point T>
-    constexpr T deg_to_rad(T y) noexcept {
+    [[nodiscard]] constexpr T deg_to_rad(T y) noexcept {
         return y * (T{PI} / T{180.});
     }
 
     template <std::floating_point T>
-    constexpr T rad_to_deg(T y) noexcept {
+    [[nodiscard]] constexpr T rad_to_deg(T y) noexcept {
         return y * (T{180.} / T{PI});
     }
 
     template <std::floating_point T>
-    T pow(T x, T y) {
+    [[nodiscard]] T pow(T x, T y) noexcept {
         return static_cast<T>(std::pow(x, y));
     }
 
     template <std::floating_point T>
-    constexpr T lerp(T from, T to, T weight) noexcept {
+    [[nodiscard]] constexpr T lerp(T from, T to, T weight) noexcept {
         return std::lerp(from, to, weight);
     }
 
     template <std::floating_point T>
-    constexpr T cubic_interpolate(T from, T to, T before, T after, T weight) noexcept {
+    [[nodiscard]] constexpr T cubic_interpolate(T from, T to, T before, T after, T weight) noexcept {
         // weight squared.
         T w2 = weight * weight;
         // weight cubed.
@@ -92,7 +92,7 @@ export namespace draco::math {
     }
 
     template <std::floating_point T>
-    constexpr T cubic_interpolate_in_time(
+    [[nodiscard]] constexpr T cubic_interpolate_in_time(
         T from, T to,
         T before, T after, T weight,
         T to_t, T before_t, T after_t) noexcept {
@@ -126,7 +126,7 @@ export namespace draco::math {
     }
 
     template <std::floating_point T>
-    constexpr T bezier_interpolate(T start, T control_1, T control_2, T end, T t) noexcept {
+    [[nodiscard]] constexpr T bezier_interpolate(T start, T control_1, T control_2, T end, T t) noexcept {
         /* Formula from Wikipedia article on Bezier curves. */
         // one minus t.
         T omt = T{1.} - t;
@@ -141,7 +141,7 @@ export namespace draco::math {
     }
 
     template <std::floating_point T>
-    constexpr T bezier_derivative(T start, T control_1, T control_2, T end, T t) noexcept {
+    [[nodiscard]] constexpr T bezier_derivative(T start, T control_1, T control_2, T end, T t) noexcept {
         /* Formula from Wikipedia article on Bezier curves. */
         T omt = T{1.} - t;
         T omt2 = omt * omt;

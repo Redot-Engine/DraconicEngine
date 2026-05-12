@@ -6,15 +6,6 @@ set(NATIVE_THIRD_PARTY_DIR "${NATIVE_SOURCE_DIR}/thirdparty")
 
 if (BUILD_TESTING)
     set(DOCTEST_INCLUDE_DIR "${NATIVE_THIRD_PARTY_DIR}/doctest")
-#    message(STATUS "Bootstrapping unit tests module boost.ut")
-#    add_library(boost_ut_main "${NATIVE_THIRD_PARTY_DIR}/boost/ut_main.cpp")
-#    target_sources(boost_ut_main
-#        PUBLIC
-#        FILE_SET CXX_MODULES
-#        BASE_DIRS "${NATIVE_THIRD_PARTY_DIR}/boost"
-#        FILES "${NATIVE_THIRD_PARTY_DIR}/boost/ut.cppm"
-#    )
-#    target_compile_features(boost_ut_main PUBLIC cxx_std_23)
 endif()
 
 function(add_modules_library)
@@ -81,7 +72,6 @@ function(add_modules_library)
             add_executable(${UNIT_TEST_TARGET} ${UNIT_TEST_FILE})
             set_target_properties(${UNIT_TEST_TARGET} PROPERTIES CXX_SCAN_FOR_MODULES ON)
             target_compile_features(${UNIT_TEST_TARGET} PUBLIC cxx_std_23)
-            #target_compile_options(${UNIT_TEST_TARGET} PUBLIC -fmodules-ts)
             target_include_directories(${UNIT_TEST_TARGET} PUBLIC ${DOCTEST_INCLUDE_DIR})
             target_link_libraries(${UNIT_TEST_TARGET} PRIVATE ${LIB_TARGET})
             message(STATUS "Unit test ${UNIT_TEST_TARGET}")
