@@ -5,7 +5,7 @@ module;
 export module core.defs;
 export import core.version;
 
-static_assert(__cplusplus >=  202302L, "Minimum of C++23 required.");
+static_assert(__cplusplus >=  202207L, "Minimum of C++23 required. Consider upgrading your compiler.");
 
 export namespace draco {
 
