@@ -28,8 +28,8 @@ A module interface or implementation unit has a well defined structure. It conta
 - Global module fragment
 - Named module fragment
 
-The **global module** fragment is the portion of the unit where headers may be imported,
-and global module symbols may be included (via headers), declared and/or defined therein.
+The **global module** fragment is the portion of the unit where global module symbols may be
+included (via headers), declared and/or defined therein.
 Those symbols are said to be in the _global module purview_ and may be used in the entire unit,
 but will not be exported themselves unless an explicit export declaration is made in the named module fragment.
 
