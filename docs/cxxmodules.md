@@ -50,7 +50,8 @@ are not properly wrapped.
 > **Do not leak global symbols through a named module interface**
 
 The **named module** fragment is the portion of the unit where the module declaration is exported
-and/or implemented. Exported symbols are prefixed
+and/or implemented. Exported symbols are prefixed by the `export` keyword. Entire structs, classes
+or namespaces can be exported in one go.
 
 _Example of a module interface unit_
 
