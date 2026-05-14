@@ -40,14 +40,12 @@ itself will not be exported through the named module. Any client code that impor
 will still not know any symbols for `std::vector` unless it also does `#include <vector>`
 alongside the import. And the same goes for macros.
 
-> **Do not leak preprocessor macros in a named module interface**
-
 For this reason, it is heavily recommended that headers are wrapped in a module which is as low
 in the hierarchy as possible, in order to avoid obfuscated header dependencies creeping up at the
 top. In particular, one should avoid exporting declarations containing STL header symbols that
 are not properly wrapped.
 
-> **Do not leak global symbols through a named module interface**
+> **Do not leak global symbols or preprocessor macros through a named module interface**
 
 The **named module** fragment is the portion of the unit where the module declaration is exported
 and/or implemented. Exported symbols are prefixed by the `export` keyword. Entire structs, classes
