@@ -7,7 +7,7 @@ Modules provide a new compilation mechanism where the compiler maps groups of sy
 Existing legacy C++ code remains compatible, but as an implementation detail. Modules are
 therefore best used when wrapping legacy source/header code.
 
-There are three types of translation units, when once includes modules:
+There are three types of translation units when one includes modules:
 - Regular translation unit (the source/header kind)
 - Module interface unit
 - Module implementation unit
@@ -24,7 +24,7 @@ to the linker, thus allowing to split the interface declaration from the impleme
 
 ### Module unit structure
 
-A module interface or implementation unit has a well defined structure. It contains:
+A module interface or implementation unit has a well-defined structure. It contains:
 - Global module fragment
 - Named module fragment
 
@@ -36,7 +36,7 @@ but will not be exported themselves unless an explicit export declaration is mad
 As an example, one may `#include <vector>` in the global module fragment, and this means
 that `std::vector` will now be in the global module purview and usable across the entire module
 unit, making it also possible to export declarations with it. However, the `std::vector` template
-iteself will not be exported through the named module. Any client code that imported this module
+itself will not be exported through the named module. Any client code that imported this module
 will still not know any symbols for `std::vector` unless it also does `#include <vector>`
 alongside the import. And the same goes for macros.
 
