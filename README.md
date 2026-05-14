@@ -13,8 +13,7 @@
 > 
 > Help us out by adding new features or information!
 
-
-## Compiling DraconicEngine
+## Compiling Draconic Engine
 
 ### Linux
 
@@ -37,3 +36,11 @@ To build, call:
 After the build successfully completed, unit tests can be executed via CTest.
 
 ```ctest --test-dir build/release```
+
+## Architecture
+
+Draconic Engine is a two-tiered project, with an inner core written in C++ and
+a public interface and editor in C#.
+
+Regarding the native layer, it is written in C++, according to the C++23 standard and using modules.
+Documentation regarding how C++ modules are used can be read [here](docs/cxxmodules.md).
