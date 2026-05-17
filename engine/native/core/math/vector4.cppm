@@ -218,11 +218,11 @@ export namespace draco::math {
         return *this;
     }
 
-    [[nodiscard]] constexpr Vector4 Vector4::operator+() noexcept {
+    [[nodiscard]] constexpr Vector4 Vector4::operator+() const noexcept {
         return { x, y, z, w };
     }
 
-    [[nodiscard]] constexpr Vector4 Vector4::operator-() noexcept {
+    [[nodiscard]] constexpr Vector4 Vector4::operator-() const noexcept {
         return { -x, -y, -z, -w };
     }
     
@@ -329,7 +329,7 @@ export namespace draco::math {
     [[nodiscard]] Vector4 normalize(const Vector4& v) noexcept {
         const float len = length(v);
 
-        return (len > CMP_NORMALIZE_TOLERANCE) ? v / len : Vector4(0.0f);
+        return (len > CMP_NORMALIZE_TOLERANCE) ? v / len : Vector4();
     }
     
     // Faster normalize, it presupposes vector has non-zero length
@@ -390,7 +390,7 @@ export namespace draco::math {
         return length_sq(a) < length_sq(b) ? a : b;
     }
 
-    // Returns a vector in the same direction whose length is bounded above by the given value  
+    // Returns a vector in the same direction whose length is bounded above by the given value.
     [[nodiscard]] Vector4 min_length(const Vector4& a, const float b) noexcept {
         const float len_sq = length_sq(a);
         
@@ -433,11 +433,13 @@ export namespace draco::math {
         return length_sq(a) > length_sq(b) ? a : b;
     }
 
-    // Returns a vector in the same direction whose length is bounded below by the given value
+    // Returns a vector in the same direction whose length is bounded below by the given value. Returns the 0 vector if the vector is too small to be normalized.
     [[nodiscard]] Vector4 max_length(const Vector4& a, const float b) noexcept {
         const float len_sq = length_sq(a);
         
-        if (len_sq < b * b) {
+        if (len_sq <= CMP_NORMALIZE_TOLERANCE2) {
+            return Vector4();
+        } else if (len_sq < b * b) {
             return a * (b / std::sqrt(len_sq));
         } else {
             return a;
@@ -448,7 +450,7 @@ export namespace draco::math {
         return max_length(b, a);
     }
 
-    // Clamps each component of x to the range [x_min, x_max]. Presupposes x_min <= x_max
+    // Clamps each component of x to the range [x_min, x_max]. Presupposes x_min <= x_max.
     [[nodiscard]] constexpr Vector4 clamp(const Vector4& x, const Vector4& x_min, const Vector4& x_max) noexcept {
         return max(x_min, min(x, x_max));
     }
@@ -457,11 +459,13 @@ export namespace draco::math {
         return max(x_min, min(x, x_max));
     }
 
-    // Clamps the length of the vector to the range [x_min, x_max]. Presupposes x_min <= x_max.
+    // Clamps the length of the vector to the range [x_min, x_max]. Presupposes x_min <= x_max. Returns the 0 vector if the vector is too small to be normalized.
     [[nodiscard]] Vector4 clamp_length(const Vector4& v, const float x_min, const float x_max) noexcept {
         const float len_sq = length_sq(v);
         
-        if (len_sq < x_min * x_min) {
+        if (len_sq <= CMP_NORMALIZE_TOLERANCE2) {
+            return Vector4();
+        } else if (len_sq < x_min * x_min) {
             return v * (x_min / std::sqrt(len_sq));
         } else if (len_sq > x_max * x_max) {
             return v * (x_max / std::sqrt(len_sq));

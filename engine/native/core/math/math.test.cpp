@@ -33,7 +33,7 @@ import core.math;
 
 TEST_SUITE("math") {
     TEST_CASE("pow") {
-        float result = draco::math::pow(2., .5);
+        float result = draco::math::pow(2.0f, 0.5f);
         constexpr float expected = draco::math::SQRT2;
         CHECK_EQ(result, expected);
     }

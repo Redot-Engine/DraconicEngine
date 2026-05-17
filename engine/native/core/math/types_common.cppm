@@ -34,8 +34,8 @@ export namespace draco::math {
         [[nodiscard]] constexpr Vector4 operator[](const int i0, const int i1, const int i2, const int i3) const noexcept;
 
         // operators
-        [[nodiscard]] constexpr Vector2 operator+() noexcept;
-        [[nodiscard]] constexpr Vector2 operator-() noexcept;
+        [[nodiscard]] constexpr Vector2 operator+() const noexcept;
+        [[nodiscard]] constexpr Vector2 operator-() const noexcept;
         [[nodiscard]] constexpr bool operator==(const Vector2& other) const noexcept = default;
         constexpr Vector2& operator+=(const Vector2& other) noexcept;
         constexpr Vector2& operator+=(const float other) noexcept;
@@ -79,8 +79,8 @@ export namespace draco::math {
         [[nodiscard]] constexpr Vector4 operator[](const int i0, const int i1, const int i2, const int i3) const noexcept;
 
         // operators
-        [[nodiscard]] constexpr Vector3 operator+() noexcept;
-        [[nodiscard]] constexpr Vector3 operator-() noexcept;
+        [[nodiscard]] constexpr Vector3 operator+() const noexcept;
+        [[nodiscard]] constexpr Vector3 operator-() const noexcept;
         [[nodiscard]] constexpr bool operator==(const Vector3& other) const noexcept = default;
         constexpr Vector3& operator+=(const Vector3& other) noexcept;
         constexpr Vector3& operator+=(const float other) noexcept;
@@ -127,8 +127,8 @@ export namespace draco::math {
         [[nodiscard]] constexpr Vector4 operator[](const int i0, const int i1, const int i2, const int i3) const noexcept;
 
         // member operators
-        [[nodiscard]] constexpr Vector4 operator+() noexcept;
-        [[nodiscard]] constexpr Vector4 operator-() noexcept;
+        [[nodiscard]] constexpr Vector4 operator+() const noexcept;
+        [[nodiscard]] constexpr Vector4 operator-() const noexcept;
         [[nodiscard]] constexpr bool operator==(const Vector4& other) const noexcept = default;
         constexpr Vector4& operator+=(const Vector4& other) noexcept;
         constexpr Vector4& operator+=(const float other) noexcept;

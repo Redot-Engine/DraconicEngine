@@ -31,5 +31,6 @@ export namespace draco::math {
     constexpr float CMP_EPSILON2 = CMP_EPSILON * CMP_EPSILON;
 
     constexpr float CMP_NORMALIZE_TOLERANCE = 0.000001f;
+    constexpr float CMP_NORMALIZE_TOLERANCE2 = CMP_NORMALIZE_TOLERANCE * CMP_NORMALIZE_TOLERANCE;
     constexpr float CMP_POINT_IN_PLANE_EPSILON = 0.00001f;
 }
