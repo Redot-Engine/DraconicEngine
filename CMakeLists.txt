@@ -17,6 +17,8 @@ endif()
 
 project(DraconicEngine LANGUAGES C CXX)
 
+set(CMAKE_CXX_MODULE_STD "libc++")
+
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 include(CTest)
