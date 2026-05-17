@@ -66,39 +66,27 @@ export namespace draco::math {
 	}
 
 	constexpr float floor(float value) noexcept {
-		if consteval {
-			if (value != value || abs(value) >= DECIMAL_LIMIT_F) {
-				return value;
-			}
-			const float truncated = static_cast<int>(value);
-			return truncated - (value < truncated);
+		if (value != value || abs(value) >= DECIMAL_LIMIT_F) {
+			return value;
 		}
-		return std::floor(value);
+		const float truncated = static_cast<int>(value);
+		return truncated - (value < truncated);
 	}
 
 	constexpr float ceil(float value) noexcept {
-		if consteval {
-			return -floor(-value);
-		}
-		return std::ceil(value);
+		return -floor(-value);
 	}
 
 	constexpr float trunc(float value) noexcept {
-		if consteval {
-			if (value != value || abs(value) >= DECIMAL_LIMIT_F) {
-				return value;
-			}
-			return static_cast<int>(value);
+		if (value != value || abs(value) >= DECIMAL_LIMIT_F) {
+			return value;
 		}
-		return std::trunc(value);
+		return static_cast<int>(value);
 	}
 
 	constexpr float round(float value) noexcept {
-		if consteval {
-			const float s = sign(value);
-			return s * floor(s * value + 0.5f);
-		}
-		return std::round(value);
+		const float s = sign(value);
+		return s * floor(s * value + 0.5f);
 	}
 
     template <std::floating_point T>

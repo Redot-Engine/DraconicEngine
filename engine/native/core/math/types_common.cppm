@@ -11,41 +11,41 @@ export namespace draco::math {
 
         // constructors
         [[nodiscard]] constexpr Vector2() noexcept = default;
-        [[nodiscard]] constexpr Vector2(const float n) noexcept;
-        [[nodiscard]] constexpr Vector2(const float x, const float y) noexcept;
+        [[nodiscard]] constexpr Vector2(float n) noexcept;
+        [[nodiscard]] constexpr Vector2(float x, float y) noexcept;
         [[nodiscard]] constexpr Vector2(const Vector3& xy) noexcept;
         [[nodiscard]] constexpr Vector2(const Vector4& xy) noexcept;
         
         // static
-        [[nodiscard]] static constexpr Vector2 x_axis(const float x = 1.0f) noexcept;
-        [[nodiscard]] static constexpr Vector2 y_axis(const float y = 1.0f) noexcept;
-        [[nodiscard]] static Vector2 polar(const float angle, const float radius = 1.0f) noexcept;
+        [[nodiscard]] static constexpr Vector2 x_axis(float x = 1.0f) noexcept;
+        [[nodiscard]] static constexpr Vector2 y_axis(float y = 1.0f) noexcept;
+        [[nodiscard]] static Vector2 polar(float angle, float radius = 1.0f) noexcept;
 
         // element access
-        [[nodiscard]] constexpr float& operator[](const int i) noexcept;
-        [[nodiscard]] constexpr const float& operator[](const int i) const noexcept;
+        [[nodiscard]] constexpr float& operator[](int i) noexcept;
+        [[nodiscard]] constexpr const float& operator[](int i) const noexcept;
 
         // swizzle
-        [[nodiscard]] constexpr Vector2 operator[](const int i0, const int i1) noexcept;
-        [[nodiscard]] constexpr Vector2 operator[](const int i0, const int i1) const noexcept;
-        [[nodiscard]] constexpr Vector3 operator[](const int i0, const int i1, const int i2) noexcept;
-        [[nodiscard]] constexpr Vector3 operator[](const int i0, const int i1, const int i2) const noexcept;
-        [[nodiscard]] constexpr Vector4 operator[](const int i0, const int i1, const int i2, const int i3) noexcept;
-        [[nodiscard]] constexpr Vector4 operator[](const int i0, const int i1, const int i2, const int i3) const noexcept;
+        [[nodiscard]] constexpr Vector2 operator[](int i0, int i1) noexcept;
+        [[nodiscard]] constexpr Vector2 operator[](int i0, int i1) const noexcept;
+        [[nodiscard]] constexpr Vector3 operator[](int i0, int i1, int i2) noexcept;
+        [[nodiscard]] constexpr Vector3 operator[](int i0, int i1, int i2) const noexcept;
+        [[nodiscard]] constexpr Vector4 operator[](int i0, int i1, int i2, int i3) noexcept;
+        [[nodiscard]] constexpr Vector4 operator[](int i0, int i1, int i2, int i3) const noexcept;
 
         // operators
         [[nodiscard]] constexpr Vector2 operator+() const noexcept;
         [[nodiscard]] constexpr Vector2 operator-() const noexcept;
         [[nodiscard]] constexpr bool operator==(const Vector2& other) const noexcept = default;
         constexpr Vector2& operator+=(const Vector2& other) noexcept;
-        constexpr Vector2& operator+=(const float other) noexcept;
+        constexpr Vector2& operator+=(float other) noexcept;
         constexpr Vector2& operator-=(const Vector2& other) noexcept;
-        constexpr Vector2& operator-=(const float other) noexcept;
+        constexpr Vector2& operator-=(float other) noexcept;
         constexpr Vector2& operator*=(const Vector2& other) noexcept;
-        constexpr Vector2& operator*=(const float other) noexcept;
+        constexpr Vector2& operator*=(float other) noexcept;
         constexpr Vector2& operator/=(const Vector2& other) noexcept;
-        constexpr Vector2& operator/=(const float other) noexcept;
-        constexpr Vector2& operator=(const float other) noexcept;
+        constexpr Vector2& operator/=(float other) noexcept;
+        constexpr Vector2& operator=(float other) noexcept;
     };
 
     struct alignas(16) Vector3 {
@@ -53,44 +53,44 @@ export namespace draco::math {
 
         // constructors
         [[nodiscard]] constexpr Vector3() noexcept = default;
-        [[nodiscard]] constexpr Vector3(const float n) noexcept;
-        [[nodiscard]] constexpr Vector3(const float x, const float y, const float z) noexcept;
-        [[nodiscard]] constexpr Vector3(const Vector2& xy, const float z = 0.0f) noexcept;
-        [[nodiscard]] constexpr Vector3(const float x, const Vector2& yz) noexcept;
+        [[nodiscard]] constexpr Vector3(float n) noexcept;
+        [[nodiscard]] constexpr Vector3(float x, float y, float z) noexcept;
+        [[nodiscard]] constexpr Vector3(const Vector2& xy, float z = 0.0f) noexcept;
+        [[nodiscard]] constexpr Vector3(float x, const Vector2& yz) noexcept;
         [[nodiscard]] constexpr Vector3(const Vector4& xyz) noexcept;
         
         // static
-        [[nodiscard]] static constexpr Vector3 x_axis(const float x = 1.0f) noexcept;
-        [[nodiscard]] static constexpr Vector3 y_axis(const float y = 1.0f) noexcept;
-        [[nodiscard]] static constexpr Vector3 z_axis(const float z = 1.0f) noexcept;
-        [[nodiscard]] static Vector3 spherical(const float azimuth, const float inclination, const float radius = 1.0f) noexcept;
-        [[nodiscard]] static Vector3 cylindrical(const float angle, const float radius = 1.0f, const float height = 0.0f) noexcept;
+        [[nodiscard]] static constexpr Vector3 x_axis(float x = 1.0f) noexcept;
+        [[nodiscard]] static constexpr Vector3 y_axis(float y = 1.0f) noexcept;
+        [[nodiscard]] static constexpr Vector3 z_axis(float z = 1.0f) noexcept;
+        [[nodiscard]] static Vector3 spherical(float azimuth, float inclination, float radius = 1.0f) noexcept;
+        [[nodiscard]] static Vector3 cylindrical(float angle, float radius = 1.0f, float height = 0.0f) noexcept;
 
         // element access
-        [[nodiscard]] constexpr float& operator[](const int i) noexcept;
-        [[nodiscard]] constexpr const float& operator[](const int i) const noexcept;
+        [[nodiscard]] constexpr float& operator[](int i) noexcept;
+        [[nodiscard]] constexpr const float& operator[](int i) const noexcept;
 
         // swizzle
-        [[nodiscard]] constexpr Vector2 operator[](const int i0, const int i1) noexcept;
-        [[nodiscard]] constexpr Vector2 operator[](const int i0, const int i1) const noexcept;
-        [[nodiscard]] constexpr Vector3 operator[](const int i0, const int i1, const int i2) noexcept;
-        [[nodiscard]] constexpr Vector3 operator[](const int i0, const int i1, const int i2) const noexcept;
-        [[nodiscard]] constexpr Vector4 operator[](const int i0, const int i1, const int i2, const int i3) noexcept;
-        [[nodiscard]] constexpr Vector4 operator[](const int i0, const int i1, const int i2, const int i3) const noexcept;
+        [[nodiscard]] constexpr Vector2 operator[](int i0, int i1) noexcept;
+        [[nodiscard]] constexpr Vector2 operator[](int i0, int i1) const noexcept;
+        [[nodiscard]] constexpr Vector3 operator[](int i0, int i1, int i2) noexcept;
+        [[nodiscard]] constexpr Vector3 operator[](int i0, int i1, int i2) const noexcept;
+        [[nodiscard]] constexpr Vector4 operator[](int i0, int i1, int i2, int i3) noexcept;
+        [[nodiscard]] constexpr Vector4 operator[](int i0, int i1, int i2, int i3) const noexcept;
 
         // operators
         [[nodiscard]] constexpr Vector3 operator+() const noexcept;
         [[nodiscard]] constexpr Vector3 operator-() const noexcept;
         [[nodiscard]] constexpr bool operator==(const Vector3& other) const noexcept = default;
         constexpr Vector3& operator+=(const Vector3& other) noexcept;
-        constexpr Vector3& operator+=(const float other) noexcept;
+        constexpr Vector3& operator+=(float other) noexcept;
         constexpr Vector3& operator-=(const Vector3& other) noexcept;
-        constexpr Vector3& operator-=(const float other) noexcept;
+        constexpr Vector3& operator-=(float other) noexcept;
         constexpr Vector3& operator*=(const Vector3& other) noexcept;
-        constexpr Vector3& operator*=(const float other) noexcept;
+        constexpr Vector3& operator*=(float other) noexcept;
         constexpr Vector3& operator/=(const Vector3& other) noexcept;
-        constexpr Vector3& operator/=(const float other) noexcept;
-        constexpr Vector3& operator=(const float other) noexcept;
+        constexpr Vector3& operator/=(float other) noexcept;
+        constexpr Vector3& operator=(float other) noexcept;
     };
 
 	struct alignas(16) Vector4 {
@@ -98,47 +98,47 @@ export namespace draco::math {
 
         // constructors
         [[nodiscard]] constexpr Vector4() noexcept = default;
-        [[nodiscard]] constexpr Vector4(const float n) noexcept;
-        [[nodiscard]] constexpr Vector4(const float x, const float y, const float z, const float w) noexcept;
+        [[nodiscard]] constexpr Vector4(float n) noexcept;
+        [[nodiscard]] constexpr Vector4(float x, float y, float z, float w) noexcept;
         [[nodiscard]] constexpr Vector4(const Vector2& xy) noexcept;
-        [[nodiscard]] constexpr Vector4(const Vector2& xy, const float z, const float w) noexcept;
-        [[nodiscard]] constexpr Vector4(const float x, const Vector2& yz, const float w) noexcept;
-        [[nodiscard]] constexpr Vector4(const float x, const float y, const Vector2& zw) noexcept;
+        [[nodiscard]] constexpr Vector4(const Vector2& xy, float z, float w) noexcept;
+        [[nodiscard]] constexpr Vector4(float x, const Vector2& yz, float w) noexcept;
+        [[nodiscard]] constexpr Vector4(float x, float y, const Vector2& zw) noexcept;
         [[nodiscard]] constexpr Vector4(const Vector2& xy, const Vector2& zw) noexcept;
-        [[nodiscard]] constexpr Vector4(const Vector3& xyz, const float w = 0.0f) noexcept;
-        [[nodiscard]] constexpr Vector4(const float x, const Vector3& yzw) noexcept;
+        [[nodiscard]] constexpr Vector4(const Vector3& xyz, float w = 0.0f) noexcept;
+        [[nodiscard]] constexpr Vector4(float x, const Vector3& yzw) noexcept;
         
         // static
-        [[nodiscard]] static constexpr Vector4 x_axis(const float x = 1.0f) noexcept;
-        [[nodiscard]] static constexpr Vector4 y_axis(const float y = 1.0f) noexcept;
-        [[nodiscard]] static constexpr Vector4 z_axis(const float z = 1.0f) noexcept;
-        [[nodiscard]] static constexpr Vector4 w_axis(const float w = 1.0f) noexcept;
+        [[nodiscard]] static constexpr Vector4 x_axis(float x = 1.0f) noexcept;
+        [[nodiscard]] static constexpr Vector4 y_axis(float y = 1.0f) noexcept;
+        [[nodiscard]] static constexpr Vector4 z_axis(float z = 1.0f) noexcept;
+        [[nodiscard]] static constexpr Vector4 w_axis(float w = 1.0f) noexcept;
 
         // element access
-        [[nodiscard]] constexpr float& operator[](const int i) noexcept;
-        [[nodiscard]] constexpr const float& operator[](const int i) const noexcept;
+        [[nodiscard]] constexpr float& operator[](int i) noexcept;
+        [[nodiscard]] constexpr const float& operator[](int i) const noexcept;
 
         // swizzle
-        [[nodiscard]] constexpr Vector2 operator[](const int i0, const int i1) noexcept;
-        [[nodiscard]] constexpr Vector2 operator[](const int i0, const int i1) const noexcept;
-        [[nodiscard]] constexpr Vector3 operator[](const int i0, const int i1, const int i2) noexcept;
-        [[nodiscard]] constexpr Vector3 operator[](const int i0, const int i1, const int i2) const noexcept;
-        [[nodiscard]] constexpr Vector4 operator[](const int i0, const int i1, const int i2, const int i3) noexcept;
-        [[nodiscard]] constexpr Vector4 operator[](const int i0, const int i1, const int i2, const int i3) const noexcept;
+        [[nodiscard]] constexpr Vector2 operator[](int i0, int i1) noexcept;
+        [[nodiscard]] constexpr Vector2 operator[](int i0, int i1) const noexcept;
+        [[nodiscard]] constexpr Vector3 operator[](int i0, int i1, int i2) noexcept;
+        [[nodiscard]] constexpr Vector3 operator[](int i0, int i1, int i2) const noexcept;
+        [[nodiscard]] constexpr Vector4 operator[](int i0, int i1, int i2, int i3) noexcept;
+        [[nodiscard]] constexpr Vector4 operator[](int i0, int i1, int i2, int i3) const noexcept;
 
         // member operators
         [[nodiscard]] constexpr Vector4 operator+() const noexcept;
         [[nodiscard]] constexpr Vector4 operator-() const noexcept;
         [[nodiscard]] constexpr bool operator==(const Vector4& other) const noexcept = default;
         constexpr Vector4& operator+=(const Vector4& other) noexcept;
-        constexpr Vector4& operator+=(const float other) noexcept;
+        constexpr Vector4& operator+=(float other) noexcept;
         constexpr Vector4& operator-=(const Vector4& other) noexcept;
-        constexpr Vector4& operator-=(const float other) noexcept;
+        constexpr Vector4& operator-=(float other) noexcept;
         constexpr Vector4& operator*=(const Vector4& other) noexcept;
-        constexpr Vector4& operator*=(const float other) noexcept;
+        constexpr Vector4& operator*=(float other) noexcept;
         constexpr Vector4& operator/=(const Vector4& other) noexcept;
-        constexpr Vector4& operator/=(const float other) noexcept;
-        constexpr Vector4& operator=(const float other) noexcept;
+        constexpr Vector4& operator/=(float other) noexcept;
+        constexpr Vector4& operator=(float other) noexcept;
     };
 }
 
