@@ -11,10 +11,10 @@ export namespace draco::math {
 
         // constructors
         [[nodiscard]] constexpr Vector2() noexcept = default;
-        [[nodiscard]] constexpr Vector2(const float n) noexcept;
+        [[nodiscard]] constexpr explicit Vector2(float n) noexcept;
         [[nodiscard]] constexpr Vector2(float x, float y) noexcept;
-        [[nodiscard]] constexpr Vector2(const Vector3& xy) noexcept;
-        [[nodiscard]] constexpr Vector2(const Vector4& xy) noexcept;
+        [[nodiscard]] constexpr explicit Vector2(const Vector3& xy) noexcept;
+        [[nodiscard]] constexpr explicit Vector2(const Vector4& xy) noexcept;
         
         // static
         [[nodiscard]] static constexpr Vector2 x_axis(float x = 1.0f) noexcept;
@@ -53,11 +53,11 @@ export namespace draco::math {
 
         // constructors
         [[nodiscard]] constexpr Vector3() noexcept = default;
-        [[nodiscard]] constexpr Vector3(const float n) noexcept;
+        [[nodiscard]] constexpr explicit Vector3(float n) noexcept;
         [[nodiscard]] constexpr Vector3(float x, float y, float z) noexcept;
-        [[nodiscard]] constexpr Vector3(const Vector2& xy, float z = 0.0f) noexcept;
+        [[nodiscard]] constexpr explicit Vector3(const Vector2& xy, float z = 0.0f) noexcept;
         [[nodiscard]] constexpr Vector3(float x, const Vector2& yz) noexcept;
-        [[nodiscard]] constexpr Vector3(const Vector4& xyz) noexcept;
+        [[nodiscard]] constexpr explicit Vector3(const Vector4& xyz) noexcept;
         
         // static
         [[nodiscard]] static constexpr Vector3 x_axis(float x = 1.0f) noexcept;
@@ -98,14 +98,14 @@ export namespace draco::math {
 
         // constructors
         [[nodiscard]] constexpr Vector4() noexcept = default;
-        [[nodiscard]] constexpr Vector4(const float n) noexcept;
+        [[nodiscard]] constexpr explicit Vector4(float n) noexcept;
         [[nodiscard]] constexpr Vector4(float x, float y, float z, float w) noexcept;
-        [[nodiscard]] constexpr Vector4(const Vector2& xy) noexcept;
+        [[nodiscard]] constexpr explicit Vector4(const Vector2& xy) noexcept;
         [[nodiscard]] constexpr Vector4(const Vector2& xy, float z, float w) noexcept;
         [[nodiscard]] constexpr Vector4(float x, const Vector2& yz, float w) noexcept;
         [[nodiscard]] constexpr Vector4(float x, float y, const Vector2& zw) noexcept;
         [[nodiscard]] constexpr Vector4(const Vector2& xy, const Vector2& zw) noexcept;
-        [[nodiscard]] constexpr Vector4(const Vector3& xyz, float w = 0.0f) noexcept;
+        [[nodiscard]] constexpr explicit Vector4(const Vector3& xyz, float w = 0.0f) noexcept;
         [[nodiscard]] constexpr Vector4(float x, const Vector3& yzw) noexcept;
         
         // static
