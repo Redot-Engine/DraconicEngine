@@ -11,7 +11,7 @@ export namespace draco::math {
 
         // constructors
         [[nodiscard]] constexpr Vector2() noexcept = default;
-        [[nodiscard]] constexpr Vector2(float n) noexcept;
+        [[nodiscard]] constexpr Vector2(const float n) noexcept;
         [[nodiscard]] constexpr Vector2(float x, float y) noexcept;
         [[nodiscard]] constexpr Vector2(const Vector3& xy) noexcept;
         [[nodiscard]] constexpr Vector2(const Vector4& xy) noexcept;
@@ -53,7 +53,7 @@ export namespace draco::math {
 
         // constructors
         [[nodiscard]] constexpr Vector3() noexcept = default;
-        [[nodiscard]] constexpr Vector3(float n) noexcept;
+        [[nodiscard]] constexpr Vector3(const float n) noexcept;
         [[nodiscard]] constexpr Vector3(float x, float y, float z) noexcept;
         [[nodiscard]] constexpr Vector3(const Vector2& xy, float z = 0.0f) noexcept;
         [[nodiscard]] constexpr Vector3(float x, const Vector2& yz) noexcept;
@@ -98,7 +98,7 @@ export namespace draco::math {
 
         // constructors
         [[nodiscard]] constexpr Vector4() noexcept = default;
-        [[nodiscard]] constexpr Vector4(float n) noexcept;
+        [[nodiscard]] constexpr Vector4(const float n) noexcept;
         [[nodiscard]] constexpr Vector4(float x, float y, float z, float w) noexcept;
         [[nodiscard]] constexpr Vector4(const Vector2& xy) noexcept;
         [[nodiscard]] constexpr Vector4(const Vector2& xy, float z, float w) noexcept;
