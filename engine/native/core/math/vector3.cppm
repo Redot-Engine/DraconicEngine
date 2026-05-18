@@ -291,6 +291,7 @@ export namespace draco::math {
     }
     
     // Faster normalize, it presupposes vector has non-zero length
+    // TODO: add check that v is non-zero on debug builds
     [[nodiscard]] Vector3 normalize_fast(const Vector3& v) noexcept {
         return v / length(v);
     }
