@@ -27,7 +27,10 @@ using rawptr = void *;
 using uintptr = uintptr_t;
 using ptrdiff = ptrdiff_t;
 
-// UTF-32 type
-using rune = u32;
+// Unicode types
+using utf8 = char8_t;
+using utf16 = char16_t;
+using utf32 = char32_t;
+using rune = char32_t;
 
 } // namespace draco

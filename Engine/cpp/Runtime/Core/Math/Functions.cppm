@@ -1,6 +1,5 @@
 module;
 
-#include <numbers>
 #include <cmath>
 #include <concepts>
 #include <limits>
@@ -11,6 +10,16 @@ import core.defs;
 import core.stdtypes;
 
 export namespace draco::math {
+    template <arithmetic T>
+    constexpr T min(T a, T b) {
+        return a < b ? a : b;
+    }
+
+    template <arithmetic T>
+    constexpr T max(T a, T b) {
+        return b < a ? a : b;
+    }
+
     template <arithmetic T>
     constexpr T sqr(T x) noexcept { return x*x; }
 
