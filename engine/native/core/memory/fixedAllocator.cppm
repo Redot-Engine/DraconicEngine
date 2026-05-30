@@ -19,7 +19,10 @@ struct FixedAllocator {
 void init(FixedAllocator *alloc, Slice block);
 
 Error alloc(
-	Allocator alloc, Slice *dst, usize size, usize align
+	Allocator alloc,
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc

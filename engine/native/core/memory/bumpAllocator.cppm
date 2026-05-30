@@ -23,14 +23,18 @@ struct BumpAllocator {
 	usize allocated;
 };
 
-void init(BumpAllocator *alloc, Allocator baseAlloc,
+void init(BumpAllocator *alloc,
+          Allocator baseAlloc,
           // one page by default on unix-like systems
           usize minAllocRequest = (1 << 12));
 
 void deinit(BumpAllocator *alloc);
 
 Error alloc(
-	Allocator alloc, Slice *dst, usize size, usize align
+	Allocator alloc,
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc

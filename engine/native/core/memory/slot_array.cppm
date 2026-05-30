@@ -43,7 +43,8 @@ class SlotArray {
 	bool valid(Handle h) const {
 		u32 i = h.index();
 
-		return i < slots.size() && slots[i].alive && slots[i].generation == h.generation();
+		return i < slots.size() && slots[i].alive &&
+		       slots[i].generation == h.generation();
 	}
 
 	T *get(Handle h) {

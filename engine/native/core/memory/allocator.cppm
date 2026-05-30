@@ -22,7 +22,9 @@ struct Allocator {
 	AllocatorVTbl *vtbl;
 	rawptr allocatorData;
 	inline Error alloc(
-		Slice *dst, usize size, usize align
+		Slice *dst,
+		usize size,
+		usize align
 #ifdef DEBUG
 		,
 		std::source_location loc = std::source_location::current()
@@ -34,7 +36,10 @@ struct Allocator {
 
 struct AllocatorVTbl {
 	using AllocFn = Error (*)(
-		Allocator alloc, Slice *dst, usize size, usize align
+		Allocator alloc,
+		Slice *dst,
+		usize size,
+		usize align
 #ifdef DEBUG
 		,
 		std::source_location loc
@@ -48,7 +53,10 @@ struct AllocatorVTbl {
 };
 
 Error nilAlloc(
-	Allocator alloc, Slice *dst, usize size, usize align
+	Allocator alloc,
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc
@@ -61,7 +69,9 @@ Error nilFreeAll(Allocator alloc);
 
 void asAllocatorVoid(Allocator *dst, rawptr alloc, AllocatorVTbl *vtbl);
 inline Error Allocator::alloc(
-	Slice *dst, usize size, usize align
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc

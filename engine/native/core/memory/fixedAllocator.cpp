@@ -15,7 +15,10 @@ void init(FixedAllocator *alloc, Slice block) {
 }
 
 Error alloc(
-	Allocator alloc, Slice *dst, usize size, usize align
+	Allocator alloc,
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc
@@ -23,10 +26,15 @@ Error alloc(
 ) {
 	FixedAllocator *allocData = (FixedAllocator *)alloc.allocatorData;
 	usize alignMask           = align - 1;
-	usize alignedSize         = allocData->size - ((align - (((uintptr)allocData->buffer) & alignMask)) & alignMask);
+	usize alignedSize =
+		allocData->size -
+		((align - (((uintptr)allocData->buffer) & alignMask)) & alignMask);
 	assert(std::popcount(align) == 1);
-	if (allocData->allocated | (alignedSize < size)) { return Error::OutOfMemory; }
-	dst->data            = (rawptr)(((uintptr) & (allocData->buffer[alignMask])) & ~alignMask);
+	if (allocData->allocated | (alignedSize < size)) {
+		return Error::OutOfMemory;
+	}
+	dst->data =
+		(rawptr)(((uintptr) & (allocData->buffer[alignMask])) & ~alignMask);
 	dst->size            = alignedSize;
 	allocData->allocated = true;
 	return Error::Okay;

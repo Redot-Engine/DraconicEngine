@@ -14,7 +14,10 @@ void init(TrackingAllocator *alloc, Allocator baseAlloc) {
 }
 
 Error alloc(
-	Allocator alloc, Slice *dst, usize size, usize align
+	Allocator alloc,
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc
@@ -23,7 +26,7 @@ Error alloc(
 	TrackingAllocator *allocData = (TrackingAllocator *)alloc.allocatorData;
 	usize reqAlign               = std::max(align, alignof(Node));
 	usize alignMask              = reqAlign - 1;
-	usize reqSize                = (size + sizeof(Node) + alignMask) & ~alignMask;
+	usize reqSize = (size + sizeof(Node) + alignMask) & ~alignMask;
 	Slice tmpDst;
 	Node *node;
 	Error err = allocData->base.vtbl->alloc(
@@ -54,7 +57,9 @@ Error free(Allocator alloc, Slice block) {
 	Node *prev;
 	Node *next;
 	Error err;
-	while (node && (node->details.data.data != block.data)) { node = node->next; }
+	while (node && (node->details.data.data != block.data)) {
+		node = node->next;
+	}
 	block.size += sizeof(Node);
 	err = allocData->base.vtbl->free(allocData->base, block);
 	switch (err) {
@@ -73,7 +78,7 @@ Error free(Allocator alloc, Slice block) {
 
 Error freeAll(Allocator alloc) {
 	TrackingAllocator *allocData = (TrackingAllocator *)alloc.allocatorData;
-	Error err                    = allocData->base.vtbl->freeAll(allocData->base);
+	Error err = allocData->base.vtbl->freeAll(allocData->base);
 	switch (err) {
 	case Error::Okay: allocData->nodes = nullptr; [[fallthrough]];
 	default:          return err;
@@ -91,7 +96,8 @@ void getAnalytics(TrackingAllocator alloc, Analytics *analytics) {
 }
 
 size_t getActiveAllocations(
-	TrackingAllocator alloc, size_t detailsCount,
+	TrackingAllocator alloc,
+	size_t detailsCount,
 	AllocationDetails *details // nullable
 ) {
 	size_t ret = 0;

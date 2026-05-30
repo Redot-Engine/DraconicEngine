@@ -13,17 +13,21 @@ import rendering.rendergraph;
 export namespace draco::rendering::quad_renderer {
 
 struct BatchKey {
-	draco::rendering::rhi::TextureHandle texture = draco::rendering::rhi::InvalidTexture;
+	draco::rendering::rhi::TextureHandle texture =
+		draco::rendering::rhi::InvalidTexture;
 
-	draco::rendering::rhi::PipelineHandle pipeline = draco::rendering::rhi::InvalidPipeline;
+	draco::rendering::rhi::PipelineHandle pipeline =
+		draco::rendering::rhi::InvalidPipeline;
 
-	draco::rendering::rhi::SamplerHandle sampler = draco::rendering::rhi::InvalidSampler;
+	draco::rendering::rhi::SamplerHandle sampler =
+		draco::rendering::rhi::InvalidSampler;
 
 	bool operator==(BatchKey const &) const = default;
 };
 
 struct QuadCommand {
-	draco::rendering::rhi::TextureHandle texture = draco::rendering::rhi::InvalidTexture;
+	draco::rendering::rhi::TextureHandle texture =
+		draco::rendering::rhi::InvalidTexture;
 
 	f32 x = 0.0F;
 	f32 y = 0.0F;
@@ -74,15 +78,20 @@ class QuadRenderer {
 
 	std::vector<u16> m_indices;
 
-	draco::rendering::rhi::BufferHandle m_vb = draco::rendering::rhi::InvalidBuffer;
+	draco::rendering::rhi::BufferHandle m_vb =
+		draco::rendering::rhi::InvalidBuffer;
 
-	draco::rendering::rhi::BufferHandle m_ib = draco::rendering::rhi::InvalidBuffer;
+	draco::rendering::rhi::BufferHandle m_ib =
+		draco::rendering::rhi::InvalidBuffer;
 
-	draco::rendering::rhi::LayoutHandle m_layout = draco::rendering::rhi::InvalidLayout;
+	draco::rendering::rhi::LayoutHandle m_layout =
+		draco::rendering::rhi::InvalidLayout;
 
-	draco::rendering::rhi::PipelineHandle m_pipeline = draco::rendering::rhi::InvalidPipeline;
+	draco::rendering::rhi::PipelineHandle m_pipeline =
+		draco::rendering::rhi::InvalidPipeline;
 
-	draco::rendering::rhi::UniformHandle m_sampler = draco::rendering::rhi::InvalidUniform;
+	draco::rendering::rhi::UniformHandle m_sampler =
+		draco::rendering::rhi::InvalidUniform;
 
 	u32 m_quad_count = 0;
 };

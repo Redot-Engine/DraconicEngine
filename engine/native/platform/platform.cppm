@@ -23,7 +23,8 @@ struct NativeWindowFrame {
 
 	bool valid = false;
 
-	NativeWindowType type = NativeWindowType::None; // Track the type of the native window
+	NativeWindowType type =
+		NativeWindowType::None; // Track the type of the native window
 };
 
 NativeWindowFrame get_native_handles(void *sdl_window_ptr);

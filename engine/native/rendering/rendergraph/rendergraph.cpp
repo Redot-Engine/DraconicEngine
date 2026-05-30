@@ -12,19 +12,26 @@ import rendering.rhi;
 namespace draco::rendering::rendergraph {
 
 static void sort_material(std::vector<rhi::RenderPacket> &packets) {
-	std::sort(packets.begin(), packets.end(), [](rhi::RenderPacket const &a, rhi::RenderPacket const &b) {
-		// Pipeline first
-		if (a.pipeline != b.pipeline) { return a.pipeline.value < b.pipeline.value; }
+	std::sort(packets.begin(), packets.end(),
+	          [](rhi::RenderPacket const &a, rhi::RenderPacket const &b) {
+				  // Pipeline first
+				  if (a.pipeline != b.pipeline) {
+					  return a.pipeline.value < b.pipeline.value;
+				  }
 
-		// Texture second
-		if (a.texture_handle != b.texture_handle) { return a.texture_handle.value < b.texture_handle.value; }
+				  // Texture second
+				  if (a.texture_handle != b.texture_handle) {
+					  return a.texture_handle.value < b.texture_handle.value;
+				  }
 
-		// Vertex buffer third
-		if (a.vertex_buffer != b.vertex_buffer) { return a.vertex_buffer.value < b.vertex_buffer.value; }
+				  // Vertex buffer third
+				  if (a.vertex_buffer != b.vertex_buffer) {
+					  return a.vertex_buffer.value < b.vertex_buffer.value;
+				  }
 
-		// Index buffer fallback
-		return a.index_buffer.value < b.index_buffer.value;
-	});
+				  // Index buffer fallback
+				  return a.index_buffer.value < b.index_buffer.value;
+			  });
 }
 
 // Placeholder until depth sorting exists
@@ -36,7 +43,8 @@ static void sort_back_to_front(std::vector<rhi::RenderPacket> &packets) {
 	sort_material(packets);
 }
 
-static void sort_packets(std::vector<rhi::RenderPacket> &packets, SortMode mode) {
+static void sort_packets(std::vector<rhi::RenderPacket> &packets,
+                         SortMode mode) {
 	switch (mode) {
 	case SortMode::None:        break;
 
@@ -76,11 +84,15 @@ void RenderGraph::execute() {
 
 		sort_packets(pass.packets, pass.sort_mode);
 
-		rhi::apply_view(pass.view, {pass.framebuffer, 0, 0, pass.width, pass.height, pass.clear_flags, pass.clear_color});
+		rhi::apply_view(pass.view,
+		                {pass.framebuffer, 0, 0, pass.width, pass.height,
+		                 pass.clear_flags, pass.clear_color});
 
 		rhi::set_view_projection(pass.view, pass.view_mtx, pass.proj_mtx);
 
-		if (pass.clear_flags) { bgfx::setViewClear(pass.view, pass.clear_flags, pass.clear_color); }
+		if (pass.clear_flags) {
+			bgfx::setViewClear(pass.view, pass.clear_flags, pass.clear_color);
+		}
 
 		for (auto &pkt : pass.packets) { rhi::submit(pkt, pass.view); }
 	}

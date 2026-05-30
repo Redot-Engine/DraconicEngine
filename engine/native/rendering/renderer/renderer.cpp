@@ -54,9 +54,11 @@ void begin_frame(Camera const &cam) {
 	f32 view_mtx[16];
 	f32 proj_mtx[16];
 
-	rhi::look_at(view_mtx, cam.position.data(), cam.target.data(), cam.up.data());
+	rhi::look_at(view_mtx, cam.position.data(), cam.target.data(),
+	             cam.up.data());
 
-	f32 aspect = f32(g_ctx.screen_width) / f32(std::max<u16>(g_ctx.screen_height, 1));
+	f32 aspect =
+		f32(g_ctx.screen_width) / f32(std::max<u16>(g_ctx.screen_height, 1));
 
 	rhi::perspective(proj_mtx, cam.fov, aspect, cam.near_plane, cam.far_plane);
 
@@ -64,7 +66,8 @@ void begin_frame(Camera const &cam) {
 	std::memcpy(pass.proj_mtx, proj_mtx, sizeof(proj_mtx));
 }
 
-static void build_uniforms(material::Material const &mat, std::vector<rhi::UniformBind> &out) {
+static void build_uniforms(material::Material const &mat,
+                           std::vector<rhi::UniformBind> &out) {
 	out.clear();
 	out.reserve(mat.uniforms.size());
 
@@ -92,7 +95,9 @@ void submit_entity(rhi::RenderPacket const &packet) {
 	pass->packets.push_back(packet);
 }
 
-void submit_renderable(draco::math::Transform const &transform, material::Material const &material, mesh::MeshHandle mesh_id) {
+void submit_renderable(draco::math::Transform const &transform,
+                       material::Material const &material,
+                       mesh::MeshHandle mesh_id) {
 	auto const *m = mesh::get(mesh_id);
 	if (!m) { return; }
 
@@ -131,7 +136,9 @@ void submit_ui(draco::rendering::quad_renderer::QuadRenderer &quad_renderer) {
 
 	draco::rendering::quad_renderer::OrthoCamera ortho;
 
-	draco::rendering::quad_renderer::QuadRenderer::build_ortho(ortho, (f32)g_ctx.screen_width, (f32)g_ctx.screen_height);
+	draco::rendering::quad_renderer::QuadRenderer::build_ortho(
+		ortho, (f32)g_ctx.screen_width, (f32)g_ctx.screen_height
+	);
 
 	std::memcpy(ui_pass.view_mtx, ortho.view, sizeof(f32) * 16);
 	std::memcpy(ui_pass.proj_mtx, ortho.proj, sizeof(f32) * 16);

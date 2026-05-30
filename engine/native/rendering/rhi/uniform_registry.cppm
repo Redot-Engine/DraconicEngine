@@ -23,7 +23,9 @@ inline void register_uniform(uint32_t hash, UniformHandle h) {
 inline void unregister_uniform(uint32_t hash, UniformHandle h) {
 	auto it = g_uniform_map.find(hash);
 
-	if (it != g_uniform_map.end() && it->second == h) { g_uniform_map.erase(it); }
+	if (it != g_uniform_map.end() && it->second == h) {
+		g_uniform_map.erase(it);
+	}
 }
 
 inline void clear_uniform_registry() {

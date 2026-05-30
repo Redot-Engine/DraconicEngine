@@ -26,7 +26,8 @@ ImageData load_image(std::filesystem::path const &path) {
 
 	int width, height, channels;
 	// STBI_rgb_alpha forces the output to be 4 bytes per pixel (RGBA)
-	unsigned char *data = stbi_load(path.string().c_str(), &width, &height, &channels, STBI_rgb_alpha);
+	unsigned char *data = stbi_load(path.string().c_str(), &width, &height,
+	                                &channels, STBI_rgb_alpha);
 
 	if (!data) {
 		std::println("Error: Failed to decode image: {}", path.string());

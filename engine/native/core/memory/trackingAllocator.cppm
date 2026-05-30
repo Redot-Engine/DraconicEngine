@@ -36,7 +36,10 @@ struct TrackingAllocator {
 void init(TrackingAllocator *alloc, Allocator baseAlloc);
 
 Error alloc(
-	Allocator alloc, Slice *dst, usize size, usize align
+	Allocator alloc,
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc
@@ -45,7 +48,9 @@ Error alloc(
 Error free(Allocator alloc, Slice block);
 Error freeAll(Allocator alloc);
 void getAnalytics(TrackingAllocator alloc, Analytics *analytics);
-usize getActiveAllocations(TrackingAllocator alloc, usize detailsCount, AllocationDetails *details);
+usize getActiveAllocations(TrackingAllocator alloc,
+                           usize detailsCount,
+                           AllocationDetails *details);
 
 AllocatorVTbl trackingAllocatorVtbl = {
 	.alloc   = alloc,

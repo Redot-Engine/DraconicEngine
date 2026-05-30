@@ -79,7 +79,11 @@ void process_deletions() {
 	});
 }
 
-bool init(void *display_type, void *window_handle, draco::platform::NativeWindowType window_type, u16 width, u16 height) {
+bool init(void *display_type,
+          void *window_handle,
+          draco::platform::NativeWindowType window_type,
+          u16 width,
+          u16 height) {
 	g_width  = width;
 	g_height = height;
 
@@ -90,7 +94,9 @@ bool init(void *display_type, void *window_handle, draco::platform::NativeWindow
 	init.platformData.nwh = window_handle;
 
 	// Map our internal window type to bgfx's native window handle type
-	if (window_type == draco::platform::NativeWindowType::Wayland) { init.platformData.type = bgfx::NativeWindowHandleType::Wayland; }
+	if (window_type == draco::platform::NativeWindowType::Wayland) {
+		init.platformData.type = bgfx::NativeWindowHandleType::Wayland;
+	}
 	else {
 		// Others can work fine with the default type
 		init.platformData.type = bgfx::NativeWindowHandleType::Default;
@@ -139,7 +145,9 @@ void shutdown() {
 	for (auto &slot : g_pipelines.internal().raw()) {
 		if (!slot.alive) { continue; }
 
-		if (bgfx::isValid(slot.value.program)) { bgfx::destroy(slot.value.program); }
+		if (bgfx::isValid(slot.value.program)) {
+			bgfx::destroy(slot.value.program);
+		}
 	}
 
 	for (auto &slot : g_uniforms.internal().raw()) {
@@ -173,12 +181,20 @@ void destroy_buffer(BufferHandle h) {
 	g_buffers.destroy(h);
 }
 
-u64 map_state(PipelineState s, BlendMode blend, DepthTest depth, CullMode cull, bool depth_write) {
+u64 map_state(PipelineState s,
+              BlendMode blend,
+              DepthTest depth,
+              CullMode cull,
+              bool depth_write) {
 	u64 state = 0;
 
-	if ((s & PipelineState::WriteRGB) != PipelineState::Default) { state |= BGFX_STATE_WRITE_RGB; }
+	if ((s & PipelineState::WriteRGB) != PipelineState::Default) {
+		state |= BGFX_STATE_WRITE_RGB;
+	}
 
-	if ((s & PipelineState::WriteAlpha) != PipelineState::Default) { state |= BGFX_STATE_WRITE_A; }
+	if ((s & PipelineState::WriteAlpha) != PipelineState::Default) {
+		state |= BGFX_STATE_WRITE_A;
+	}
 
 	if (depth_write) { state |= BGFX_STATE_WRITE_Z; }
 
@@ -205,9 +221,13 @@ u64 map_state(PipelineState s, BlendMode blend, DepthTest depth, CullMode cull, 
 	case BlendMode::None:     break;
 	}
 
-	if ((s & PipelineState::MSAA) != PipelineState::Default) { state |= BGFX_STATE_MSAA; }
+	if ((s & PipelineState::MSAA) != PipelineState::Default) {
+		state |= BGFX_STATE_MSAA;
+	}
 
-	if ((s & PipelineState::PrimitiveTriStrip) != PipelineState::Default) { state |= BGFX_STATE_PT_TRISTRIP; }
+	if ((s & PipelineState::PrimitiveTriStrip) != PipelineState::Default) {
+		state |= BGFX_STATE_PT_TRISTRIP;
+	}
 
 	return state;
 }

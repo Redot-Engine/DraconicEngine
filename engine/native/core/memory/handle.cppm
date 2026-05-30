@@ -40,7 +40,8 @@ struct Handle {
 	}
 
 	static constexpr Handle make(u16 index, u16 generation) {
-		return Handle{(static_cast<u32>(generation) << 16) | static_cast<u32>(index)};
+		return Handle{(static_cast<u32>(generation) << 16) |
+		              static_cast<u32>(index)};
 	}
 };
 } // namespace draco::core::memory

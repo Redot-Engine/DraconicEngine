@@ -180,13 +180,18 @@ struct Pipeline {
 	u64 state;
 };
 
-bool init(void *display_type, void *window_handle, draco::platform::NativeWindowType window_type, u16 width, u16 height);
+bool init(void *display_type,
+          void *window_handle,
+          draco::platform::NativeWindowType window_type,
+          u16 width,
+          u16 height);
 void resize(u16 width, u16 height);
 void shutdown();
 
 PipelineHandle create_pipeline(PipelineDesc const &);
 
-BufferHandle create_vertex_buffer(void const *data, u32 size, LayoutHandle layout_h);
+BufferHandle
+create_vertex_buffer(void const *data, u32 size, LayoutHandle layout_h);
 BufferHandle create_index_buffer(void const *data, u32 size);
 void destroy_buffer(BufferHandle handle);
 
@@ -194,18 +199,27 @@ UniformHandle create_uniform(char const *name, UniformType type, u16 num = 1);
 void destroy_uniform(UniformHandle handle);
 void set_uniform(UniformHandle handle, void const *value, u16 num = 1);
 
-TextureHandle create_texture(void const *data, u32 width, u32 height, u32 flags = 0);
+TextureHandle
+create_texture(void const *data, u32 width, u32 height, u32 flags = 0);
 void destroy_texture(TextureHandle handle);
 
-FramebufferHandle create_framebuffer(u32 width, u32 height, TextureFormat format);
+FramebufferHandle
+create_framebuffer(u32 width, u32 height, TextureFormat format);
 void destroy_framebuffer(FramebufferHandle handle);
 TextureHandle get_framebuffer_texture(FramebufferHandle handle);
 
 BufferHandle create_dynamic_vertex_buffer(u32 size, LayoutHandle layout);
-void update_dynamic_vertex_buffer(BufferHandle handle, u32 start_vertex, void const *data, u32 size);
+void update_dynamic_vertex_buffer(BufferHandle handle,
+                                  u32 start_vertex,
+                                  void const *data,
+                                  u32 size);
 
-BufferHandle create_dynamic_index_buffer(u32 size, u16 flags = BGFX_BUFFER_NONE);
-void update_dynamic_index_buffer(BufferHandle handle, u32 start_index, void const *data, u32 size);
+BufferHandle create_dynamic_index_buffer(u32 size,
+                                         u16 flags = BGFX_BUFFER_NONE);
+void update_dynamic_index_buffer(BufferHandle handle,
+                                 u32 start_index,
+                                 void const *data,
+                                 u32 size);
 
 LayoutHandle create_vertex_layout(VertexLayoutDesc const &desc);
 
@@ -233,7 +247,8 @@ void apply_view(ViewID view, ViewDesc const &desc);
 
 void identity_matrix(f32 *_mtx);
 
-u64 map_state(PipelineState s, BlendMode, DepthTest, CullMode, bool depth_write);
+u64
+map_state(PipelineState s, BlendMode, DepthTest, CullMode, bool depth_write);
 bgfx::UniformType::Enum map_uniform_type(UniformType t);
 bgfx::Attrib::Enum map_attrib(Attrib a);
 bgfx::AttribType::Enum map_attrib_type(AttribType t);
@@ -248,16 +263,20 @@ void destroy_resource(T handle);
 
 void process_deletions();
 
-inline u64 make_sort_key(u8 layer, u8 pass, u16 pipeline, u16 texture, u16 depth = 0) {
-	return (u64(layer) << 56) | (u64(pass) << 48) | (u64(pipeline) << 32) | (u64(texture) << 16) | u64(depth);
+inline u64
+make_sort_key(u8 layer, u8 pass, u16 pipeline, u16 texture, u16 depth = 0) {
+	return (u64(layer) << 56) | (u64(pass) << 48) | (u64(pipeline) << 32) |
+	       (u64(texture) << 16) | u64(depth);
 }
 
 constexpr PipelineState operator|(PipelineState a, PipelineState b) {
-	return static_cast<PipelineState>(static_cast<u64>(a) | static_cast<u64>(b));
+	return static_cast<PipelineState>(static_cast<u64>(a) |
+	                                  static_cast<u64>(b));
 }
 
 constexpr PipelineState operator&(PipelineState a, PipelineState b) {
-	return static_cast<PipelineState>(static_cast<u64>(a) & static_cast<u64>(b));
+	return static_cast<PipelineState>(static_cast<u64>(a) &
+	                                  static_cast<u64>(b));
 }
 } // namespace draco::rendering::rhi
 

@@ -90,7 +90,8 @@ TEST_SUITE("vector2") {
 
 		BASIC_RAC_SUBCASE("vec3", (v[1, 1, 0]), (Vector3{2.0F, 2.0F, 1.0F}));
 
-		BASIC_RAC_SUBCASE("vec4", (v[0, 1, 1, 0]), (Vector4{1.0F, 2.0F, 2.0F, 1.0F}));
+		BASIC_RAC_SUBCASE("vec4", (v[0, 1, 1, 0]),
+		                  (Vector4{1.0F, 2.0F, 2.0F, 1.0F}));
 	}
 
 	TEST_CASE("swap") {
@@ -200,15 +201,18 @@ TEST_SUITE("vector2") {
 		static constexpr Vector2 a{1.0F, 2.0F};
 		static constexpr Vector2 b{3.0F, 4.0F};
 
-		BASIC_RAC_SUBCASE("weight = -1", (lerp(a, b, -1.0F)), (Vector2{-1.0F, 0.0F}));
+		BASIC_RAC_SUBCASE("weight = -1", (lerp(a, b, -1.0F)),
+		                  (Vector2{-1.0F, 0.0F}));
 
 		BASIC_RAC_SUBCASE("weight = 0", (lerp(a, b, 0.0F)), (a));
 
-		BASIC_RAC_SUBCASE("weight = 0.5", (lerp(a, b, 0.5F)), (Vector2{2.0F, 3.0F}));
+		BASIC_RAC_SUBCASE("weight = 0.5", (lerp(a, b, 0.5F)),
+		                  (Vector2{2.0F, 3.0F}));
 
 		BASIC_RAC_SUBCASE("weight = 1", (lerp(a, b, 1.0F)), (b));
 
-		BASIC_RAC_SUBCASE("weight = 2", (lerp(a, b, 2.0F)), (Vector2{5.0F, 6.0F}));
+		BASIC_RAC_SUBCASE("weight = 2", (lerp(a, b, 2.0F)),
+		                  (Vector2{5.0F, 6.0F}));
 	}
 
 	TEST_CASE("min") {
@@ -222,7 +226,8 @@ TEST_SUITE("vector2") {
 
 		static constexpr Vector2 expected{4.0F, 3.0F};
 
-		BASIC_RAC_SUBCASE_2("float", (min(a, 4.0F)), (expected), (min(4.0F, a)), (expected));
+		BASIC_RAC_SUBCASE_2("float", (min(a, 4.0F)), (expected), (min(4.0F, a)),
+		                    (expected));
 	}
 
 	TEST_CASE("min_length") {
@@ -260,7 +265,8 @@ TEST_SUITE("vector2") {
 
 		static constexpr Vector2 expected{5.0F, 4.0F};
 
-		BASIC_RAC_SUBCASE_2("float", (max(a, 4.0F)), (expected), (max(4.0F, a)), (expected));
+		BASIC_RAC_SUBCASE_2("float", (max(a, 4.0F)), (expected), (max(4.0F, a)),
+		                    (expected));
 	}
 
 	TEST_CASE("max_length") {
@@ -297,7 +303,8 @@ TEST_SUITE("vector2") {
 
 		BASIC_RAC_SUBCASE("vector", (clamp(a, b, c)), (Vector2{3.0F, 7.0F}));
 
-		BASIC_RAC_SUBCASE("float", (clamp(a, 4.0F, 5.0F)), (Vector2{5.0F, 4.0F}));
+		BASIC_RAC_SUBCASE("float", (clamp(a, 4.0F, 5.0F)),
+		                  (Vector2{5.0F, 4.0F}));
 	}
 
 	TEST_CASE("clamp_length") {
@@ -307,13 +314,15 @@ TEST_SUITE("vector2") {
 
 		static constexpr Vector2 v{3.0F, 4.0F}; // len: 5
 
-		BASIC_R_SUBCASE("length < min", (clamp_length(v, 10.0F, 15.0F)), (Vector2{6.0F, 8.0F}));
+		BASIC_R_SUBCASE("length < min", (clamp_length(v, 10.0F, 15.0F)),
+		                (Vector2{6.0F, 8.0F}));
 
 		BASIC_R_SUBCASE("length == min", (clamp_length(v, 5.0F, 10.0F)), (v));
 
 		BASIC_R_SUBCASE("length == max", (clamp_length(v, 3.0F, 5.0F)), (v));
 
-		BASIC_R_SUBCASE("length > max", (clamp_length(v, 1.0F, 2.5F)), (Vector2{1.5F, 2.0F}));
+		BASIC_R_SUBCASE("length > max", (clamp_length(v, 1.0F, 2.5F)),
+		                (Vector2{1.5F, 2.0F}));
 	}
 
 	TEST_CASE("abs") {
@@ -333,13 +342,17 @@ TEST_SUITE("vector2") {
 		static constexpr Vector2 a{0.5F, 1.4F};
 		static constexpr Vector2 b{-1.0F, 1.0F};
 
-		BASIC_RAC_SUBCASE_2("floor", (floor(a)), (Vector2{0.0F, 1.0F}), (floor(b)), (b));
+		BASIC_RAC_SUBCASE_2("floor", (floor(a)), (Vector2{0.0F, 1.0F}),
+		                    (floor(b)), (b));
 
-		BASIC_RAC_SUBCASE_2("ceil", (ceil(a)), (Vector2{1.0F, 2.0F}), (ceil(b)), (b));
+		BASIC_RAC_SUBCASE_2("ceil", (ceil(a)), (Vector2{1.0F, 2.0F}), (ceil(b)),
+		                    (b));
 
-		BASIC_RAC_SUBCASE_2("trunc", (trunc(a)), (Vector2{0.0F, 1.0F}), (trunc(b)), (b));
+		BASIC_RAC_SUBCASE_2("trunc", (trunc(a)), (Vector2{0.0F, 1.0F}),
+		                    (trunc(b)), (b));
 
-		BASIC_RAC_SUBCASE_2("round", (round(a)), (Vector2{1.0F, 1.0F}), (round(b)), (b));
+		BASIC_RAC_SUBCASE_2("round", (round(a)), (Vector2{1.0F, 1.0F}),
+		                    (round(b)), (b));
 	}
 
 	TEST_CASE("sign") {
@@ -357,11 +370,14 @@ TEST_SUITE("vector2") {
 		static constexpr Vector2 v{1.0F, 2.0F};
 		static constexpr Vector2 offset = Vector2::x_axis(CMP_EPSILON);
 
-		BASIC_R_SUBCASE("distance < epsilon", (approx_eq(v, v + offset * 0.5F)), (true));
+		BASIC_R_SUBCASE("distance < epsilon", (approx_eq(v, v + offset * 0.5F)),
+		                (true));
 
-		BASIC_R_SUBCASE("distance == epsilon", (approx_eq(v, v + offset)), (true));
+		BASIC_R_SUBCASE("distance == epsilon", (approx_eq(v, v + offset)),
+		                (true));
 
-		BASIC_R_SUBCASE("distance > epsilon", (approx_eq(v, v + offset * 2.0F)), (false));
+		BASIC_R_SUBCASE("distance > epsilon", (approx_eq(v, v + offset * 2.0F)),
+		                (false));
 	}
 }
 
@@ -374,11 +390,14 @@ TEST_SUITE("vector3") {
 		static constexpr Vector2 a{1.0F, 2.0F};
 		static constexpr Vector4 b{3.0F, 4.0F, 5.0F, 6.0F};
 
-		BASIC_RAC_SUBCASE("float", (Vector3(1.0F)), (Vector3{1.0F, 1.0F, 1.0F}));
+		BASIC_RAC_SUBCASE("float", (Vector3(1.0F)),
+		                  (Vector3{1.0F, 1.0F, 1.0F}));
 
-		BASIC_RAC_SUBCASE("vec2, float", (Vector3(a, 7.0F)), (Vector3{1.0F, 2.0F, 7.0F}));
+		BASIC_RAC_SUBCASE("vec2, float", (Vector3(a, 7.0F)),
+		                  (Vector3{1.0F, 2.0F, 7.0F}));
 
-		BASIC_RAC_SUBCASE("float, vec2", (Vector3(7.0F, a)), (Vector3{7.0F, 1.0F, 2.0F}));
+		BASIC_RAC_SUBCASE("float, vec2", (Vector3(7.0F, a)),
+		                  (Vector3{7.0F, 1.0F, 2.0F}));
 
 		BASIC_RAC_SUBCASE("vec4", (Vector3(b)), (Vector3{3.0F, 4.0F, 5.0F}));
 	}
@@ -404,7 +423,8 @@ TEST_SUITE("vector3") {
 
 		BASIC_RAC_SUBCASE("vec3", (v[1, 2, 0]), (Vector3{2.0F, 3.0F, 1.0F}));
 
-		BASIC_RAC_SUBCASE("vec4", (v[0, 2, 1, 0]), (Vector4{1.0F, 3.0F, 2.0F, 1.0F}));
+		BASIC_RAC_SUBCASE("vec4", (v[0, 2, 1, 0]),
+		                  (Vector4{1.0F, 3.0F, 2.0F, 1.0F}));
 	}
 
 	TEST_CASE("swap") {
@@ -514,15 +534,18 @@ TEST_SUITE("vector3") {
 		static constexpr Vector3 a{1.0F, 2.0F, 3.0F};
 		static constexpr Vector3 b{4.0F, 5.0F, 6.0F};
 
-		BASIC_RAC_SUBCASE("weight = -1", (lerp(a, b, -1.0F)), (Vector3{-2.0F, -1.0F, -0.0F}));
+		BASIC_RAC_SUBCASE("weight = -1", (lerp(a, b, -1.0F)),
+		                  (Vector3{-2.0F, -1.0F, -0.0F}));
 
 		BASIC_RAC_SUBCASE("weight = 0", (lerp(a, b, 0.0F)), (a));
 
-		BASIC_RAC_SUBCASE("weight = 0.5", (lerp(a, b, 0.5F)), (Vector3{2.5F, 3.5F, 4.5F}));
+		BASIC_RAC_SUBCASE("weight = 0.5", (lerp(a, b, 0.5F)),
+		                  (Vector3{2.5F, 3.5F, 4.5F}));
 
 		BASIC_RAC_SUBCASE("weight = 1", (lerp(a, b, 1.0F)), (b));
 
-		BASIC_RAC_SUBCASE("weight = 2", (lerp(a, b, 2.0F)), (Vector3{7.0F, 8.0F, 9.0F}));
+		BASIC_RAC_SUBCASE("weight = 2", (lerp(a, b, 2.0F)),
+		                  (Vector3{7.0F, 8.0F, 9.0F}));
 	}
 
 	TEST_CASE("min") {
@@ -536,7 +559,8 @@ TEST_SUITE("vector3") {
 
 		static constexpr Vector3 expected{4.0F, 4.0F, 3.0F};
 
-		BASIC_RAC_SUBCASE_2("float", (min(a, 4.0F)), (expected), (min(4.0F, a)), (expected));
+		BASIC_RAC_SUBCASE_2("float", (min(a, 4.0F)), (expected), (min(4.0F, a)),
+		                    (expected));
 	}
 
 	TEST_CASE("min_length") {
@@ -574,7 +598,8 @@ TEST_SUITE("vector3") {
 
 		static constexpr Vector3 expected{5.0F, 8.0F, 4.0F};
 
-		BASIC_RAC_SUBCASE_2("float", (max(a, 4.0F)), (expected), (max(4.0F, a)), (expected));
+		BASIC_RAC_SUBCASE_2("float", (max(a, 4.0F)), (expected), (max(4.0F, a)),
+		                    (expected));
 	}
 
 	TEST_CASE("max_length") {
@@ -609,9 +634,11 @@ TEST_SUITE("vector3") {
 		static constexpr Vector3 b{1.0F, 6.0F, 7.0F};
 		static constexpr Vector3 c{3.0F, 9.0F, 8.0F};
 
-		BASIC_RAC_SUBCASE("vector", (clamp(a, b, c)), (Vector3{3.0F, 8.0F, 7.0F}));
+		BASIC_RAC_SUBCASE("vector", (clamp(a, b, c)),
+		                  (Vector3{3.0F, 8.0F, 7.0F}));
 
-		BASIC_RAC_SUBCASE("float", (clamp(a, 4.0F, 5.0F)), (Vector3{5.0F, 5.0F, 4.0F}));
+		BASIC_RAC_SUBCASE("float", (clamp(a, 4.0F, 5.0F)),
+		                  (Vector3{5.0F, 5.0F, 4.0F}));
 	}
 
 	TEST_CASE("clamp_length") {
@@ -621,20 +648,23 @@ TEST_SUITE("vector3") {
 
 		static constexpr Vector3 v{2.0F, 4.0F, 4.0F}; // len: 6
 
-		BASIC_R_SUBCASE("length < min", (clamp_length(v, 12.0F, 14.0F)), (Vector3{4.0F, 8.0F, 8.0F}));
+		BASIC_R_SUBCASE("length < min", (clamp_length(v, 12.0F, 14.0F)),
+		                (Vector3{4.0F, 8.0F, 8.0F}));
 
 		BASIC_R_SUBCASE("length == min", (clamp_length(v, 6.0F, 9.0F)), (v));
 
 		BASIC_R_SUBCASE("length == max", (clamp_length(v, 3.0F, 6.0F)), (v));
 
-		BASIC_R_SUBCASE("length > max", (clamp_length(v, 1.0F, 3.0F)), (Vector3{1.0F, 2.0F, 2.0F}));
+		BASIC_R_SUBCASE("length > max", (clamp_length(v, 1.0F, 3.0F)),
+		                (Vector3{1.0F, 2.0F, 2.0F}));
 	}
 
 	TEST_CASE("abs") {
 		using draco::math::Vector3;
 		using draco::math::abs;
 
-		RAC_CHECK_EQ((abs(Vector3{1.0F, -2.0F, 0.0F})), (Vector3{1.0F, 2.0F, 0.0F}));
+		RAC_CHECK_EQ((abs(Vector3{1.0F, -2.0F, 0.0F})),
+		             (Vector3{1.0F, 2.0F, 0.0F}));
 	}
 
 	TEST_CASE("rounding") {
@@ -647,20 +677,25 @@ TEST_SUITE("vector3") {
 		static constexpr Vector3 a{0.5F, -0.5F, 1.4F};
 		static constexpr Vector3 b{-1.0F, 0.0F, 1.0F};
 
-		BASIC_RAC_SUBCASE_2("floor", (floor(a)), (Vector3{0.0F, -1.0F, 1.0F}), (floor(b)), (b));
+		BASIC_RAC_SUBCASE_2("floor", (floor(a)), (Vector3{0.0F, -1.0F, 1.0F}),
+		                    (floor(b)), (b));
 
-		BASIC_RAC_SUBCASE_2("ceil", (ceil(a)), (Vector3{1.0F, 0.0F, 2.0F}), (ceil(b)), (b));
+		BASIC_RAC_SUBCASE_2("ceil", (ceil(a)), (Vector3{1.0F, 0.0F, 2.0F}),
+		                    (ceil(b)), (b));
 
-		BASIC_RAC_SUBCASE_2("trunc", (trunc(a)), (Vector3{0.0F, 0.0F, 1.0F}), (trunc(b)), (b));
+		BASIC_RAC_SUBCASE_2("trunc", (trunc(a)), (Vector3{0.0F, 0.0F, 1.0F}),
+		                    (trunc(b)), (b));
 
-		BASIC_RAC_SUBCASE_2("round", (round(a)), (Vector3{1.0F, -1.0F, 1.0F}), (round(b)), (b));
+		BASIC_RAC_SUBCASE_2("round", (round(a)), (Vector3{1.0F, -1.0F, 1.0F}),
+		                    (round(b)), (b));
 	}
 
 	TEST_CASE("sign") {
 		using draco::math::Vector3;
 		using draco::math::sign;
 
-		RAC_CHECK_EQ((sign(Vector3{1.0F, -1.0F, 0.0F})), (Vector3{1.0F, -1.0F, 0.0F}));
+		RAC_CHECK_EQ((sign(Vector3{1.0F, -1.0F, 0.0F})),
+		             (Vector3{1.0F, -1.0F, 0.0F}));
 	}
 
 	TEST_CASE("approx_eq") {
@@ -671,18 +706,22 @@ TEST_SUITE("vector3") {
 		static constexpr Vector3 v{1.0F, 2.0F, 3.0F};
 		static constexpr Vector3 offset = Vector3::x_axis(CMP_EPSILON);
 
-		BASIC_R_SUBCASE("distance < epsilon", (approx_eq(v, v + offset * 0.5F)), (true));
+		BASIC_R_SUBCASE("distance < epsilon", (approx_eq(v, v + offset * 0.5F)),
+		                (true));
 
-		BASIC_R_SUBCASE("distance == epsilon", (approx_eq(v, v + offset)), (true));
+		BASIC_R_SUBCASE("distance == epsilon", (approx_eq(v, v + offset)),
+		                (true));
 
-		BASIC_R_SUBCASE("distance > epsilon", (approx_eq(v, v + offset * 2.0F)), (false));
+		BASIC_R_SUBCASE("distance > epsilon", (approx_eq(v, v + offset * 2.0F)),
+		                (false));
 	}
 
 	TEST_CASE("cross") {
 		using draco::math::Vector3;
 		using draco::math::cross;
 
-		RAC_CHECK_EQ((cross(Vector3::x_axis(), Vector3::y_axis())), (Vector3::z_axis()))
+		RAC_CHECK_EQ((cross(Vector3::x_axis(), Vector3::y_axis())),
+		             (Vector3::z_axis()))
 	}
 }
 
@@ -695,23 +734,32 @@ TEST_SUITE("vector4") {
 		static constexpr Vector2 a{1.0F, 2.0F};
 		static constexpr Vector3 b{3.0F, 4.0F, 5.0F};
 
-		BASIC_RAC_SUBCASE("float", (Vector4(1.0F)), (Vector4{1.0F, 1.0F, 1.0F, 1.0F}));
+		BASIC_RAC_SUBCASE("float", (Vector4(1.0F)),
+		                  (Vector4{1.0F, 1.0F, 1.0F, 1.0F}));
 
-		BASIC_RAC_SUBCASE("vec2, float, float", (Vector4(a, 6.0F, 7.0F)), (Vector4{1.0F, 2.0F, 6.0F, 7.0F}));
+		BASIC_RAC_SUBCASE("vec2, float, float", (Vector4(a, 6.0F, 7.0F)),
+		                  (Vector4{1.0F, 2.0F, 6.0F, 7.0F}));
 
-		BASIC_RAC_SUBCASE("float, vec2, float", (Vector4(6.0F, a, 7.0F)), (Vector4{6.0F, 1.0F, 2.0F, 7.0F}));
+		BASIC_RAC_SUBCASE("float, vec2, float", (Vector4(6.0F, a, 7.0F)),
+		                  (Vector4{6.0F, 1.0F, 2.0F, 7.0F}));
 
-		BASIC_RAC_SUBCASE("float, float, vec2", (Vector4(6.0F, 7.0F, a)), (Vector4{6.0F, 7.0F, 1.0F, 2.0F}));
+		BASIC_RAC_SUBCASE("float, float, vec2", (Vector4(6.0F, 7.0F, a)),
+		                  (Vector4{6.0F, 7.0F, 1.0F, 2.0F}));
 
-		BASIC_RAC_SUBCASE("vec2, vec2", (Vector4(a, a)), (Vector4{1.0F, 2.0F, 1.0F, 2.0F}));
+		BASIC_RAC_SUBCASE("vec2, vec2", (Vector4(a, a)),
+		                  (Vector4{1.0F, 2.0F, 1.0F, 2.0F}));
 
-		BASIC_RAC_SUBCASE("vec3, float", (Vector4(b, 6.0F)), (Vector4{3.0F, 4.0F, 5.0F, 6.0F}));
+		BASIC_RAC_SUBCASE("vec3, float", (Vector4(b, 6.0F)),
+		                  (Vector4{3.0F, 4.0F, 5.0F, 6.0F}));
 
-		BASIC_RAC_SUBCASE("float, vec3", (Vector4(6.0F, b)), (Vector4{6.0F, 3.0F, 4.0F, 5.0F}));
+		BASIC_RAC_SUBCASE("float, vec3", (Vector4(6.0F, b)),
+		                  (Vector4{6.0F, 3.0F, 4.0F, 5.0F}));
 
-		BASIC_RAC_SUBCASE("vec2", (Vector4(a)), (Vector4{1.0F, 2.0F, 0.0F, 0.0F}));
+		BASIC_RAC_SUBCASE("vec2", (Vector4(a)),
+		                  (Vector4{1.0F, 2.0F, 0.0F, 0.0F}));
 
-		BASIC_RAC_SUBCASE("vec3", (Vector4(b)), (Vector4{3.0F, 4.0F, 5.0F, 0.0F}));
+		BASIC_RAC_SUBCASE("vec3", (Vector4(b)),
+		                  (Vector4{3.0F, 4.0F, 5.0F, 0.0F}));
 	}
 
 	TEST_CASE("access") {
@@ -736,7 +784,8 @@ TEST_SUITE("vector4") {
 
 		BASIC_RAC_SUBCASE("vec3", (v[1, 2, 0]), (Vector3{2.0F, 3.0F, 1.0F}));
 
-		BASIC_RAC_SUBCASE("vec4", (v[0, 2, 1, 3]), (Vector4{1.0F, 3.0F, 2.0F, 4.0F}));
+		BASIC_RAC_SUBCASE("vec4", (v[0, 2, 1, 3]),
+		                  (Vector4{1.0F, 3.0F, 2.0F, 4.0F}));
 	}
 
 	TEST_CASE("swap") {
@@ -825,7 +874,8 @@ TEST_SUITE("vector4") {
 		static constexpr Vector4 a{1.0F, 2.0F, 3.0F, 4.0F};
 		static constexpr Vector4 b{5.0F, 6.0F, 7.0F, 8.0F};
 
-		RAC_CHECK_EQ((reflect(a, b)), (Vector4{-699.0F, -838.0F, -977.0F, -1116.0F}));
+		RAC_CHECK_EQ((reflect(a, b)),
+		             (Vector4{-699.0F, -838.0F, -977.0F, -1116.0F}));
 	}
 
 	TEST_CASE("angle") {
@@ -846,15 +896,18 @@ TEST_SUITE("vector4") {
 		static constexpr Vector4 a{1.0F, 2.0F, 3.0F, 4.0F};
 		static constexpr Vector4 b{5.0F, 6.0F, 7.0F, 8.0F};
 
-		BASIC_RAC_SUBCASE("weight = -1", (lerp(a, b, -1.0F)), (Vector4{-3.0F, -2.0F, -1.0F, 0.0F}));
+		BASIC_RAC_SUBCASE("weight = -1", (lerp(a, b, -1.0F)),
+		                  (Vector4{-3.0F, -2.0F, -1.0F, 0.0F}));
 
 		BASIC_RAC_SUBCASE("weight = 0", (lerp(a, b, 0.0F)), (a));
 
-		BASIC_RAC_SUBCASE("weight = 0.5", (lerp(a, b, 0.5F)), (Vector4{3.0F, 4.0F, 5.0F, 6.0F}));
+		BASIC_RAC_SUBCASE("weight = 0.5", (lerp(a, b, 0.5F)),
+		                  (Vector4{3.0F, 4.0F, 5.0F, 6.0F}));
 
 		BASIC_RAC_SUBCASE("weight = 1", (lerp(a, b, 1.0F)), (b));
 
-		BASIC_RAC_SUBCASE("weight = 2", (lerp(a, b, 2.0F)), (Vector4{9.0F, 10.0F, 11.0F, 12.0F}));
+		BASIC_RAC_SUBCASE("weight = 2", (lerp(a, b, 2.0F)),
+		                  (Vector4{9.0F, 10.0F, 11.0F, 12.0F}));
 	}
 
 	TEST_CASE("min") {
@@ -864,11 +917,13 @@ TEST_SUITE("vector4") {
 		static constexpr Vector4 a{5.0F, 8.0F, 3.0F, 4.0F};
 		static constexpr Vector4 b{1.0F, 6.0F, 7.0F, 2.0F};
 
-		BASIC_RAC_SUBCASE("vector", (min(a, b)), (Vector4{1.0F, 6.0F, 3.0F, 2.0F}));
+		BASIC_RAC_SUBCASE("vector", (min(a, b)),
+		                  (Vector4{1.0F, 6.0F, 3.0F, 2.0F}));
 
 		static constexpr Vector4 expected{4.0F, 4.0F, 3.0F, 4.0F};
 
-		BASIC_RAC_SUBCASE_2("float", (min(a, 4.0F)), (expected), (min(4.0F, a)), (expected));
+		BASIC_RAC_SUBCASE_2("float", (min(a, 4.0F)), (expected), (min(4.0F, a)),
+		                    (expected));
 	}
 
 	TEST_CASE("min_length") {
@@ -902,11 +957,13 @@ TEST_SUITE("vector4") {
 		static constexpr Vector4 a{5.0F, 8.0F, 3.0F, 4.0F};
 		static constexpr Vector4 b{1.0F, 6.0F, 7.0F, 2.0F};
 
-		BASIC_RAC_SUBCASE("vector", (max(a, b)), (Vector4{5.0F, 8.0F, 7.0F, 4.0F}));
+		BASIC_RAC_SUBCASE("vector", (max(a, b)),
+		                  (Vector4{5.0F, 8.0F, 7.0F, 4.0F}));
 
 		static constexpr Vector4 expected{5.0F, 8.0F, 4.0F, 4.0F};
 
-		BASIC_RAC_SUBCASE_2("float", (max(a, 4.0F)), (expected), (max(4.0F, a)), (expected));
+		BASIC_RAC_SUBCASE_2("float", (max(a, 4.0F)), (expected), (max(4.0F, a)),
+		                    (expected));
 	}
 
 	TEST_CASE("max_length") {
@@ -941,9 +998,11 @@ TEST_SUITE("vector4") {
 		static constexpr Vector4 b{1.0F, 6.0F, 7.0F, 2.0F};
 		static constexpr Vector4 c{3.0F, 9.0F, 8.0F, 4.0F};
 
-		BASIC_RAC_SUBCASE("vector", (clamp(a, b, c)), (Vector4{3.0F, 8.0F, 7.0F, 4.0F}));
+		BASIC_RAC_SUBCASE("vector", (clamp(a, b, c)),
+		                  (Vector4{3.0F, 8.0F, 7.0F, 4.0F}));
 
-		BASIC_RAC_SUBCASE("float", (clamp(a, 4.0F, 5.0F)), (Vector4{5.0F, 5.0F, 4.0F, 4.0F}));
+		BASIC_RAC_SUBCASE("float", (clamp(a, 4.0F, 5.0F)),
+		                  (Vector4{5.0F, 5.0F, 4.0F, 4.0F}));
 	}
 
 	TEST_CASE("clamp_length") {
@@ -953,20 +1012,23 @@ TEST_SUITE("vector4") {
 
 		static constexpr Vector4 v{1.0F, -3.0F, -1.0F, 5.0F}; // len: 6
 
-		BASIC_R_SUBCASE("length < min", (clamp_length(v, 12.0F, 14.0F)), (Vector4{2.0F, -6.0F, -2.0F, 10.0F}));
+		BASIC_R_SUBCASE("length < min", (clamp_length(v, 12.0F, 14.0F)),
+		                (Vector4{2.0F, -6.0F, -2.0F, 10.0F}));
 
 		BASIC_R_SUBCASE("length == min", (clamp_length(v, 6.0F, 9.0F)), (v));
 
 		BASIC_R_SUBCASE("length == max", (clamp_length(v, 3.0F, 6.0F)), (v));
 
-		BASIC_R_SUBCASE("length > max", (clamp_length(v, 1.0F, 3.0F)), (Vector4{0.5F, -1.5F, -0.5F, 2.5F}));
+		BASIC_R_SUBCASE("length > max", (clamp_length(v, 1.0F, 3.0F)),
+		                (Vector4{0.5F, -1.5F, -0.5F, 2.5F}));
 	}
 
 	TEST_CASE("abs") {
 		using draco::math::Vector4;
 		using draco::math::abs;
 
-		RAC_CHECK_EQ((abs(Vector4{1.0F, -2.0F, -3.0F, 0.0F})), (Vector4{1.0F, 2.0F, 3.0F, 0.0F}));
+		RAC_CHECK_EQ((abs(Vector4{1.0F, -2.0F, -3.0F, 0.0F})),
+		             (Vector4{1.0F, 2.0F, 3.0F, 0.0F}));
 	}
 
 	TEST_CASE("rounding") {
@@ -979,20 +1041,27 @@ TEST_SUITE("vector4") {
 		static constexpr Vector4 a{0.5F, -0.5F, 1.4F, 1.6F};
 		static constexpr Vector4 b{-1.0F, 0.0F, 1.0F, 2.0F};
 
-		BASIC_RAC_SUBCASE_2("floor", (floor(a)), (Vector4{0.0F, -1.0F, 1.0F, 1.0F}), (floor(b)), (b));
+		BASIC_RAC_SUBCASE_2("floor", (floor(a)),
+		                    (Vector4{0.0F, -1.0F, 1.0F, 1.0F}), (floor(b)),
+		                    (b));
 
-		BASIC_RAC_SUBCASE_2("ceil", (ceil(a)), (Vector4{1.0F, 0.0F, 2.0F, 2.0F}), (ceil(b)), (b));
+		BASIC_RAC_SUBCASE_2("ceil", (ceil(a)),
+		                    (Vector4{1.0F, 0.0F, 2.0F, 2.0F}), (ceil(b)), (b));
 
-		BASIC_RAC_SUBCASE_2("trunc", (trunc(a)), (Vector4{0.0F, 0.0F, 1.0F, 1.0F}), (trunc(b)), (b));
+		BASIC_RAC_SUBCASE_2("trunc", (trunc(a)),
+		                    (Vector4{0.0F, 0.0F, 1.0F, 1.0F}), (trunc(b)), (b));
 
-		BASIC_RAC_SUBCASE_2("round", (round(a)), (Vector4{1.0F, -1.0F, 1.0F, 2.0F}), (round(b)), (b));
+		BASIC_RAC_SUBCASE_2("round", (round(a)),
+		                    (Vector4{1.0F, -1.0F, 1.0F, 2.0F}), (round(b)),
+		                    (b));
 	}
 
 	TEST_CASE("sign") {
 		using draco::math::Vector4;
 		using draco::math::sign;
 
-		RAC_CHECK_EQ((sign(Vector4{1.0F, -1.0F, 0.0F, -0.0F})), (Vector4{1.0F, -1.0F, 0.0F, 0.0F}));
+		RAC_CHECK_EQ((sign(Vector4{1.0F, -1.0F, 0.0F, -0.0F})),
+		             (Vector4{1.0F, -1.0F, 0.0F, 0.0F}));
 	}
 
 	TEST_CASE("approx_eq") {
@@ -1003,10 +1072,13 @@ TEST_SUITE("vector4") {
 		static constexpr Vector4 v{1.0F, 2.0F, 3.0F, 4.0F};
 		static constexpr Vector4 offset = Vector4::x_axis(CMP_EPSILON);
 
-		BASIC_R_SUBCASE("distance < epsilon", (approx_eq(v, v + offset * 0.5F)), (true));
+		BASIC_R_SUBCASE("distance < epsilon", (approx_eq(v, v + offset * 0.5F)),
+		                (true));
 
-		BASIC_R_SUBCASE("distance == epsilon", (approx_eq(v, v + offset)), (true));
+		BASIC_R_SUBCASE("distance == epsilon", (approx_eq(v, v + offset)),
+		                (true));
 
-		BASIC_R_SUBCASE("distance > epsilon", (approx_eq(v, v + offset * 2.0F)), (false));
+		BASIC_R_SUBCASE("distance > epsilon", (approx_eq(v, v + offset * 2.0F)),
+		                (false));
 	}
 }

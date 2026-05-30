@@ -24,16 +24,20 @@ export namespace draco::math {
 static_assert(sizeof(Vector2) == 8, "Vector2 must be 8 bytes");
 static_assert(alignof(Vector2) == 8, "Vector2 must be 8-byte aligned");
 static_assert(trivial<Vector2>, "Vector2 must be trivial");
-static_assert(std::is_standard_layout_v<Vector2>, "Vector2 must be standard layout");
+static_assert(std::is_standard_layout_v<Vector2>,
+              "Vector2 must be standard layout");
 
 // constructors
 [[nodiscard]] constexpr Vector2::Vector2(f32 const n) noexcept : x{n}, y{n} { }
 
-[[nodiscard]] constexpr Vector2::Vector2(f32 const x, f32 const y) noexcept : x{x}, y{y} { }
+[[nodiscard]] constexpr Vector2::Vector2(f32 const x, f32 const y) noexcept :
+	x{x}, y{y} { }
 
-[[nodiscard]] constexpr Vector2::Vector2(Vector3 const &xy) noexcept : x{xy.x}, y{xy.y} { }
+[[nodiscard]] constexpr Vector2::Vector2(Vector3 const &xy) noexcept :
+	x{xy.x}, y{xy.y} { }
 
-[[nodiscard]] constexpr Vector2::Vector2(Vector4 const &xy) noexcept : x{xy.x}, y{xy.y} { }
+[[nodiscard]] constexpr Vector2::Vector2(Vector4 const &xy) noexcept :
+	x{xy.x}, y{xy.y} { }
 
 // static
 [[nodiscard]] constexpr Vector2 Vector2::x_axis(f32 const x) noexcept {
@@ -44,7 +48,8 @@ static_assert(std::is_standard_layout_v<Vector2>, "Vector2 must be standard layo
 	return {0.0F, y};
 }
 
-[[nodiscard]] Vector2 Vector2::polar(f32 const angle, f32 const radius) noexcept {
+[[nodiscard]] Vector2 Vector2::polar(f32 const angle,
+                                     f32 const radius) noexcept {
 	return {radius * std::cos(angle), radius * std::sin(angle)};
 }
 
@@ -54,39 +59,59 @@ static_assert(std::is_standard_layout_v<Vector2>, "Vector2 must be standard layo
 	else { return (&x)[i]; }
 }
 
-[[nodiscard]] constexpr f32 const &Vector2::operator[](i32 const i) const noexcept {
+[[nodiscard]] constexpr f32 const &
+Vector2::operator[](i32 const i) const noexcept {
 	if consteval { return i ? y : x; }
 	else { return (&x)[i]; }
 }
 
 // swizzle
-[[nodiscard]] constexpr Vector2 Vector2::operator[](i32 const i0, i32 const i1) noexcept {
+[[nodiscard]] constexpr Vector2 Vector2::operator[](i32 const i0,
+                                                    i32 const i1) noexcept {
 	if consteval { return {select(i0, x, y), select(i1, x, y)}; }
 	else { return {(&x)[i0], (&x)[i1]}; }
 }
 
-[[nodiscard]] constexpr Vector2 Vector2::operator[](i32 const i0, i32 const i1) const noexcept {
+[[nodiscard]] constexpr Vector2
+Vector2::operator[](i32 const i0, i32 const i1) const noexcept {
 	if consteval { return {select(i0, x, y), select(i1, x, y)}; }
 	else { return {(&x)[i0], (&x)[i1]}; }
 }
 
-[[nodiscard]] constexpr Vector3 Vector2::operator[](i32 const i0, i32 const i1, i32 const i2) noexcept {
-	if consteval { return {select(i0, x, y), select(i1, x, y), select(i2, x, y)}; }
+[[nodiscard]] constexpr Vector3
+Vector2::operator[](i32 const i0, i32 const i1, i32 const i2) noexcept {
+	if consteval {
+		return {select(i0, x, y), select(i1, x, y), select(i2, x, y)};
+	}
 	else { return {(&x)[i0], (&x)[i1], (&x)[i2]}; }
 }
 
-[[nodiscard]] constexpr Vector3 Vector2::operator[](i32 const i0, i32 const i1, i32 const i2) const noexcept {
-	if consteval { return {select(i0, x, y), select(i1, x, y), select(i2, x, y)}; }
+[[nodiscard]] constexpr Vector3
+Vector2::operator[](i32 const i0, i32 const i1, i32 const i2) const noexcept {
+	if consteval {
+		return {select(i0, x, y), select(i1, x, y), select(i2, x, y)};
+	}
 	else { return {(&x)[i0], (&x)[i1], (&x)[i2]}; }
 }
 
-[[nodiscard]] constexpr Vector4 Vector2::operator[](i32 const i0, i32 const i1, i32 const i2, i32 const i3) noexcept {
-	if consteval { return {select(i0, x, y), select(i1, x, y), select(i2, x, y), select(i3, x, y)}; }
+[[nodiscard]] constexpr Vector4 Vector2::operator[](i32 const i0,
+                                                    i32 const i1,
+                                                    i32 const i2,
+                                                    i32 const i3) noexcept {
+	if consteval {
+		return {select(i0, x, y), select(i1, x, y), select(i2, x, y),
+		        select(i3, x, y)};
+	}
 	else { return {(&x)[i0], (&x)[i1], (&x)[i2], (&x)[i3]}; }
 }
 
-[[nodiscard]] constexpr Vector4 Vector2::operator[](i32 const i0, i32 const i1, i32 const i2, i32 const i3) const noexcept {
-	if consteval { return {select(i0, x, y), select(i1, x, y), select(i2, x, y), select(i3, x, y)}; }
+[[nodiscard]] constexpr Vector4 Vector2::operator[](
+	i32 const i0, i32 const i1, i32 const i2, i32 const i3
+) const noexcept {
+	if consteval {
+		return {select(i0, x, y), select(i1, x, y), select(i2, x, y),
+		        select(i3, x, y)};
+	}
 	else { return {(&x)[i0], (&x)[i1], (&x)[i2], (&x)[i3]}; }
 }
 
@@ -154,51 +179,63 @@ constexpr Vector2 &Vector2::operator=(f32 const other) noexcept {
 	return {-x, -y};
 }
 
-[[nodiscard]] constexpr Vector2 operator+(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 operator+(Vector2 const &a,
+                                          Vector2 const &b) noexcept {
 	return {a.x + b.x, a.y + b.y};
 }
 
-[[nodiscard]] constexpr Vector2 operator+(Vector2 const &a, f32 const b) noexcept {
+[[nodiscard]] constexpr Vector2 operator+(Vector2 const &a,
+                                          f32 const b) noexcept {
 	return {a.x + b, a.y + b};
 }
 
-[[nodiscard]] constexpr Vector2 operator+(f32 const a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 operator+(f32 const a,
+                                          Vector2 const &b) noexcept {
 	return b + a;
 }
 
-[[nodiscard]] constexpr Vector2 operator-(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 operator-(Vector2 const &a,
+                                          Vector2 const &b) noexcept {
 	return {a.x - b.x, a.y - b.y};
 }
 
-[[nodiscard]] constexpr Vector2 operator-(Vector2 const &a, f32 const b) noexcept {
+[[nodiscard]] constexpr Vector2 operator-(Vector2 const &a,
+                                          f32 const b) noexcept {
 	return {a.x - b, a.y - b};
 }
 
-[[nodiscard]] constexpr Vector2 operator-(f32 const a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 operator-(f32 const a,
+                                          Vector2 const &b) noexcept {
 	return {a - b.x, a - b.y};
 }
 
-[[nodiscard]] constexpr Vector2 operator*(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 operator*(Vector2 const &a,
+                                          Vector2 const &b) noexcept {
 	return {a.x * b.x, a.y * b.y};
 }
 
-[[nodiscard]] constexpr Vector2 operator*(Vector2 const &a, f32 const b) noexcept {
+[[nodiscard]] constexpr Vector2 operator*(Vector2 const &a,
+                                          f32 const b) noexcept {
 	return {a.x * b, a.y * b};
 }
 
-[[nodiscard]] constexpr Vector2 operator*(f32 const a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 operator*(f32 const a,
+                                          Vector2 const &b) noexcept {
 	return b * a;
 }
 
-[[nodiscard]] constexpr Vector2 operator/(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 operator/(Vector2 const &a,
+                                          Vector2 const &b) noexcept {
 	return {a.x / b.x, a.y / b.y};
 }
 
-[[nodiscard]] constexpr Vector2 operator/(Vector2 const &a, f32 const b) noexcept {
+[[nodiscard]] constexpr Vector2 operator/(Vector2 const &a,
+                                          f32 const b) noexcept {
 	return a * (1.0F / b);
 }
 
-[[nodiscard]] constexpr Vector2 operator/(f32 const a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 operator/(f32 const a,
+                                          Vector2 const &b) noexcept {
 	return {a / b.x, a / b.y};
 }
 
@@ -220,7 +257,8 @@ constexpr Vector2 &Vector2::operator=(f32 const other) noexcept {
 }
 
 // Return squared distance between two vectors
-[[nodiscard]] constexpr f32 distance_sq(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr f32 distance_sq(Vector2 const &a,
+                                        Vector2 const &b) noexcept {
 	return length_sq(a - b);
 }
 
@@ -243,12 +281,14 @@ constexpr Vector2 &Vector2::operator=(f32 const other) noexcept {
 }
 
 // Returns vector projected onto normal
-[[nodiscard]] constexpr Vector2 project(Vector2 const &vector, Vector2 const &normal) noexcept {
+[[nodiscard]] constexpr Vector2 project(Vector2 const &vector,
+                                        Vector2 const &normal) noexcept {
 	return normal * (dot(vector, normal) / length_sq(normal));
 }
 
 // Returns a vector reflected off a plane defined by its normal
-[[nodiscard]] constexpr Vector2 reflect(Vector2 const &incoming, Vector2 const &normal) noexcept {
+[[nodiscard]] constexpr Vector2 reflect(Vector2 const &incoming,
+                                        Vector2 const &normal) noexcept {
 	return incoming - 2.0F * dot(incoming, normal) * normal;
 }
 
@@ -258,12 +298,14 @@ constexpr Vector2 &Vector2::operator=(f32 const other) noexcept {
 }
 
 // Returns linear i32erpolation between two vectors
-[[nodiscard]] constexpr Vector2 lerp(Vector2 const &from, Vector2 const &to, f32 const weight) noexcept {
+[[nodiscard]] constexpr Vector2
+lerp(Vector2 const &from, Vector2 const &to, f32 const weight) noexcept {
 	return {lerp(from.x, to.x, weight), lerp(from.y, to.y, weight)};
 }
 
 // Returns component-wise minimum
-[[nodiscard]] constexpr Vector2 min(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 min(Vector2 const &a,
+                                    Vector2 const &b) noexcept {
 	return {std::min(a.x, b.x), std::min(a.y, b.y)};
 }
 
@@ -276,7 +318,8 @@ constexpr Vector2 &Vector2::operator=(f32 const other) noexcept {
 }
 
 // Returns the vector with the smaller length
-[[nodiscard]] constexpr Vector2 min_length(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 min_length(Vector2 const &a,
+                                           Vector2 const &b) noexcept {
 	return length_sq(a) < length_sq(b) ? a : b;
 }
 
@@ -293,7 +336,8 @@ constexpr Vector2 &Vector2::operator=(f32 const other) noexcept {
 }
 
 // Returns component-wise maximum
-[[nodiscard]] constexpr Vector2 max(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 max(Vector2 const &a,
+                                    Vector2 const &b) noexcept {
 	return {std::max(a.x, b.x), std::max(a.y, b.y)};
 }
 
@@ -306,7 +350,8 @@ constexpr Vector2 &Vector2::operator=(f32 const other) noexcept {
 }
 
 // Returns the vector with the larger length
-[[nodiscard]] constexpr Vector2 max_length(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr Vector2 max_length(Vector2 const &a,
+                                           Vector2 const &b) noexcept {
 	return length_sq(a) > length_sq(b) ? a : b;
 }
 
@@ -324,16 +369,19 @@ constexpr Vector2 &Vector2::operator=(f32 const other) noexcept {
 }
 
 // Clamps each component of x to the range [x_min, x_max]. Presupposes x_min <= x_max.
-[[nodiscard]] constexpr Vector2 clamp(Vector2 const &x, Vector2 const &x_min, Vector2 const &x_max) noexcept {
+[[nodiscard]] constexpr Vector2
+clamp(Vector2 const &x, Vector2 const &x_min, Vector2 const &x_max) noexcept {
 	return max(x_min, min(x, x_max));
 }
 
-[[nodiscard]] constexpr Vector2 clamp(Vector2 const &x, f32 const x_min, f32 const x_max) noexcept {
+[[nodiscard]] constexpr Vector2
+clamp(Vector2 const &x, f32 const x_min, f32 const x_max) noexcept {
 	return max(x_min, min(x, x_max));
 }
 
 // Clamps the length of the vector to the range [x_min, x_max]. Presupposes x_min <= x_max. Returns the 0 vector if the vector is too small to be normalized.
-[[nodiscard]] Vector2 clamp_length(Vector2 const &v, f32 const x_min, f32 const x_max) noexcept {
+[[nodiscard]] Vector2
+clamp_length(Vector2 const &v, f32 const x_min, f32 const x_max) noexcept {
 	f32 const len_sq = length_sq(v);
 
 	if (len_sq <= CMP_NORMALIZE_TOLERANCE2) { return Vector2(); }
@@ -373,7 +421,8 @@ constexpr Vector2 &Vector2::operator=(f32 const other) noexcept {
 }
 
 // Returns true if the vectors are approximately equal
-[[nodiscard]] constexpr bool approx_eq(Vector2 const &a, Vector2 const &b) noexcept {
+[[nodiscard]] constexpr bool approx_eq(Vector2 const &a,
+                                       Vector2 const &b) noexcept {
 	return distance_sq(a, b) < CMP_EPSILON2;
 }
 } // namespace draco::math

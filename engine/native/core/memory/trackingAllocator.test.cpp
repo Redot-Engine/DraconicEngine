@@ -31,7 +31,8 @@ TEST_CASE("Tracking allocator basic functions") {
 	alloc.free(bSlice);
 	REQUIRE(tracking::getActiveAllocations(trackingAlloc, 3, details) == 3);
 	REQUIRE(details[2].data.data == aSlice.data);
-	REQUIRE(details[1].data.data == bSlice.data); // with a freeing allocator this line shouldn't exist
+	REQUIRE(details[1].data.data ==
+	        bSlice.data); // with a freeing allocator this line shouldn't exist
 	REQUIRE(details[0].data.data == cSlice.data);
 	tracking::getAnalytics(trackingAlloc, &analytics);
 	REQUIRE(analytics.totalAllocatedBytes >= 9);

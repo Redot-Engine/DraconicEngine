@@ -37,8 +37,11 @@ TextureHandle create_texture(void const *data, u32 w, u32 h, u32 flags) {
 	RHI_ASSERT(data != nullptr, "Texture data is null");
 	RHI_ASSERT(w > 0 && h > 0, "Invalid texture dimensions");
 
-	auto tex = bgfx::createTexture2D(w, h, false, 1, bgfx::TextureFormat::RGBA8, flags == 0 ? (BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP) : flags,
-	                                 bgfx::copy(data, w * h * 4));
+	auto tex = bgfx::createTexture2D(
+		w, h, false, 1, bgfx::TextureFormat::RGBA8,
+		flags == 0 ? (BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP) : flags,
+		bgfx::copy(data, w * h * 4)
+	);
 
 	return g_textures.create(tex);
 }
@@ -51,15 +54,19 @@ void destroy_texture(TextureHandle h) {
 	g_textures.destroy(h);
 }
 
-FramebufferHandle create_framebuffer(u32 width, u32 height, TextureFormat format) {
+FramebufferHandle
+create_framebuffer(u32 width, u32 height, TextureFormat format) {
 	// We set render target flags so it can be attached to a framebuffer object
 	u64 flags = BGFX_TEXTURE_RT | BGFX_SAMPLER_U_CLAMP | BGFX_SAMPLER_V_CLAMP;
 
 	bgfx::TextureFormat::Enum bgfx_format = bgfx::TextureFormat::RGBA8;
 
-	bgfx::TextureHandle th = bgfx::createTexture2D(static_cast<u16>(width), static_cast<u16>(height), false, 1, bgfx_format, flags);
+	bgfx::TextureHandle th =
+		bgfx::createTexture2D(static_cast<u16>(width), static_cast<u16>(height),
+	                          false, 1, bgfx_format, flags);
 
-	RHI_ASSERT(bgfx::isValid(th), "Failed to allocate backing texture for Framebuffer");
+	RHI_ASSERT(bgfx::isValid(th),
+	           "Failed to allocate backing texture for Framebuffer");
 
 	TextureHandle color_tex_h = g_textures.create(th);
 

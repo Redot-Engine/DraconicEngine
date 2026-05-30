@@ -41,7 +41,9 @@ void resize(u16 width, u16 height);
 void begin_frame(Camera const &cam);
 
 void submit_entity(draco::rendering::rhi::RenderPacket &packet, u16 view);
-void submit_renderable(draco::math::Transform const &transform, material::Material const &material, mesh::MeshHandle mesh_id);
+void submit_renderable(draco::math::Transform const &transform,
+                       material::Material const &material,
+                       mesh::MeshHandle mesh_id);
 void submit_ui(draco::rendering::quad_renderer::QuadRenderer &quad_renderer);
 
 void end_frame();

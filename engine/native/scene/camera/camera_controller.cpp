@@ -22,15 +22,18 @@ void CameraController::init(f32 x, f32 y, f32 z) {
 
 void CameraController::update(f32 dt) {
 	m_yaw += draco::input::get_mouse_dx() * m_sensitivity;
-	m_pitch -= draco::input::get_mouse_dy() * m_sensitivity; // Temp fix to flip mouse input
+	m_pitch -= draco::input::get_mouse_dy() *
+	           m_sensitivity; // Temp fix to flip mouse input
 
 	// Clamp pitch
 	if (m_pitch > 1.5F) { m_pitch = 1.5F; }
 	if (m_pitch < -1.5F) { m_pitch = -1.5F; }
 
-	bx::Vec3 forward = {cosf(m_pitch) * sinf(m_yaw), sinf(m_pitch), cosf(m_pitch) * cosf(m_yaw)};
+	bx::Vec3 forward = {cosf(m_pitch) * sinf(m_yaw), sinf(m_pitch),
+	                    cosf(m_pitch) * cosf(m_yaw)};
 
-	bx::Vec3 right = {sinf(m_yaw - bx::kPiHalf), 0.0F, cosf(m_yaw - bx::kPiHalf)};
+	bx::Vec3 right = {sinf(m_yaw - bx::kPiHalf), 0.0F,
+	                  cosf(m_yaw - bx::kPiHalf)};
 
 	f32 velocity = m_speed * dt;
 
@@ -58,7 +61,8 @@ void CameraController::update(f32 dt) {
 }
 
 draco::rendering::renderer::Camera CameraController::get_camera() const {
-	bx::Vec3 forward = {cosf(m_pitch) * sinf(m_yaw), sinf(m_pitch), cosf(m_pitch) * cosf(m_yaw)};
+	bx::Vec3 forward = {cosf(m_pitch) * sinf(m_yaw), sinf(m_pitch),
+	                    cosf(m_pitch) * cosf(m_yaw)};
 
 	draco::rendering::renderer::Camera cam{};
 

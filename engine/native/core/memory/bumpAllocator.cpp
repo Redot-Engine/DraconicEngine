@@ -10,7 +10,8 @@ module core.memory.bumpAllocator;
 import core.stdtypes;
 
 namespace draco::memory::bump {
-void init(BumpAllocator *alloc, Allocator baseAlloc,
+void init(BumpAllocator *alloc,
+          Allocator baseAlloc,
           // one page by default on unix-like systems
           usize minAllocRequest) {
 	memset(alloc, 0, sizeof(BumpAllocator));
@@ -24,15 +25,19 @@ void deinit(BumpAllocator *alloc) {
 	while (node != nullptr) {
 		lastNode = node;
 		node     = node->next;
-		alloc->base.vtbl->free(alloc->base, {
-												.data = (void *)lastNode,
-												.size = lastNode->size + sizeof(Node),
-											});
+		alloc->base.vtbl->free(alloc->base,
+		                       {
+								   .data = (void *)lastNode,
+								   .size = lastNode->size + sizeof(Node),
+							   });
 	}
 }
 
 Error alloc(
-	Allocator alloc, Slice *dst, usize size, usize align
+	Allocator alloc,
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc
@@ -64,9 +69,11 @@ Error alloc(
 		if (*lastNode) { spillover = ((*lastNode)->size - oldPos); }
 		reqSize = (sizeof(Node) + size + alignMask) & ~alignMask;
 		err     = allocData->base.vtbl->alloc(
-			allocData->base, &newBlock, std::max(allocData->minAllocRequest, reqSize), std::max(alignof(Node), align)
+			allocData->base, &newBlock,
+			std::max(allocData->minAllocRequest, reqSize),
+			std::max(alignof(Node), align)
 #ifdef DEBUG
-																						   ,
+				,
 			loc
 #endif
 		);

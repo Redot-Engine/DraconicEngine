@@ -14,9 +14,11 @@ PipelineHandle create_pipeline(PipelineDesc const &desc) {
 	RHI_ASSERT(desc.vs != InvalidShader, "Pipeline missing vertex shader");
 	RHI_ASSERT(desc.fs != InvalidShader, "Pipeline missing fragment shader");
 
-	bgfx::ProgramHandle prog = bgfx::createProgram(resolve(desc.vs), resolve(desc.fs), true);
+	bgfx::ProgramHandle prog =
+		bgfx::createProgram(resolve(desc.vs), resolve(desc.fs), true);
 
-	u64 state = map_state(desc.state, desc.blend, desc.depth, desc.cull, desc.depth_write);
+	u64 state = map_state(desc.state, desc.blend, desc.depth, desc.cull,
+	                      desc.depth_write);
 
 	return g_pipelines.create({prog, state});
 }
@@ -25,7 +27,10 @@ LayoutHandle create_vertex_layout(VertexLayoutDesc const &desc) {
 	bgfx::VertexLayout layout;
 	layout.begin();
 
-	for (auto const &e : desc.elements) { layout.add(map_attrib(e.attrib), e.count, map_attrib_type(e.type), e.normalized); }
+	for (auto const &e : desc.elements) {
+		layout.add(map_attrib(e.attrib), e.count, map_attrib_type(e.type),
+		           e.normalized);
+	}
 
 	layout.end();
 

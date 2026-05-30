@@ -44,18 +44,25 @@ static void ensure_mesh_layout() {
 	g_mesh_layout = rhi::create_vertex_layout(desc);
 }
 
-MeshHandle create(void const *vertex_data, u32 vertex_size, u32 vertex_count, std::vector<u32> const &indices, rhi::LayoutHandle layout) {
+MeshHandle create(void const *vertex_data,
+                  u32 vertex_size,
+                  u32 vertex_count,
+                  std::vector<u32> const &indices,
+                  rhi::LayoutHandle layout) {
 	Mesh mesh{};
 
 	mesh.vbh = rhi::create_vertex_buffer(vertex_data, vertex_size, layout);
-	mesh.ibh = rhi::create_index_buffer(indices.data(), static_cast<u32>(indices.size() * sizeof(u32)));
+	mesh.ibh = rhi::create_index_buffer(
+		indices.data(), static_cast<u32>(indices.size() * sizeof(u32))
+	);
 
 	mesh.layout = layout;
 
 	mesh.vertex_count = vertex_count;
 	mesh.index_count  = static_cast<u32>(indices.size());
 
-	mesh.valid = (mesh.vbh != rhi::InvalidBuffer) && (mesh.ibh != rhi::InvalidBuffer);
+	mesh.valid =
+		(mesh.vbh != rhi::InvalidBuffer) && (mesh.ibh != rhi::InvalidBuffer);
 
 	if (!mesh.valid) {
 		if (mesh.vbh != rhi::InvalidBuffer) { rhi::destroy_buffer(mesh.vbh); }
@@ -70,12 +77,15 @@ MeshHandle create_cube() {
 
 	usize key = 1;
 
-	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) { return it->second; }
+	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) {
+		return it->second;
+	}
 
 	auto v = gen::cube_vertices();
 	auto i = gen::cube_indices();
 
-	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i, g_mesh_layout);
+	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i,
+	                      g_mesh_layout);
 
 	g_mesh_cache[key] = h;
 	return h;
@@ -86,12 +96,15 @@ MeshHandle create_plane(f32 size) {
 
 	usize key = hash_mesh_params(1000, 0, size);
 
-	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) { return it->second; }
+	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) {
+		return it->second;
+	}
 
 	auto v = gen::plane_vertices(size);
 	auto i = gen::plane_indices();
 
-	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i, g_mesh_layout);
+	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i,
+	                      g_mesh_layout);
 
 	g_mesh_cache[key] = h;
 	return h;
@@ -102,14 +115,18 @@ MeshHandle create_sphere(int segments, int rings) {
 
 	ensure_mesh_layout();
 
-	usize key = hash_combine(std::hash<int>{}(segments), std::hash<int>{}(rings));
+	usize key =
+		hash_combine(std::hash<int>{}(segments), std::hash<int>{}(rings));
 
-	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) { return it->second; }
+	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) {
+		return it->second;
+	}
 
 	auto v = gen::sphere_vertices(segments, rings);
 	auto i = gen::sphere_indices(segments, rings);
 
-	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i, g_mesh_layout);
+	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i,
+	                      g_mesh_layout);
 
 	g_mesh_cache[key] = h;
 	return h;
@@ -122,12 +139,15 @@ MeshHandle create_cylinder(int segments, f32 height) {
 
 	usize key = hash_mesh_params(2000, segments, height);
 
-	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) { return it->second; }
+	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) {
+		return it->second;
+	}
 
 	auto v = gen::cylinder_vertices(segments, height);
 	auto i = gen::cylinder_indices(segments);
 
-	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i, g_mesh_layout);
+	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i,
+	                      g_mesh_layout);
 
 	g_mesh_cache[key] = h;
 	return h;
@@ -137,14 +157,19 @@ MeshHandle create_capsule(int segments, int rings, f32 height) {
 	if (segments < 3 || rings < 2 || height < 0.0F) { return {}; }
 
 	ensure_mesh_layout();
-	usize key = hash_combine(hash_combine(std::hash<int>{}(segments), std::hash<int>{}(rings)), std::hash<f32>{}(height));
+	usize key = hash_combine(hash_combine(std::hash<int>{}(segments),
+	                                      std::hash<int>{}(rings)),
+	                         std::hash<f32>{}(height));
 
-	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) { return it->second; }
+	if (auto it = g_mesh_cache.find(key); it != g_mesh_cache.end()) {
+		return it->second;
+	}
 
 	auto v = gen::capsule_vertices(segments, rings, height);
 	auto i = gen::capsule_indices(segments, rings);
 
-	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i, g_mesh_layout);
+	MeshHandle h = create(v.data(), v.size() * sizeof(Vertex), (u32)v.size(), i,
+	                      g_mesh_layout);
 
 	g_mesh_cache[key] = h;
 	return h;
@@ -178,22 +203,30 @@ Vertex make(f32 px, f32 py, f32 pz, f32 nx, f32 ny, f32 nz, f32 u, f32 v) {
 
 std::vector<Vertex> cube_vertices() {
 	return {
-		make(-1, -1, 1, 0, 0, 1, 0, 0),   make(1, -1, 1, 0, 0, 1, 1, 0),    make(1, 1, 1, 0, 0, 1, 1, 1),    make(-1, 1, 1, 0, 0, 1, 0, 1),
+		make(-1, -1, 1, 0, 0, 1, 0, 0),   make(1, -1, 1, 0, 0, 1, 1, 0),
+		make(1, 1, 1, 0, 0, 1, 1, 1),     make(-1, 1, 1, 0, 0, 1, 0, 1),
 
-		make(1, -1, -1, 0, 0, -1, 0, 0),  make(-1, -1, -1, 0, 0, -1, 1, 0), make(-1, 1, -1, 0, 0, -1, 1, 1), make(1, 1, -1, 0, 0, -1, 0, 1),
+		make(1, -1, -1, 0, 0, -1, 0, 0),  make(-1, -1, -1, 0, 0, -1, 1, 0),
+		make(-1, 1, -1, 0, 0, -1, 1, 1),  make(1, 1, -1, 0, 0, -1, 0, 1),
 
-		make(-1, -1, -1, -1, 0, 0, 0, 0), make(-1, -1, 1, -1, 0, 0, 1, 0),  make(-1, 1, 1, -1, 0, 0, 1, 1),  make(-1, 1, -1, -1, 0, 0, 0, 1),
+		make(-1, -1, -1, -1, 0, 0, 0, 0), make(-1, -1, 1, -1, 0, 0, 1, 0),
+		make(-1, 1, 1, -1, 0, 0, 1, 1),   make(-1, 1, -1, -1, 0, 0, 0, 1),
 
-		make(1, -1, 1, 1, 0, 0, 0, 0),    make(1, -1, -1, 1, 0, 0, 1, 0),   make(1, 1, -1, 1, 0, 0, 1, 1),   make(1, 1, 1, 1, 0, 0, 0, 1),
+		make(1, -1, 1, 1, 0, 0, 0, 0),    make(1, -1, -1, 1, 0, 0, 1, 0),
+		make(1, 1, -1, 1, 0, 0, 1, 1),    make(1, 1, 1, 1, 0, 0, 0, 1),
 
-		make(-1, 1, 1, 0, 1, 0, 0, 0),    make(1, 1, 1, 0, 1, 0, 1, 0),     make(1, 1, -1, 0, 1, 0, 1, 1),   make(-1, 1, -1, 0, 1, 0, 0, 1),
+		make(-1, 1, 1, 0, 1, 0, 0, 0),    make(1, 1, 1, 0, 1, 0, 1, 0),
+		make(1, 1, -1, 0, 1, 0, 1, 1),    make(-1, 1, -1, 0, 1, 0, 0, 1),
 
-		make(-1, -1, -1, 0, -1, 0, 0, 0), make(1, -1, -1, 0, -1, 0, 1, 0),  make(1, -1, 1, 0, -1, 0, 1, 1),  make(-1, -1, 1, 0, -1, 0, 0, 1),
+		make(-1, -1, -1, 0, -1, 0, 0, 0), make(1, -1, -1, 0, -1, 0, 1, 0),
+		make(1, -1, 1, 0, -1, 0, 1, 1),   make(-1, -1, 1, 0, -1, 0, 0, 1),
 	};
 }
 
 std::vector<u32> cube_indices() {
-	return {0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4, 8, 9, 10, 10, 11, 8, 12, 13, 14, 14, 15, 12, 16, 17, 18, 18, 19, 16, 20, 21, 22, 22, 23, 20};
+	return {0,  1,  2,  2,  3,  0,  4,  5,  6,  6,  7,  4,
+	        8,  9,  10, 10, 11, 8,  12, 13, 14, 14, 15, 12,
+	        16, 17, 18, 18, 19, 16, 20, 21, 22, 22, 23, 20};
 }
 
 std::vector<Vertex> plane_vertices(f32 size) {
@@ -277,7 +310,8 @@ std::vector<Vertex> cylinder_vertices(int segments, f32 height) {
 	for (int x = 0; x <= segments; x++) {
 		f32 t = (f32)x / segments;
 		f32 a = t * 2.0F * draco::math::PI;
-		v.push_back(make(cosf(a), half, sinf(a), 0, 1, 0, (cosf(a) + 1) * 0.5F, (sinf(a) + 1) * 0.5F));
+		v.push_back(make(cosf(a), half, sinf(a), 0, 1, 0, (cosf(a) + 1) * 0.5F,
+		                 (sinf(a) + 1) * 0.5F));
 	}
 
 	// Bottom cap (Downward Normals)
@@ -286,7 +320,8 @@ std::vector<Vertex> cylinder_vertices(int segments, f32 height) {
 	for (int x = 0; x <= segments; x++) {
 		f32 t = (f32)x / segments;
 		f32 a = t * 2.0F * draco::math::PI;
-		v.push_back(make(cosf(a), -half, sinf(a), 0, -1, 0, (cosf(a) + 1) * 0.5F, (sinf(a) + 1) * 0.5F));
+		v.push_back(make(cosf(a), -half, sinf(a), 0, -1, 0,
+		                 (cosf(a) + 1) * 0.5F, (sinf(a) + 1) * 0.5F));
 	}
 
 	return v;

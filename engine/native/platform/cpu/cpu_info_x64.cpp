@@ -37,7 +37,12 @@ bool os_has_zmm() noexcept {
 	return (get_xcr0() & 0xe6ULL) == 0xe6ULL;
 }
 
-void cpuid(unsigned int leaf, unsigned int subleaf, unsigned int &eax, unsigned int &ebx, unsigned int &ecx, unsigned int &edx) noexcept {
+void cpuid(unsigned int leaf,
+           unsigned int subleaf,
+           unsigned int &eax,
+           unsigned int &ebx,
+           unsigned int &ecx,
+           unsigned int &edx) noexcept {
 #if defined(_MSC_VER)
 	int regs[4];
 	__cpuidex(regs, leaf, subleaf);
@@ -63,7 +68,9 @@ CpuFeature detect_cpu_feature() noexcept {
 	constexpr unsigned int AVX     = 1U << 28;
 	constexpr unsigned int FMA     = 1U << 12;
 
-	if ((ecx & (OSXSAVE | AVX | FMA)) != (OSXSAVE | AVX | FMA)) { return CpuFeature::NONE; }
+	if ((ecx & (OSXSAVE | AVX | FMA)) != (OSXSAVE | AVX | FMA)) {
+		return CpuFeature::NONE;
+	}
 
 	if (!os_has_ymm()) { return CpuFeature::NONE; }
 

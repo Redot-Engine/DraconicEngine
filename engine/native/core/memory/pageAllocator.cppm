@@ -10,7 +10,10 @@ export import core.stdtypes;
 export namespace draco::memory {
 namespace page {
 Error alloc(
-	Allocator alloc, Slice *dst, usize size, usize align
+	Allocator alloc,
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc

@@ -6,7 +6,8 @@ export module core.defs;
 export import core.version;
 export import core.stdtypes;
 
-static_assert(__cplusplus >= 202'207L, "Minimum of C++23 required. Consider upgrading your compiler.");
+static_assert(__cplusplus >= 202'207L,
+              "Minimum of C++23 required. Consider upgrading your compiler.");
 
 export namespace draco {
 template<typename T> concept arithmetic = std::is_arithmetic_v<T>;

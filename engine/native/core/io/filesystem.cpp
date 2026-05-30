@@ -31,7 +31,9 @@ std::vector<u8> load_binary(std::string const &path) {
 	file.seekg(0, std::ios::beg);
 
 	std::vector<u8> buffer(static_cast<std::size_t>(size));
-	if (file.read(reinterpret_cast<char *>(buffer.data()), size)) { return buffer; }
+	if (file.read(reinterpret_cast<char *>(buffer.data()), size)) {
+		return buffer;
+	}
 
 	std::println("Error: Failed to read file contents: {}", path);
 	return {};

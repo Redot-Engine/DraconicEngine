@@ -30,13 +30,15 @@ constexpr u32 UINT32_MAX_VAL     = std::numeric_limits<u32>::max();
 // This is a reciprocal for normalization
 // Used to map a u32 [0, MAX] range to a float [0, 1.0] range
 // Calculated via double precision to prevent rounding errors
-constexpr f32 UINT32_INVERSE_MAX_F = static_cast<f32>(1.0 / static_cast<f64>(UINT32_MAX_VAL));
-constexpr f32 DECIMAL_LIMIT_F      = 8388608.0F;
+constexpr f32 UINT32_INVERSE_MAX_F =
+	static_cast<f32>(1.0 / static_cast<f64>(UINT32_MAX_VAL));
+constexpr f32 DECIMAL_LIMIT_F = 8388608.0F;
 
 constexpr f32 CMP_EPSILON  = 0.000001F;
 constexpr f32 CMP_EPSILON2 = CMP_EPSILON * CMP_EPSILON;
 
-constexpr f32 CMP_NORMALIZE_TOLERANCE    = 0.000001F;
-constexpr f32 CMP_NORMALIZE_TOLERANCE2   = CMP_NORMALIZE_TOLERANCE * CMP_NORMALIZE_TOLERANCE;
+constexpr f32 CMP_NORMALIZE_TOLERANCE = 0.000001F;
+constexpr f32 CMP_NORMALIZE_TOLERANCE2 =
+	CMP_NORMALIZE_TOLERANCE * CMP_NORMALIZE_TOLERANCE;
 constexpr f32 CMP_POINT_IN_PLANE_EPSILON = 0.00001F;
 } // namespace draco::math

@@ -1,6 +1,6 @@
 TabWidth: 4
 IndentWidth: 4
-ColumnLimit: 150
+ColumnLimit: 80
 
 UseTab: AlignWithSpaces
 
@@ -156,6 +156,12 @@ NumericLiteralCase:
     Prefix: Lower
     Suffix: Upper
     
+# TODO Use after upgrading to Clang 23
+# PackParameters:
+#     BinPack: OnePerLine
+
+BinPackParameters: OnePerLine
+
 QualifierAlignment: Right
 
 ReflowComments: Never

@@ -46,11 +46,13 @@ bool is_down(Key key) {
 
 void process_event(SDL_Event const &e) {
 	switch (e.type) {
-	case SDL_EVENT_KEY_DOWN:     set_key(map_sdl_key(e.key.key), true); break;
+	case SDL_EVENT_KEY_DOWN: set_key(map_sdl_key(e.key.key), true); break;
 
-	case SDL_EVENT_KEY_UP:       set_key(map_sdl_key(e.key.key), false); break;
+	case SDL_EVENT_KEY_UP:   set_key(map_sdl_key(e.key.key), false); break;
 
-	case SDL_EVENT_MOUSE_MOTION: set_mouse_delta((f32)e.motion.xrel, (f32)e.motion.yrel); break;
+	case SDL_EVENT_MOUSE_MOTION:
+		set_mouse_delta((f32)e.motion.xrel, (f32)e.motion.yrel);
+		break;
 	}
 }
 

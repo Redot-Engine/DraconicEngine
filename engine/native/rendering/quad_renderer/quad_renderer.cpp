@@ -34,10 +34,12 @@ void QuadRenderer::init(draco::rendering::rhi::PipelineHandle pipeline) {
 	m_layout   = create_vertex_layout(layout);
 
 	// Allocating dynamic streaming buffers
-	m_vb = create_dynamic_vertex_buffer(sizeof(TexturedVertex) * MaxVertices, m_layout);
+	m_vb = create_dynamic_vertex_buffer(sizeof(TexturedVertex) * MaxVertices,
+	                                    m_layout);
 
 	// Pass BGFX_BUFFER_NONE implicitly to match tracking
-	m_ib = create_dynamic_index_buffer(MaxIndices * sizeof(u16), BGFX_BUFFER_NONE);
+	m_ib =
+		create_dynamic_index_buffer(MaxIndices * sizeof(u16), BGFX_BUFFER_NONE);
 
 	m_sampler = create_uniform("s_texColor", UniformType::Sampler);
 }
@@ -54,9 +56,12 @@ void QuadRenderer::begin() {
 void QuadRenderer::submit(QuadCommand const &cmd) {
 	if (m_quad_count >= MaxQuads) { return; }
 
-	BatchKey new_key{cmd.texture, m_pipeline, draco::rendering::rhi::InvalidSampler};
+	BatchKey new_key{cmd.texture, m_pipeline,
+	                 draco::rendering::rhi::InvalidSampler};
 
-	if (m_batch_key.texture == draco::rendering::rhi::InvalidTexture) { m_batch_key = new_key; }
+	if (m_batch_key.texture == draco::rendering::rhi::InvalidTexture) {
+		m_batch_key = new_key;
+	}
 
 	bool state_change = !(new_key == m_batch_key);
 
@@ -121,8 +126,12 @@ void QuadRenderer::flush_to_pass(draco::rendering::rendergraph::Pass &pass) {
 	if (m_vertices.empty()) { return; }
 
 	// Upload only the exact slices we are using this frame
-	update_dynamic_vertex_buffer(m_vb, 0, m_vertices.data(), static_cast<u32>(m_vertices.size() * sizeof(TexturedVertex)));
-	update_dynamic_index_buffer(m_ib, 0, m_indices.data(), static_cast<u32>(m_indices.size() * sizeof(u16)));
+	update_dynamic_vertex_buffer(m_vb, 0, m_vertices.data(),
+	                             static_cast<u32>(m_vertices.size() *
+	                                              sizeof(TexturedVertex)));
+	update_dynamic_index_buffer(m_ib, 0, m_indices.data(),
+	                            static_cast<u32>(m_indices.size() *
+	                                             sizeof(u16)));
 
 	RenderPacket pkt{};
 	pkt.vertex_buffer   = m_vb;
@@ -134,7 +143,9 @@ void QuadRenderer::flush_to_pass(draco::rendering::rendergraph::Pass &pass) {
 	pkt.vertex_count = static_cast<u32>(m_vertices.size());
 	pkt.index_count  = static_cast<u32>(m_indices.size());
 
-	pkt.sort_key = make_sort_key(0, 0, static_cast<u16>(m_pipeline.value), static_cast<u16>(m_batch_key.texture.value), 0);
+	pkt.sort_key =
+		make_sort_key(0, 0, static_cast<u16>(m_pipeline.value),
+	                  static_cast<u16>(m_batch_key.texture.value), 0);
 
 	bx::mtxIdentity(pkt.model);
 

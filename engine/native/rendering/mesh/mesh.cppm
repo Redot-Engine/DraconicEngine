@@ -31,7 +31,10 @@ struct Mesh {
 	bool valid = false;
 };
 
-MeshHandle create(void const *vertex_data, u32 vertex_size, u32 vertex_count, std::vector<u32> const &indices,
+MeshHandle create(void const *vertex_data,
+                  u32 vertex_size,
+                  u32 vertex_count,
+                  std::vector<u32> const &indices,
                   draco::rendering::rhi::LayoutHandle layout);
 
 MeshHandle create_cube();

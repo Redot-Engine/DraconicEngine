@@ -7,7 +7,10 @@ import core.stdtypes;
 
 namespace draco::memory {
 Error nilAlloc(
-	Allocator alloc, Slice *dst, usize size, usize align
+	Allocator alloc,
+	Slice *dst,
+	usize size,
+	usize align
 #ifdef DEBUG
 	,
 	std::source_location loc
