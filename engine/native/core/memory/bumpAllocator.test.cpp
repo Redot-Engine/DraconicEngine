@@ -4,8 +4,7 @@
 import core.memory;
 import core.stdtypes;
 
-TEST_CASE("Bump allocator provides distinct pointers on allocation")
-{
+TEST_CASE("Bump allocator provides distinct pointers on allocation") {
 	using namespace draco::memory;
 	bump::BumpAllocator bumpAlloc;
 	Allocator alloc;
@@ -25,8 +24,7 @@ TEST_CASE("Bump allocator provides distinct pointers on allocation")
 	bump::deinit(&bumpAlloc);
 }
 
-TEST_CASE("Bump allocator aligns pointers correctly")
-{
+TEST_CASE("Bump allocator aligns pointers correctly") {
 	using namespace draco::memory;
 	bump::BumpAllocator bumpAlloc;
 	Allocator alloc;
@@ -46,10 +44,8 @@ TEST_CASE("Bump allocator aligns pointers correctly")
 	bump::deinit(&bumpAlloc);
 }
 
-TEST_CASE("Bump allocator data is well packed")
-{
-	struct Foo
-	{
+TEST_CASE("Bump allocator data is well packed") {
+	struct Foo {
 		draco::u32 a;
 		draco::u64 b;
 	};
@@ -70,17 +66,16 @@ TEST_CASE("Bump allocator data is well packed")
 	REQUIRE(bumpAlloc.first->size > bumpAlloc.allocated);
 	err = alloc.alloc(&bSlice, sizeof(draco::u64), alignof(Foo));
 	REQUIRE(err == Error::Okay);
-	a = (draco::u32*)aSlice.data;
-	b = (draco::u64*)bSlice.data;
+	a  = (draco::u32 *)aSlice.data;
+	b  = (draco::u64 *)bSlice.data;
 	*a = 69;
 	*b = 420;
-	REQUIRE(((Foo*)bumpAlloc.first->data)->a == 69);
-	REQUIRE(((Foo*)bumpAlloc.first->data)->b == 420);
+	REQUIRE(((Foo *)bumpAlloc.first->data)->a == 69);
+	REQUIRE(((Foo *)bumpAlloc.first->data)->b == 420);
 	bump::deinit(&bumpAlloc);
 }
 
-TEST_CASE("Bump allocator allocates second page when available")
-{
+TEST_CASE("Bump allocator allocates second page when available") {
 	using namespace draco::memory;
 	bump::BumpAllocator bumpAlloc;
 	Allocator alloc;
@@ -100,8 +95,7 @@ TEST_CASE("Bump allocator allocates second page when available")
 	bump::deinit(&bumpAlloc);
 }
 
-TEST_CASE("Exact alignment")
-{
+TEST_CASE("Exact alignment") {
 	using namespace draco::memory;
 	bump::BumpAllocator bumpAlloc;
 	Allocator alloc;

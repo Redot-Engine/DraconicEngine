@@ -5,8 +5,7 @@ import core.memory;
 import core.memory.slice;
 import core.stdtypes;
 
-TEST_CASE("Tracking allocator basic functions")
-{
+TEST_CASE("Tracking allocator basic functions") {
 	using namespace draco::memory;
 	bump::BumpAllocator bumpAlloc;
 	tracking::TrackingAllocator trackingAlloc;

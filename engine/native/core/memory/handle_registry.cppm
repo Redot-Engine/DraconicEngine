@@ -3,47 +3,39 @@ export module core.memory.handle_registry;
 import core.memory.slot_array;
 import core.memory.handle;
 
-export namespace draco::core::memory
-{
-    // Manager layer so other subsystems don't touch raw storage logic
-    
-    template<typename T, typename Tag>
-    class HandleRegistry
-    {
-    public:
-        using HandleType = Handle<Tag>;
+export namespace draco::core::memory {
+// Manager layer so other subsystems don't touch raw storage logic
 
-        HandleType create(const T& value)
-        {
-            return storage.create(value);
-        }
+template<typename T, typename Tag>
+class HandleRegistry {
+	public:
+	using HandleType = Handle<Tag>;
 
-        bool valid(HandleType h) const
-        {
-            return storage.valid(h);
-        }
+	HandleType create(T const &value) {
+		return storage.create(value);
+	}
 
-        T* get(HandleType h)
-        {
-            return storage.get(h);
-        }
+	bool valid(HandleType h) const {
+		return storage.valid(h);
+	}
 
-        const T* get(HandleType h) const
-        {
-            return storage.get(h);
-        }
+	T *get(HandleType h) {
+		return storage.get(h);
+	}
 
-        void destroy(HandleType h)
-        {
-            storage.destroy(h);
-        }
+	T const *get(HandleType h) const {
+		return storage.get(h);
+	}
 
-        SlotArray<T, Tag>& internal()
-        {
-            return storage;
-        }
+	void destroy(HandleType h) {
+		storage.destroy(h);
+	}
 
-    private:
-        SlotArray<T, Tag> storage;
-    };
-}
+	SlotArray<T, Tag> &internal() {
+		return storage;
+	}
+
+	private:
+	SlotArray<T, Tag> storage;
+};
+} // namespace draco::core::memory

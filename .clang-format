@@ -1,0 +1,203 @@
+TabWidth: 4
+IndentWidth: 4
+ColumnLimit: 150
+
+UseTab: AlignWithSpaces
+
+# Pointer and reference alignment style. Possible values: Left, Right, Middle.
+PointerAlignment: Right
+
+# AccessModifierOffset (int)
+# The extra indent or outdent of access modifiers, e.g. public:.
+AccessModifierOffset: 0
+
+AlignArrayOfStructures: Right
+AlignAfterOpenBracket: true
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveBitFields: Consecutive
+AlignConsecutiveDeclarations: None
+AlignConsecutiveMacros: Consecutive
+AlignConsecutiveShortCaseStatements:
+    Enabled: true
+    AcrossEmptyLines: true
+    AcrossComments: true
+    AlignCaseColons: false
+    
+
+AlignEscapedNewlines: LeftWithLastLine
+
+AlignOperands: Align
+
+AlignTrailingComments:
+    Kind: Always
+    AlignPPAndNotPP: true
+
+AllowAllArgumentsOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowBreakBeforeNoexceptSpecifier: Always
+
+AllowShortBlocksOnASingleLine: Always
+AllowShortCaseExpressionOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortCompoundRequirementOnASingleLine: true
+AllowShortEnumsOnASingleLine: false
+
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLambdasOnASingleLine: Inline
+AllowShortLoopsOnASingleLine: true
+AllowShortNamespacesOnASingleLine: false
+
+AlwaysBreakBeforeMultilineStrings: false
+
+BitFieldColonSpacing: Both
+
+# TODO Highly Opinionated will need to deliberate on this. I prefer K&R Style but some prefer Allman
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterCaseLabel: false
+    AfterClass: false
+    AfterControlStatement: Never
+    AfterEnum: false
+    AfterFunction: false
+    AfterNamespace: false
+    AfterStruct: false
+    AfterExternBlock: false
+    BeforeCatch: true # catch on separate line, not like we'll use catch
+    BeforeElse: true
+    BeforeLambdaBody: false
+    BeforeWhile: true
+    IndentBraces: false
+    
+BreakAdjacentStringLiterals: false
+BreakAfterAttributes: Leave
+
+BreakAfterOpenBracketBracedList: false
+BreakAfterOpenBracketFunction: false
+BreakAfterOpenBracketIf: false
+BreakAfterOpenBracketLoop: false
+BreakAfterOpenBracketSwitch: false
+BreakAfterReturnType: Automatic
+
+BreakBeforeBinaryOperators: None
+BreakBeforeCloseBracketBracedList: true
+BreakBeforeCloseBracketFunction: true
+BreakBeforeCloseBracketIf: true
+BreakBeforeCloseBracketSwitch: true
+
+BreakBeforeConceptDeclarations: Allowed
+BreakBeforeInlineASMColon: OnlyMultiline
+BreakBeforeTemplateCloser: true
+BreakBeforeTernaryOperators: true
+
+BreakConstructorInitializers: AfterColon
+BreakFunctionDefinitionParameters: false
+
+BreakInheritanceList: AfterColon
+
+BreakStringLiterals: false
+
+BreakTemplateDeclarations: Leave
+
+CompactNamespaces: false
+
+Cpp11BracedListStyle: FunctionCall
+
+EmptyLineAfterAccessModifier: Leave
+EmptyLineBeforeAccessModifier: LogicalBlock
+
+EnumTrailingComma: Leave
+
+FixNamespaceComments: true
+
+IndentAccessModifiers: false
+
+IndentCaseBlocks: false
+
+IndentExportBlock: false
+IndentExternBlock: false
+IndentGotoLabels: true
+
+IndentPPDirectives: BeforeHash
+IndentRequiresClause: false
+IndentWrappedFunctionNames: false
+
+# I personally don't like unbraced things but this should be heavily discussed
+# For example it's a Pain in the ass to go back and add braces when someone
+# didn't include them after you need to extend it
+InsertBraces: true
+
+InsertNewlineAtEOF: true
+
+# This one will be controversial...
+IntegerLiteralSeparator:
+    Binary: 4
+    Decimal: 3
+    Hex: 4
+    BinaryMinDigitsInsert: 8
+    DecimalMinDigitsInsert: 6
+    HexMinDigitsInsert: 8
+
+KeepEmptyLines:
+    AtEndOfFile: false
+    AtStartOfBlock: false
+    AtStartOfFile: false
+
+KeepFormFeed: false
+
+# No Microslop BS \r\n 
+LineEnding: LF
+
+NamespaceIndentation: None
+
+NumericLiteralCase:
+    ExponentLetter: Leave
+    HexDigit: Lower
+    Prefix: Lower
+    Suffix: Upper
+    
+QualifierAlignment: Right
+
+ReflowComments: Never
+
+RemoveBracesLLVM: false
+RemoveEmptyLinesInUnwrappedLines: false
+RemoveParentheses: Leave
+
+RemoveSemicolon: false
+
+RequiresExpressionIndentation: OuterScope
+
+SeparateDefinitionBlocks: Leave
+
+SkipMacroDefinitionBody: true
+
+SortIncludes:
+    Enabled: false
+
+SortUsingDeclarations: Never
+
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterOperatorKeyword: false
+SpaceAfterTemplateKeyword: false
+SpaceAroundPointerQualifiers: Default
+
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBraces: Always
+
+SpacesInAngles: Leave
+
+SpacesInContainerLiterals: false
+SpacesInParens: Never
+SpacesInSquareBrackets: false
+
+
