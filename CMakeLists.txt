@@ -26,21 +26,14 @@ include(Modules)
 include(Shaders)
 
 # Subdirectories for engine libs
-add_subdirectory(engine/native)
+add_subdirectory(engine)
 
 # Main Executable
 add_executable(draconic engine/native/main/main.cpp)
 
 target_link_libraries(draconic
     PRIVATE
-    core
-    math
-    io
-    memory
-    platform
-    input
-    rendering
-    scene
+    native
     bgfx
     bx
     bimg

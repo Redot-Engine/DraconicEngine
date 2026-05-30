@@ -6,11 +6,7 @@
 #include <bgfx/bgfx.h>
 #include <bx/math.h>
 
-import core;
-import input;
-import platform;
-import scene;
-import rendering;
+import draconic;
 
 int main(int argc, char* argv[])
 {
