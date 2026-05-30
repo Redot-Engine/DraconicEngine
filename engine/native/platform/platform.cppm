@@ -5,28 +5,27 @@ module;
 export module platform;
 
 export namespace draco::platform {
-    enum class NativeWindowType
-    {
-        None,
-        Default,
-        Win32,
-        Wayland, 
-        X11,
-        Cocoa
-    };
+enum class NativeWindowType {
+	None,
+	Default,
+	Win32,
+	Wayland,
+	X11,
+	Cocoa
+};
 
-    struct NativeWindowFrame
-    {
-        void* nwh = nullptr; // Native Window Handle
-        void* ndt = nullptr; // Native Display Type
+struct NativeWindowFrame {
+	void *nwh = nullptr; // Native Window Handle
+	void *ndt = nullptr; // Native Display Type
 
-        int width = 0;
-        int height = 0;
+	int width  = 0;
+	int height = 0;
 
-        bool valid = false;
+	bool valid = false;
 
-        NativeWindowType type = NativeWindowType::None; // Track the type of the native window
-    };
+	NativeWindowType type =
+		NativeWindowType::None; // Track the type of the native window
+};
 
-    NativeWindowFrame get_native_handles(void* sdl_window_ptr);
-}
+NativeWindowFrame get_native_handles(void *sdl_window_ptr);
+} // namespace draco::platform
