@@ -1,51 +1,63 @@
 #include <print>
-#include <cstring>
-#include <math.h>
+#include <cmath>
+#include <chrono>
 
-#include <SDL3/SDL.h>
-#include <bgfx/bgfx.h>
 #include <bx/math.h>
 
 import draconic;
+import shell;
+import shell.desktop;
 
-int main(int argc, char* argv[])
+using namespace draconic::shell;
+
+namespace
 {
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
-        std::println("SDL init failed: {}", SDL_GetError());
+    // Map the shell's window system onto the RHI's native window type so bgfx
+    // interprets the handles correctly (only Wayland needs explicit flagging).
+    draco::rendering::rhi::NativeWindowType toRhiWindowType(WindowSystem sys)
+    {
+        using RhiType = draco::rendering::rhi::NativeWindowType;
+        switch (sys)
+        {
+            case WindowSystem::Win32:   return RhiType::Win32;
+            case WindowSystem::X11:     return RhiType::X11;
+            case WindowSystem::Wayland: return RhiType::Wayland;
+            case WindowSystem::Cocoa:   return RhiType::Cocoa;
+            default:                    return RhiType::Default;
+        }
+    }
+}
+
+int main(int, char*[])
+{
+    auto shell = createShell(WindowSettings{
+        .title = u8"Draconic Engine Rendering Sample",
+        .width = 1280,
+        .height = 720,
+    });
+
+    IWindow* mainWindow = shell->mainWindow();
+    if (mainWindow == nullptr)
+    {
+        std::println("Failed to create shell window");
         return -1;
     }
 
-    SDL_Window* window = SDL_CreateWindow(
-        "Draconic Engine Rendering Sample",
-        1280, 720,
-        SDL_WINDOW_RESIZABLE
-    );
+    // Capture the mouse for camera control.
+    shell->input()->mouse()->setRelativeMode(true);
 
-    if (!window) {
-        std::println("Failed to create window: {}", SDL_GetError());
-        SDL_Quit();
-        return -1;
-    }
+    const NativeWindow native = mainWindow->native();
+    const draco::u32 startW = mainWindow->width();
+    const draco::u32 startH = mainWindow->height();
 
-    draco::input::setMouseCaptured(window, true);
-
-    auto handles = draco::platform::getNativeHandles(window);
-
-    if (!handles.valid) {
-        std::println("Failed to get native handles");
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return -1;
-    }
-
-    if (!draco::rendering::rhi::init(handles.ndt, handles.nwh, handles.type, 1280, 720)) {
+    if (!draco::rendering::rhi::init(native.display, native.window, toRhiWindowType(native.system),
+                                     static_cast<draco::u16>(startW), static_cast<draco::u16>(startH)))
+    {
         std::println("RHI init failed");
-        SDL_DestroyWindow(window);
-        SDL_Quit();
         return -1;
     }
 
-    draco::rendering::renderer::init(1280, 720);
+    draco::rendering::renderer::init(startW, startH);
 
     auto cube_mesh = draco::rendering::mesh::createCube();
     auto plane_mesh = draco::rendering::mesh::createPlane(5.0f);
@@ -72,8 +84,6 @@ int main(int argc, char* argv[])
     if (vs.empty() || fs.empty() || vs_quad.empty() || fs_quad.empty()) {
         std::println("Shader load failed");
         draco::rendering::rhi::shutdown();
-        SDL_DestroyWindow(window);
-        SDL_Quit();
         return -1;
     }
 
@@ -103,7 +113,6 @@ int main(int argc, char* argv[])
     draco::f32 tint[4]   = {1,1,1,1};
     draco::f32 offset[4] = {0,0,0,0};
 
-    bool running = true;
     bool mouse_captured = true;
 
     draco::rendering::material::Material mat{};
@@ -131,36 +140,35 @@ int main(int argc, char* argv[])
     scene.renderables[4].transform.setPosition(12.0f, 0.0f, 0.0f);
 
     scene.renderables[1].transform.setRotation(-bx::kPiHalf, 0.0f, 0.0f);
-    
-    while (running)
+
+    using clock = std::chrono::steady_clock;
+    const auto startTime = clock::now();
+    auto lastTime = startTime;
+
+    while (shell->isRunning())
     {
-        static draco::u64 last = SDL_GetTicks();
-        draco::u64 now = SDL_GetTicks();
-        draco::f32 dt = static_cast<draco::f32>(now - last) / 1000.0f;
-        last = now;
+        shell->processEvents();
 
-        SDL_Event e;
-        draco::input::beginFrame();
+        const auto nowTime = clock::now();
+        const draco::f32 dt = std::chrono::duration<draco::f32>(nowTime - lastTime).count();
+        lastTime = nowTime;
+        const draco::f32 elapsed = std::chrono::duration<draco::f32>(nowTime - startTime).count();
 
-        while (SDL_PollEvent(&e))
+        IInputManager* input = shell->input();
+        IKeyboard* kb = input->keyboard();
+        IMouse* ms = input->mouse();
+
+        // Toggle mouse capture on Escape (edge-triggered).
+        if (kb->isKeyPressed(KeyCode::Escape))
         {
-            if (e.type == SDL_EVENT_QUIT)
-                running = false;
-
-            if (e.type == SDL_EVENT_KEY_DOWN &&
-                e.key.key == SDLK_ESCAPE)
-            {
-                mouse_captured = !mouse_captured;
-                draco::input::setMouseCaptured(window, mouse_captured);
-            }
-
-            draco::input::processEvent(e);
+            mouse_captured = !mouse_captured;
+            ms->setRelativeMode(mouse_captured);
         }
 
-        int w, h;
-        SDL_GetWindowSize(window, &w, &h);
+        const draco::u32 w = mainWindow->width();
+        const draco::u32 h = mainWindow->height();
 
-        if (w <= 0 || h <= 0)
+        if (w == 0 || h == 0 || mainWindow->isMinimized())
         {
             continue;
         }
@@ -168,11 +176,19 @@ int main(int argc, char* argv[])
         draco::rendering::rhi::resize((draco::u16)w, (draco::u16)h);
         draco::rendering::renderer::resize((draco::u16)w, (draco::u16)h);
 
-        camera.update(dt);
+        draco::scene::CameraInput camInput{};
+        camInput.mouseDx      = ms->deltaX();
+        camInput.mouseDy      = ms->deltaY();
+        camInput.moveForward  = kb->isKeyDown(KeyCode::W);
+        camInput.moveBackward = kb->isKeyDown(KeyCode::S);
+        camInput.moveLeft     = kb->isKeyDown(KeyCode::A);
+        camInput.moveRight    = kb->isKeyDown(KeyCode::D);
+        camera.update(dt, camInput);
+
         auto cam = camera.getCamera();
 
         draco::rendering::renderer::beginFrame(cam);
-        
+
         for (const auto& renderable : scene.renderables)
         {
             draco::rendering::renderer::submitRenderable(renderable.transform,  renderable.material,  renderable.mesh);
@@ -189,11 +205,11 @@ int main(int argc, char* argv[])
 
             q.texture = tex;
             q.color = 0xffffffff;
-            q.x = quad_base_x + std::sin(SDL_GetTicks() * 0.001f + i) * 50.0f;
+            q.x = quad_base_x + std::sin(elapsed + i) * 50.0f;
             q.y = quad_base_y + i * 6.0f;
             q.width = 50.0f;
             q.height = 50.0f;
-            q.rotation = SDL_GetTicks() * 0.001f;
+            q.rotation = elapsed;
 
             quad_renderer.submit(q);
         }
@@ -204,8 +220,7 @@ int main(int argc, char* argv[])
     }
 
     draco::rendering::rhi::shutdown();
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    // The shell destructor destroys the window and shuts SDL down.
 
     return 0;
 }

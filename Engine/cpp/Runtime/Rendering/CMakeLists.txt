@@ -5,7 +5,7 @@ add_modules_library(Mesh)
 add_modules_library(Material)
 add_modules_library(QuadRenderer)
 
-target_link_libraries(RHI PUBLIC Core Platform bgfx bx)
+target_link_libraries(RHI PUBLIC Core bgfx bx)
 target_link_libraries(RenderGraph PUBLIC RHI bx)
 target_link_libraries(Mesh PUBLIC RHI Core)
 target_link_libraries(Material PUBLIC RHI)

@@ -3,22 +3,23 @@
 #
 add_executable(RenderSample RenderSample.cpp)
 
+# The SDL3 desktop shell backend owns windowing + input; it pulls in SDL3 (PUBLIC).
 target_link_libraries(RenderSample
         PRIVATE
         Runtime
+        Shell_Desktop
         bgfx
         bx
         bimg
 )
 
+# SDL is statically linked via Shell_Desktop; force-load the whole archive so its
+# constructor-registered video/input drivers are not stripped by the linker.
 if(UNIX AND NOT APPLE)
-    target_link_libraries(RenderSample PRIVATE SDL3::SDL3-static Threads::Threads dl)
+    target_link_libraries(RenderSample PRIVATE Threads::Threads dl)
     target_link_options(RenderSample PRIVATE -Wl,--whole-archive $<TARGET_FILE:SDL3::SDL3-static> -Wl,--no-whole-archive)
 elseif(APPLE)
-    target_link_libraries(RenderSample PRIVATE SDL3::SDL3-static)
     target_link_options(RenderSample PRIVATE -Wl,-force_load,$<TARGET_FILE:SDL3::SDL3-static>)
-else()
-    target_link_libraries(RenderSample PRIVATE SDL3::SDL3-static)
 endif()
 
 compile_shaders(RenderSample)

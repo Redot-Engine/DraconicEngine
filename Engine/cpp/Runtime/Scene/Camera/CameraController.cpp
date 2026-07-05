@@ -5,15 +5,13 @@ module;
 
 module scene.camera.controller;
 
-import input;
-
 namespace draco::scene
 {
-    void CameraController::init(f32 x, f32 y, f32 z)
+    void CameraController::init(f32 px, f32 py, f32 pz)
     {
-        x = x;
-        y = y;
-        z = z;
+        x = px;
+        y = py;
+        z = pz;
 
         yaw = 0.0f;
         pitch = 0.0f;
@@ -22,12 +20,10 @@ namespace draco::scene
         sensitivity = 0.002f;  // mouse sensitivity
     }
 
-    void CameraController::update(f32 dt)
+    void CameraController::update(f32 dt, const CameraInput& input)
     {
-        using namespace input;
-
-        yaw   += getMouseDx() * sensitivity;
-        pitch -= getMouseDy() * sensitivity; // Temp fix to flip mouse input
+        yaw   += input.mouseDx * sensitivity;
+        pitch -= input.mouseDy * sensitivity; // Temp fix to flip mouse input
 
         // Clamp pitch
         if (pitch > 1.5f)  pitch = 1.5f;
@@ -47,27 +43,27 @@ namespace draco::scene
 
         f32 velocity = speed * dt;
 
-        if (isDown(Key::W))
+        if (input.moveForward)
         {
             x += forward.x * velocity;
             y += forward.y * velocity;
             z += forward.z * velocity;
         }
 
-        if (isDown(Key::S))
+        if (input.moveBackward)
         {
             x -= forward.x * velocity;
             y -= forward.y * velocity;
             z -= forward.z * velocity;
         }
 
-        if (isDown(Key::A))
+        if (input.moveLeft)
         {
             x += right.x * velocity;
             z += right.z * velocity;
         }
 
-        if (isDown(Key::D))
+        if (input.moveRight)
         {
             x -= right.x * velocity;
             z -= right.z * velocity;

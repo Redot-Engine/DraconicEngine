@@ -15,11 +15,23 @@ export module rendering.rhi;
 import core.stdtypes;
 import core.math.constants;
 import core.memory;
-import platform;
 import rendering.rhi.vertex;
 
 export namespace draco::rendering::rhi
 {
+    // Which native windowing system the handles passed to init() belong to. RHI
+    // only needs this to tell bgfx when a surface is Wayland (a wl_surface* must
+    // be flagged as such); everything else uses bgfx's default handling. The
+    // caller maps its own window abstraction onto this.
+    enum class NativeWindowType
+    {
+        Default,
+        Win32,
+        X11,
+        Wayland,
+        Cocoa,
+    };
+
     struct BufferTag {};
     struct PipelineTag {};
     struct ShaderTag {};
@@ -191,7 +203,7 @@ export namespace draco::rendering::rhi
         u64 state;
     };
 
-    bool init(void* display_type, void* window_handle, platform::NativeWindowType window_type, u16 width, u16 height);
+    bool init(void* display_type, void* window_handle, NativeWindowType window_type, u16 width, u16 height);
     void resize(u16 width, u16 height);
     void shutdown();
 
