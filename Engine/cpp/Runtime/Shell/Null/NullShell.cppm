@@ -70,17 +70,17 @@ export namespace draconic::shell
             m_pendingDestroy.push_back(window->id());
         }
 
-        [[nodiscard]] std::span<IWindow* const> windows() noexcept override
+        [[nodiscard]] std::span<IWindow* const> windows() const noexcept override
         {
             return std::span<IWindow* const>(m_live.data(), m_live.size());
         }
-        [[nodiscard]] IWindow* mainWindow() noexcept override
+        [[nodiscard]] IWindow* mainWindow() const noexcept override
         {
             // Tracked by id, so destroying/flushing the main window never promotes
             // another window into its place.
             return getWindow(m_mainWindowId);
         }
-        [[nodiscard]] IWindow* getWindow(draco::u32 id) noexcept override
+        [[nodiscard]] IWindow* getWindow(draco::u32 id) const noexcept override
         {
             for (IWindow* w : m_live) { if (w->id() == id) { return w; } }
             return nullptr;
@@ -194,7 +194,7 @@ export namespace draconic::shell
         [[nodiscard]] bool isRunning() const noexcept override
         {
             // Running until requestExit() or the main window is closed/destroyed.
-            IWindow* main = const_cast<NullWindowManager&>(m_windows).mainWindow();
+            IWindow* main = m_windows.mainWindow();
             return m_running && main != nullptr && main->isOpen();
         }
         void requestExit() override { m_running = false; }
