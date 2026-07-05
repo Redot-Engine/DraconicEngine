@@ -12,7 +12,7 @@ export module shell:input;
 
 export import core.stdtypes;
 
-export namespace draconic::shell
+export namespace draco::shell
 {
     // ---- Keyboard ---------------------------------------------------------
 

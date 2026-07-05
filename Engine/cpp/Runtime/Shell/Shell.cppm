@@ -10,7 +10,7 @@ export import core.stdtypes;
 export import :window;
 export import :input;
 
-export namespace draconic::shell
+export namespace draco::shell
 {
     // Top-level handle to the running shell. Owns the window manager and the input
     // manager and pumps OS events. A runner creates one backend instance, then

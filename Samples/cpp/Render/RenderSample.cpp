@@ -8,7 +8,7 @@ import draconic;
 import shell;
 import shell.desktop;
 
-using namespace draconic::shell;
+using namespace draco::shell;
 
 namespace
 {

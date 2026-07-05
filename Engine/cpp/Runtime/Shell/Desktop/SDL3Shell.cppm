@@ -28,7 +28,7 @@ export module shell.desktop;
 import core.stdtypes;
 import shell;
 
-export namespace draconic::shell
+export namespace draco::shell
 {
     class SDL3Window final : public IWindow
     {

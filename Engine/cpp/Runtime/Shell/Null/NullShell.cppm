@@ -19,7 +19,7 @@ export module shell.null;
 import core.stdtypes;
 import shell;
 
-export namespace draconic::shell
+export namespace draco::shell
 {
     class NullWindow final : public IWindow
     {

@@ -5,7 +5,7 @@ import shell;
 import shell.null;
 
 using namespace draco;
-using namespace draconic::shell;
+using namespace draco::shell;
 
 TEST_CASE("shell.null: a headless shell reports a window and run state")
 {

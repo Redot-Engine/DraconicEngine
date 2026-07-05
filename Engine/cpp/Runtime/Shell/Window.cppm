@@ -13,7 +13,7 @@ export module shell:window;
 
 export import core.stdtypes;
 
-export namespace draconic::shell
+export namespace draco::shell
 {
     // The windowing system a native handle belongs to (see NativeWindow).
     enum class WindowSystem : draco::u8
