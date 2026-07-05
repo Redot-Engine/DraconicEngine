@@ -369,6 +369,14 @@ export namespace draconic::shell
         SDL3Gamepad(SDL_Gamepad* pad, SDL_JoystickID id, draco::i32 index, std::u8string name) noexcept
             : m_pad(pad), m_id(id), m_index(index), m_name(std::move(name)) {}
 
+        // Owns the SDL_Gamepad; closing it here means the owning unique_ptr frees
+        // the whole device with no manual bookkeeping. Must run before SDL_Quit,
+        // which the shell guarantees by clearing the device list in releaseDevices().
+        ~SDL3Gamepad() override { if (m_pad != nullptr) { SDL_CloseGamepad(m_pad); } }
+
+        SDL3Gamepad(const SDL3Gamepad&) = delete;
+        SDL3Gamepad& operator=(const SDL3Gamepad&) = delete;
+
         [[nodiscard]] draco::i32 index() const override { return m_index; }
         [[nodiscard]] std::u8string_view name() const override { return m_name; }
         [[nodiscard]] bool connected() const override { return m_pad != nullptr; }
@@ -468,12 +476,7 @@ export namespace draconic::shell
         // can call it again harmlessly.
         void releaseDevices()
         {
-            for (SDL3Gamepad* g : m_gamepads)
-            {
-                if (g->handle() != nullptr) { SDL_CloseGamepad(g->handle()); }
-                delete g;
-            }
-            m_gamepads.clear();
+            m_gamepads.clear();   // each SDL3Gamepad dtor closes its SDL_Gamepad
             m_mouse.releaseCursors();
         }
 
@@ -484,7 +487,7 @@ export namespace draconic::shell
         [[nodiscard]] IGamepad*  getGamepad(draco::i32 index) override
         {
             if (index < 0 || static_cast<draco::usize>(index) >= m_gamepads.size()) { return nullptr; }
-            return m_gamepads[static_cast<draco::usize>(index)];
+            return m_gamepads[static_cast<draco::usize>(index)].get();
         }
         [[nodiscard]] std::span<const InputEvent> events() const override
         {
@@ -496,7 +499,7 @@ export namespace draconic::shell
         {
             m_keyboard.beginFrame();
             m_mouse.beginFrame();
-            for (SDL3Gamepad* g : m_gamepads) { g->beginFrame(); }
+            for (auto& g : m_gamepads) { g->beginFrame(); }
             m_events.clear();   // events are valid only for the frame they were pumped in
         }
 
@@ -523,7 +526,7 @@ export namespace draconic::shell
                 ? std::u8string(reinterpret_cast<const char8_t*>(nm))
                 : std::u8string{};
             const draco::i32 index = static_cast<draco::i32>(m_gamepads.size());
-            m_gamepads.push_back(new SDL3Gamepad(pad, id, index, std::move(name)));
+            m_gamepads.push_back(std::make_unique<SDL3Gamepad>(pad, id, index, std::move(name)));
         }
 
         void removeGamepad(SDL_JoystickID id)
@@ -532,9 +535,7 @@ export namespace draconic::shell
             {
                 if (m_gamepads[i]->joystickId() == id)
                 {
-                    if (m_gamepads[i]->handle() != nullptr) { SDL_CloseGamepad(m_gamepads[i]->handle()); }
-                    delete m_gamepads[i];
-                    m_gamepads.erase(m_gamepads.begin() + static_cast<std::ptrdiff_t>(i));
+                    m_gamepads.erase(m_gamepads.begin() + static_cast<std::ptrdiff_t>(i));  // dtor closes the SDL_Gamepad
                     for (draco::usize j = 0; j < m_gamepads.size(); ++j) { m_gamepads[j]->setIndex(static_cast<draco::i32>(j)); }
                     return;
                 }
@@ -543,7 +544,7 @@ export namespace draconic::shell
 
         SDL3Gamepad* findGamepadById(SDL_JoystickID id)
         {
-            for (SDL3Gamepad* g : m_gamepads) { if (g->joystickId() == id) { return g; } }
+            for (auto& g : m_gamepads) { if (g->joystickId() == id) { return g.get(); } }
             return nullptr;
         }
 
@@ -551,7 +552,7 @@ export namespace draconic::shell
         SDL3Keyboard m_keyboard;
         SDL3Mouse    m_mouse;
         SDL3Touch    m_touch;
-        std::vector<SDL3Gamepad*> m_gamepads;
+        std::vector<std::unique_ptr<SDL3Gamepad>> m_gamepads;
         std::vector<InputEvent>   m_events;         // this frame's event stream
         draco::u32                m_hoverWindow = 0; // window under the pointer
         draco::u32                m_focusWindow = 0; // keyboard-focused window
