@@ -122,3 +122,62 @@ TEST_CASE("shell.null: input is present and reports no activity")
 
     input->update();  // must be a harmless no-op
 }
+
+TEST_CASE("shell.null: destroying the main window does not promote another window")
+{
+    NullShell shell;
+    IWindowManager* wm = shell.windowManager();
+    IWindow* main = wm->mainWindow();
+    REQUIRE(main != nullptr);
+    const u32 mainId = main->id();
+
+    // A second window is open alongside the main window.
+    auto second = wm->createWindow(WindowSettings{});
+    REQUIRE(second.has_value());
+    IWindow* secondary = second.value();
+    REQUIRE(secondary != main);
+    REQUIRE(wm->mainWindow() == main);   // still the first window, not the newest
+
+    // Close and destroy the main window while the secondary stays open.
+    main->close();
+    CHECK_FALSE(shell.isRunning());      // main window closed -> shell stops
+    wm->destroyWindow(main);
+    wm->flushDestroyed();
+
+    // The secondary is still live and open, but must NOT be promoted to main,
+    // and isRunning() must not flip back to true.
+    CHECK(wm->getWindow(secondary->id()) == secondary);
+    CHECK(secondary->isOpen());
+    CHECK(wm->mainWindow() == nullptr);
+    CHECK(wm->getWindow(mainId) == nullptr);
+    CHECK_FALSE(shell.isRunning());
+}
+
+TEST_CASE("shell.null: destroyWindow ignores windows it does not own")
+{
+    NullShell a;
+    NullShell b;
+    IWindowManager* wmA = a.windowManager();
+    IWindowManager* wmB = b.windowManager();
+
+    IWindow* aMain = wmA->mainWindow();
+    IWindow* bMain = wmB->mainWindow();
+    REQUIRE(aMain != nullptr);
+    REQUIRE(bMain != nullptr);
+    // Each manager numbers ids independently, so the two main windows collide
+    // on id: destroyWindow must reject by pointer identity, not by id.
+    REQUIRE(aMain->id() == bMain->id());
+
+    // Ask A to destroy B's window (and a null). Both must be no-ops: B's window
+    // stays open, and A's bookkeeping (its own same-id window) is untouched.
+    wmA->destroyWindow(bMain);
+    wmA->destroyWindow(nullptr);
+    wmA->flushDestroyed();
+
+    CHECK(bMain->isOpen());                  // foreign window not closed
+    CHECK(wmB->mainWindow() == bMain);       // B unaffected
+    CHECK(wmA->mainWindow() == aMain);       // A's same-id window survived
+    CHECK(wmA->windows().size() == 1u);
+    CHECK(a.isRunning());
+    CHECK(b.isRunning());
+}

@@ -59,12 +59,13 @@ export namespace draconic::shell
             IWindow* borrowed = window.get();
             m_owned.push_back(std::move(window));
             m_live.push_back(borrowed);
+            if (m_mainWindowId == 0) { m_mainWindowId = id; }  // the first window created is the main window
             return borrowed;
         }
 
         void destroyWindow(IWindow* window) override
         {
-            if (window == nullptr) { return; }
+            if (!owns(window)) { return; }  // no-op for null or windows this manager does not own
             window->close();
             m_pendingDestroy.push_back(window->id());
         }
@@ -75,7 +76,9 @@ export namespace draconic::shell
         }
         [[nodiscard]] IWindow* mainWindow() noexcept override
         {
-            return m_live.empty() ? nullptr : m_live[0];
+            // Tracked by id, so destroying/flushing the main window never promotes
+            // another window into its place.
+            return getWindow(m_mainWindowId);
         }
         [[nodiscard]] IWindow* getWindow(draco::u32 id) noexcept override
         {
@@ -104,11 +107,22 @@ export namespace draconic::shell
         }
 
     private:
+        // True only for windows this manager owns (present in m_live). Rejects
+        // nullptr too, so destroyWindow() is a no-op for null/unknown windows.
+        // Checked by pointer identity, not id: a window from another manager can
+        // share an id, and acting on it would corrupt this manager's bookkeeping.
+        [[nodiscard]] bool owns(IWindow* window) const noexcept
+        {
+            for (IWindow* w : m_live) { if (w == window) { return true; } }
+            return false;
+        }
+
         std::vector<std::unique_ptr<NullWindow>> m_owned;
         std::vector<IWindow*> m_live;          // borrowed parallel pointers for the span
         std::vector<draco::u32> m_pendingDestroy; // window ids
         std::vector<WindowEvent> m_events;     // always empty (no OS event source)
         draco::u32 m_nextId = 1;
+        draco::u32 m_mainWindowId = 0;         // id of the main window (first created); 0 = none
     };
 
     // No-op input devices: report nothing held/pressed so headless callers can
@@ -179,9 +193,9 @@ export namespace draconic::shell
         void processEvents() override {}  // no OS event source
         [[nodiscard]] bool isRunning() const noexcept override
         {
-            // Running while the main window (if any) is open.
+            // Running until requestExit() or the main window is closed/destroyed.
             IWindow* main = const_cast<NullWindowManager&>(m_windows).mainWindow();
-            return m_running && (main == nullptr || main->isOpen());
+            return m_running && main != nullptr && main->isOpen();
         }
         void requestExit() override { m_running = false; }
 

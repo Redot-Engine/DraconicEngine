@@ -131,11 +131,13 @@ export namespace draconic::shell
         // mid-frame. No-op if the window is null or unknown.
         virtual void destroyWindow(IWindow* window) = 0;
 
-        // All currently-live windows, including closed-but-not-yet-flushed ones
-        // until flushDestroyed() runs. The main window is windows()[0] while open.
+        // All currently-live windows, in creation order, including
+        // closed-but-not-yet-flushed ones until flushDestroyed() runs.
         [[nodiscard]] virtual std::span<IWindow* const> windows() noexcept = 0;
 
-        // The first window created, or null if none are live.
+        // The main window: the first window created, tracked by identity. Returns
+        // null once it has been destroyed; it is never re-assigned to a different
+        // window (closing the main window is not masked by other open windows).
         [[nodiscard]] virtual IWindow* mainWindow() noexcept = 0;
 
         // Look up a live window by id, or null if there is no such window.
