@@ -20,6 +20,8 @@ if(UNIX AND NOT APPLE)
     target_link_options(RenderSample PRIVATE -Wl,--whole-archive $<TARGET_FILE:SDL3::SDL3-static> -Wl,--no-whole-archive)
 elseif(APPLE)
     target_link_options(RenderSample PRIVATE -Wl,-force_load,$<TARGET_FILE:SDL3::SDL3-static>)
+elseif(MSVC)
+    target_link_options(RenderSample PRIVATE /WHOLEARCHIVE:$<TARGET_FILE:SDL3::SDL3-static>)
 endif()
 
 compile_shaders(RenderSample)
