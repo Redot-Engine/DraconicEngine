@@ -17,9 +17,9 @@ set(SDL_AUDIO OFF CACHE BOOL "" FORCE)
 set(SDL_VIDEO ON CACHE BOOL "" FORCE)        
 set(SDL_RENDER OFF CACHE BOOL "" FORCE)      # Off because bgfx handles the rendering!
 set(SDL_CAMERA OFF CACHE BOOL "" FORCE)      
-set(SDL_JOYSTICK OFF CACHE BOOL "" FORCE)    
-set(SDL_HAPTIC OFF CACHE BOOL "" FORCE)      
-set(SDL_HIDAPI OFF CACHE BOOL "" FORCE)      
+set(SDL_JOYSTICK ON CACHE BOOL "" FORCE)     # Required by SDL_INIT_GAMEPAD (shell.desktop input)
+set(SDL_HAPTIC OFF CACHE BOOL "" FORCE)       # Not needed: gamepad rumble uses SDL_RumbleGamepad (joystick), not the haptic subsystem
+set(SDL_HIDAPI ON CACHE BOOL "" FORCE)        # Controller backends (PS/Switch/Xbox over USB/BT)
 
 if(APPLE)
     set(SDL_WAYLAND OFF CACHE BOOL "" FORCE)
