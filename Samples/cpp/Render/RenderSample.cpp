@@ -5,8 +5,6 @@
 #include <bx/math.h>
 
 import draconic;
-import shell;
-import shell.desktop;
 
 using namespace draco::shell;
 
@@ -40,6 +38,7 @@ int main(int, char*[])
     if (mainWindow == nullptr)
     {
         std::println("Failed to create shell window");
+        destroyShell(shell);
         return -1;
     }
 
@@ -54,6 +53,7 @@ int main(int, char*[])
                                      static_cast<draco::u16>(startW), static_cast<draco::u16>(startH)))
     {
         std::println("RHI init failed");
+        destroyShell(shell);
         return -1;
     }
 
@@ -84,6 +84,7 @@ int main(int, char*[])
     if (vs.empty() || fs.empty() || vs_quad.empty() || fs_quad.empty()) {
         std::println("Shader load failed");
         draco::rendering::rhi::shutdown();
+        destroyShell(shell);
         return -1;
     }
 
@@ -220,7 +221,7 @@ int main(int, char*[])
     }
 
     draco::rendering::rhi::shutdown();
-    // The shell destructor destroys the window and shuts SDL down.
+    destroyShell(shell);   // destroys the window and shuts SDL down
 
     return 0;
 }
