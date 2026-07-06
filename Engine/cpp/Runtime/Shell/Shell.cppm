@@ -43,4 +43,13 @@ export namespace draco::shell
         // Ask the shell to quit (flips isRunning() to false).
         virtual void requestExit() = 0;
     };
+
+    // Creates the platform shell backend. Which backend is used is a compile-time
+    // decision: the definition is supplied by whichever backend is linked (the SDL3
+    // desktop backend, or the headless null backend). Pair every createShell() with a
+    // destroyShell(); the caller owns the returned shell.
+    [[nodiscard]] IShell* createShell(const WindowSettings& settings = {});
+
+    // Destroys a shell returned by createShell().
+    void destroyShell(IShell* shell) noexcept;
 }

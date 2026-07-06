@@ -66,7 +66,7 @@ TEST_CASE("shell.desktop: a window-close event stops the shell")
     SDL3Shell shell;
     if (shell.mainWindow() == nullptr) { return; }
 
-    auto* window = static_cast<SDL3Window*>(shell.mainWindow())->handle();
+    auto* window = static_cast<SDL_Window*>(static_cast<SDL3Window*>(shell.mainWindow())->handle());
     REQUIRE(window != nullptr);
 
     SDL_Event event{};
@@ -89,7 +89,7 @@ TEST_CASE("shell.desktop: keyboard events drive double-buffered key state")
     REQUIRE(input->keyboard() != nullptr);
     IKeyboard* kb = input->keyboard();
 
-    const SDL_WindowID winId = SDL_GetWindowID(static_cast<SDL3Window*>(shell.mainWindow())->handle());
+    const SDL_WindowID winId = SDL_GetWindowID(static_cast<SDL_Window*>(static_cast<SDL3Window*>(shell.mainWindow())->handle()));
 
     auto pushKey = [winId](bool down) {
         SDL_Event e{};
@@ -130,7 +130,7 @@ TEST_CASE("shell.desktop: mouse motion and buttons are tracked")
     IMouse* mouse = input->mouse();
     REQUIRE(mouse != nullptr);
 
-    const SDL_WindowID winId = SDL_GetWindowID(static_cast<SDL3Window*>(shell.mainWindow())->handle());
+    const SDL_WindowID winId = SDL_GetWindowID(static_cast<SDL_Window*>(static_cast<SDL3Window*>(shell.mainWindow())->handle()));
 
     SDL_Event motion{};
     motion.type = SDL_EVENT_MOUSE_MOTION;

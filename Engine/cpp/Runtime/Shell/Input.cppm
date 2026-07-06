@@ -67,21 +67,21 @@ export namespace draco::shell
         Gui   = LeftGui   | RightGui,
     };
 
-    inline constexpr KeyModifiers operator|(KeyModifiers a, KeyModifiers b) noexcept
+    constexpr KeyModifiers operator|(KeyModifiers a, KeyModifiers b) noexcept
     {
         return static_cast<KeyModifiers>(static_cast<draco::u32>(a) | static_cast<draco::u32>(b));
     }
-    inline constexpr KeyModifiers operator&(KeyModifiers a, KeyModifiers b) noexcept
+    constexpr KeyModifiers operator&(KeyModifiers a, KeyModifiers b) noexcept
     {
         return static_cast<KeyModifiers>(static_cast<draco::u32>(a) & static_cast<draco::u32>(b));
     }
-    inline constexpr KeyModifiers& operator|=(KeyModifiers& a, KeyModifiers b) noexcept
+    constexpr KeyModifiers& operator|=(KeyModifiers& a, KeyModifiers b) noexcept
     {
         a = a | b;
         return a;
     }
     // True when every bit in `flag` is set in `mods`.
-    inline constexpr bool HasFlag(KeyModifiers mods, KeyModifiers flag) noexcept
+    constexpr bool HasFlag(KeyModifiers mods, KeyModifiers flag) noexcept
     {
         return (mods & flag) == flag;
     }
