@@ -7,7 +7,6 @@ add_executable(RenderSample RenderSample.cpp)
 target_link_libraries(RenderSample
         PRIVATE
         Runtime
-        Shell_Desktop
         bgfx
         bx
         bimg
