@@ -16,7 +16,7 @@ export import core.stdtypes;
 export namespace draco::shell
 {
     // The windowing system a native handle belongs to (see NativeWindow).
-    enum class WindowSystem : draco::u8
+    enum class WindowSystem : u8
     {
         Unknown,
         Win32,
@@ -43,8 +43,8 @@ export namespace draco::shell
     struct WindowSettings
     {
         std::u8string_view title = u8"Draconic";
-        draco::u32 width = 1280;
-        draco::u32 height = 720;
+        u32 width = 1280;
+        u32 height = 720;
     };
 
     // A single OS window. Created and owned by IWindowManager; callers never
@@ -56,11 +56,11 @@ export namespace draco::shell
 
         // Stable per-window id, unique within a shell run. Routes OS events to the
         // right window and looks windows up. 0 is never a valid id.
-        [[nodiscard]] virtual draco::u32 id() const noexcept = 0;
+        [[nodiscard]] virtual u32 id() const noexcept = 0;
 
         // Current client-area size in pixels.
-        [[nodiscard]] virtual draco::u32 width() const noexcept = 0;
-        [[nodiscard]] virtual draco::u32 height() const noexcept = 0;
+        [[nodiscard]] virtual u32 width() const noexcept = 0;
+        [[nodiscard]] virtual u32 height() const noexcept = 0;
 
         // Native OS handles for RHI surface creation (see NativeWindow).
         [[nodiscard]] virtual NativeWindow native() const noexcept = 0;
@@ -82,7 +82,7 @@ export namespace draco::shell
     // matches the pull-based event model and avoids callback-lifetime concerns.
     // The consumer drains the queue each frame and reacts (resize a swapchain,
     // close a window, and so on).
-    enum class WindowEventType : draco::u8
+    enum class WindowEventType : u8
     {
         Resized,
         Moved,
@@ -96,17 +96,17 @@ export namespace draco::shell
     struct WindowEvent
     {
         WindowEventType type = WindowEventType::Resized;
-        draco::u32 windowId = 0;
-        draco::u32 width = 0;   // Resized
-        draco::u32 height = 0;  // Resized
-        draco::i32 x = 0;       // Moved
-        draco::i32 y = 0;       // Moved
+        u32 windowId = 0;
+        u32 width = 0;   // Resized
+        u32 height = 0;  // Resized
+        i32 x = 0;       // Moved
+        i32 y = 0;       // Moved
     };
 
     // Error returned by IWindowManager::createWindow when a window cannot be made.
     // Placeholder for the engine's eventual Result error type; std::expected
     // requires a concrete error type.
-    enum class WindowError : draco::u8
+    enum class WindowError : u8
     {
         CreationFailed,
     };
@@ -141,7 +141,7 @@ export namespace draco::shell
         [[nodiscard]] virtual IWindow* mainWindow() const noexcept = 0;
 
         // Look up a live window by id, or null if there is no such window.
-        [[nodiscard]] virtual IWindow* getWindow(draco::u32 id) const noexcept = 0;
+        [[nodiscard]] virtual IWindow* getWindow(u32 id) const noexcept = 0;
 
         // Window events accumulated during the last processEvents() pump. Valid
         // until the next pump; drained by the runner each frame.

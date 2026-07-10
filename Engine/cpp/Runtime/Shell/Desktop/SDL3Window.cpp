@@ -38,16 +38,16 @@ namespace draco::shell
     {
         int w = 0, h = 0;
         SDL_GetWindowSize(m_window, &w, &h);
-        m_width = static_cast<draco::u32>(w);
-        m_height = static_cast<draco::u32>(h);
-        m_id = static_cast<draco::u32>(SDL_GetWindowID(m_window));
+        m_width = static_cast<u32>(w);
+        m_height = static_cast<u32>(h);
+        m_id = static_cast<u32>(SDL_GetWindowID(m_window));
     }
 
     SDL3Window::~SDL3Window() { if (m_window != nullptr) { SDL_DestroyWindow(m_window); } }
 
-    draco::u32 SDL3Window::id() const noexcept { return m_id; }
-    draco::u32 SDL3Window::width() const noexcept { return m_width; }
-    draco::u32 SDL3Window::height() const noexcept { return m_height; }
+    u32 SDL3Window::id() const noexcept { return m_id; }
+    u32 SDL3Window::width() const noexcept { return m_width; }
+    u32 SDL3Window::height() const noexcept { return m_height; }
 
     NativeWindow SDL3Window::native() const noexcept
     {
@@ -87,7 +87,7 @@ namespace draco::shell
     }
     void SDL3Window::close() { m_open = false; }
     void* SDL3Window::handle() const noexcept { return m_window; }
-    void SDL3Window::onResized(draco::u32 w, draco::u32 h) noexcept { m_width = w; m_height = h; }
+    void SDL3Window::onResized(u32 w, u32 h) noexcept { m_width = w; m_height = h; }
 
     // ---- SDL3WindowManager ----
 
@@ -125,7 +125,7 @@ namespace draco::shell
         // another window into its place.
         return getWindow(m_mainWindowId);
     }
-    IWindow* SDL3WindowManager::getWindow(draco::u32 id) const noexcept
+    IWindow* SDL3WindowManager::getWindow(u32 id) const noexcept
     {
         for (IWindow* w : m_live) { if (w->id() == id) { return w; } }
         return nullptr;
@@ -137,13 +137,13 @@ namespace draco::shell
 
     void SDL3WindowManager::flushDestroyed()
     {
-        for (draco::u32 id : m_pendingDestroy)
+        for (u32 id : m_pendingDestroy)
         {
-            for (draco::usize i = 0; i < m_live.size(); ++i)
+            for (usize i = 0; i < m_live.size(); ++i)
             {
                 if (m_live[i]->id() == id) { m_live.erase(m_live.begin() + static_cast<std::ptrdiff_t>(i)); break; }
             }
-            for (draco::usize i = 0; i < m_owned.size(); ++i)
+            for (usize i = 0; i < m_owned.size(); ++i)
             {
                 if (m_owned[i]->id() == id) { m_owned.erase(m_owned.begin() + static_cast<std::ptrdiff_t>(i)); break; }  // dtor destroys SDL window
             }
@@ -151,7 +151,7 @@ namespace draco::shell
         m_pendingDestroy.clear();
     }
 
-    SDL3Window* SDL3WindowManager::find(draco::u32 id) noexcept
+    SDL3Window* SDL3WindowManager::find(u32 id) noexcept
     {
         for (std::unique_ptr<SDL3Window>& w : m_owned) { if (w->id() == id) { return w.get(); } }
         return nullptr;

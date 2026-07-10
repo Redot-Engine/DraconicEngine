@@ -24,12 +24,12 @@ export namespace draco::shell
     class NullMouse final : public IMouse
     {
     public:
-        [[nodiscard]] draco::f32 x() const override;
-        [[nodiscard]] draco::f32 y() const override;
-        [[nodiscard]] draco::f32 deltaX() const override;
-        [[nodiscard]] draco::f32 deltaY() const override;
-        [[nodiscard]] draco::f32 scrollX() const override;
-        [[nodiscard]] draco::f32 scrollY() const override;
+        [[nodiscard]] f32 x() const override;
+        [[nodiscard]] f32 y() const override;
+        [[nodiscard]] f32 deltaX() const override;
+        [[nodiscard]] f32 deltaY() const override;
+        [[nodiscard]] f32 scrollX() const override;
+        [[nodiscard]] f32 scrollY() const override;
         [[nodiscard]] bool isButtonDown(MouseButton) const override;
         [[nodiscard]] bool isButtonPressed(MouseButton) const override;
         [[nodiscard]] bool isButtonReleased(MouseButton) const override;
@@ -43,8 +43,8 @@ export namespace draco::shell
     class NullTouch final : public ITouch
     {
     public:
-        [[nodiscard]] draco::i32 touchCount() const override;
-        [[nodiscard]] bool getTouchPoint(draco::i32, TouchPoint&) const override;
+        [[nodiscard]] i32 touchCount() const override;
+        [[nodiscard]] bool getTouchPoint(i32, TouchPoint&) const override;
         [[nodiscard]] bool hasTouch() const override;
     };
 
@@ -54,11 +54,11 @@ export namespace draco::shell
         [[nodiscard]] IKeyboard* keyboard() override;
         [[nodiscard]] IMouse*    mouse()    override;
         [[nodiscard]] ITouch*    touch()    override;
-        [[nodiscard]] draco::i32 gamepadCount() const override;
-        [[nodiscard]] IGamepad*  getGamepad(draco::i32) override;
+        [[nodiscard]] i32 gamepadCount() const override;
+        [[nodiscard]] IGamepad*  getGamepad(i32) override;
         [[nodiscard]] std::span<const InputEvent> events() const override;
-        [[nodiscard]] draco::u32 hoverWindow()   const override;
-        [[nodiscard]] draco::u32 focusedWindow() const override;
+        [[nodiscard]] u32 hoverWindow()   const override;
+        [[nodiscard]] u32 focusedWindow() const override;
         void update() override;
 
     private:

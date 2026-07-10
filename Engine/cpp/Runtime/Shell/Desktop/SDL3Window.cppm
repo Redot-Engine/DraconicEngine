@@ -25,9 +25,9 @@ export namespace draco::shell
         SDL3Window(const SDL3Window&) = delete;
         SDL3Window& operator=(const SDL3Window&) = delete;
 
-        [[nodiscard]] draco::u32 id() const noexcept override;
-        [[nodiscard]] draco::u32 width() const noexcept override;
-        [[nodiscard]] draco::u32 height() const noexcept override;
+        [[nodiscard]] u32 id() const noexcept override;
+        [[nodiscard]] u32 width() const noexcept override;
+        [[nodiscard]] u32 height() const noexcept override;
 
         // Extract the real native handles from SDL's window properties so RHI can
         // create its own surface (it does not use SDL's Vulkan helpers).
@@ -40,13 +40,13 @@ export namespace draco::shell
         // The SDL_Window*, exposed as an opaque handle so the interface carries no SDL
         // type. Backend code (and SDL-aware tests) cast it back to SDL_Window*.
         [[nodiscard]] void* handle() const noexcept;
-        void onResized(draco::u32 w, draco::u32 h) noexcept;
+        void onResized(u32 w, u32 h) noexcept;
 
     private:
         SDL_Window* m_window;
-        draco::u32 m_id = 0;
-        draco::u32 m_width = 0;
-        draco::u32 m_height = 0;
+        u32 m_id = 0;
+        u32 m_width = 0;
+        u32 m_height = 0;
         bool m_open = true;
     };
 
@@ -61,12 +61,12 @@ export namespace draco::shell
 
         [[nodiscard]] std::span<IWindow* const> windows() const noexcept override;
         [[nodiscard]] IWindow* mainWindow() const noexcept override;
-        [[nodiscard]] IWindow* getWindow(draco::u32 id) const noexcept override;
+        [[nodiscard]] IWindow* getWindow(u32 id) const noexcept override;
         [[nodiscard]] std::span<const WindowEvent> events() const noexcept override;
         void flushDestroyed() override;
 
         // --- event pump wiring (called by SDL3Shell::processEvents) ---
-        SDL3Window* find(draco::u32 id) noexcept;
+        SDL3Window* find(u32 id) noexcept;
         void clearEvents() noexcept;
         void pushEvent(const WindowEvent& e);
 
@@ -81,8 +81,8 @@ export namespace draco::shell
 
         std::vector<std::unique_ptr<SDL3Window>> m_owned;
         std::vector<IWindow*> m_live;
-        std::vector<draco::u32> m_pendingDestroy;
+        std::vector<u32> m_pendingDestroy;
         std::vector<WindowEvent> m_events;
-        draco::u32 m_mainWindowId = 0;   // id of the main window (first created); 0 = none
+        u32 m_mainWindowId = 0;   // id of the main window (first created); 0 = none
     };
 }

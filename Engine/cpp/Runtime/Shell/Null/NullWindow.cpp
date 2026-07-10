@@ -14,17 +14,17 @@ namespace draco::shell
 {
     // ---- NullWindow ----
 
-    NullWindow::NullWindow(draco::u32 id, const WindowSettings& settings) noexcept
+    NullWindow::NullWindow(u32 id, const WindowSettings& settings) noexcept
         : m_id(id), m_width(settings.width), m_height(settings.height) {}
 
-    draco::u32 NullWindow::id() const noexcept { return m_id; }
-    draco::u32 NullWindow::width() const noexcept { return m_width; }
-    draco::u32 NullWindow::height() const noexcept { return m_height; }
+    u32 NullWindow::id() const noexcept { return m_id; }
+    u32 NullWindow::width() const noexcept { return m_width; }
+    u32 NullWindow::height() const noexcept { return m_height; }
     NativeWindow NullWindow::native() const noexcept { return {}; }  // headless: no handles
     bool NullWindow::isOpen() const noexcept { return m_open; }
     bool NullWindow::isMinimized() const noexcept { return m_minimized; }
     void NullWindow::close() { m_open = false; }
-    void NullWindow::resize(draco::u32 w, draco::u32 h) noexcept { m_width = w; m_height = h; }
+    void NullWindow::resize(u32 w, u32 h) noexcept { m_width = w; m_height = h; }
     void NullWindow::setMinimized(bool m) noexcept { m_minimized = m; }
 
     // ---- NullWindowManager ----
@@ -33,7 +33,7 @@ namespace draco::shell
 
     std::expected<IWindow*, WindowError> NullWindowManager::createWindow(const WindowSettings& settings)
     {
-        const draco::u32 id = m_nextId++;
+        const u32 id = m_nextId++;
         auto window = std::make_unique<NullWindow>(id, settings);
         IWindow* borrowed = window.get();
         m_owned.push_back(std::move(window));
@@ -59,7 +59,7 @@ namespace draco::shell
         // another window into its place.
         return getWindow(m_mainWindowId);
     }
-    IWindow* NullWindowManager::getWindow(draco::u32 id) const noexcept
+    IWindow* NullWindowManager::getWindow(u32 id) const noexcept
     {
         for (IWindow* w : m_live) { if (w->id() == id) { return w; } }
         return nullptr;
@@ -71,13 +71,13 @@ namespace draco::shell
 
     void NullWindowManager::flushDestroyed()
     {
-        for (draco::u32 id : m_pendingDestroy)
+        for (u32 id : m_pendingDestroy)
         {
-            for (draco::usize i = 0; i < m_live.size(); ++i)
+            for (usize i = 0; i < m_live.size(); ++i)
             {
                 if (m_live[i]->id() == id) { m_live.erase(m_live.begin() + static_cast<std::ptrdiff_t>(i)); break; }
             }
-            for (draco::usize i = 0; i < m_owned.size(); ++i)
+            for (usize i = 0; i < m_owned.size(); ++i)
             {
                 if (m_owned[i]->id() == id) { m_owned.erase(m_owned.begin() + static_cast<std::ptrdiff_t>(i)); break; }
             }

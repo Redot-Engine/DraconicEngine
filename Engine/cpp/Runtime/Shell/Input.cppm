@@ -16,7 +16,7 @@ export namespace draco::shell
 {
     // ---- Keyboard ---------------------------------------------------------
 
-    enum class KeyCode : draco::u32
+    enum class KeyCode : u32
     {
         Unknown = 0,
         A, B, C, D, E, F, G, H, I, J, K, L, M,
@@ -45,7 +45,7 @@ export namespace draco::shell
 
     // Bitmask of the modifier keys held during a key event. Combine and test with
     // the operators below and HasFlag().
-    enum class KeyModifiers : draco::u32
+    enum class KeyModifiers : u32
     {
         None       = 0,
         LeftShift  = 1 << 0,
@@ -69,11 +69,11 @@ export namespace draco::shell
 
     constexpr KeyModifiers operator|(KeyModifiers a, KeyModifiers b) noexcept
     {
-        return static_cast<KeyModifiers>(static_cast<draco::u32>(a) | static_cast<draco::u32>(b));
+        return static_cast<KeyModifiers>(static_cast<u32>(a) | static_cast<u32>(b));
     }
     constexpr KeyModifiers operator&(KeyModifiers a, KeyModifiers b) noexcept
     {
-        return static_cast<KeyModifiers>(static_cast<draco::u32>(a) & static_cast<draco::u32>(b));
+        return static_cast<KeyModifiers>(static_cast<u32>(a) & static_cast<u32>(b));
     }
     constexpr KeyModifiers& operator|=(KeyModifiers& a, KeyModifiers b) noexcept
     {
@@ -88,7 +88,7 @@ export namespace draco::shell
 
     // ---- Mouse ------------------------------------------------------------
 
-    enum class MouseButton : draco::u32
+    enum class MouseButton : u32
     {
         Left, Middle, Right, X1, X2,
 
@@ -96,7 +96,7 @@ export namespace draco::shell
     };
 
     // Cursor shape passed to IMouse::setCursor.
-    enum class CursorType : draco::u32
+    enum class CursorType : u32
     {
         Default, Text, Wait, Crosshair, Progress,
         ResizeNWSE, ResizeNESW, ResizeEW, ResizeNS,
@@ -109,7 +109,7 @@ export namespace draco::shell
 
     // ---- Gamepad ----------------------------------------------------------
 
-    enum class GamepadButton : draco::u32
+    enum class GamepadButton : u32
     {
         South, East, West, North,
         LeftShoulder, RightShoulder,
@@ -122,7 +122,7 @@ export namespace draco::shell
         Count,
     };
 
-    enum class GamepadAxis : draco::u32
+    enum class GamepadAxis : u32
     {
         LeftX, LeftY, RightX, RightY,
         LeftTrigger, RightTrigger,
@@ -136,10 +136,10 @@ export namespace draco::shell
     // window; pressure is in [0,1].
     struct TouchPoint
     {
-        draco::u64 id       = 0;
-        draco::f32 x        = 0.0f;
-        draco::f32 y        = 0.0f;
-        draco::f32 pressure = 1.0f;
+        u64 id       = 0;
+        f32 x        = 0.0f;
+        f32 y        = 0.0f;
+        f32 pressure = 1.0f;
     };
 
     // ---- Input events (the event-first source of truth) -------------------
@@ -149,7 +149,7 @@ export namespace draco::shell
     // events, and higher layers (viewport surfaces, UI dispatch) consume the same
     // stream, so the polled and event views never disagree.
 
-    enum class InputEventKind : draco::u8
+    enum class InputEventKind : u8
     {
         KeyDown, KeyUp, TextInput,
         MouseMove, MouseButtonDown, MouseButtonUp, MouseWheel,
@@ -162,18 +162,18 @@ export namespace draco::shell
     struct InputEvent
     {
         InputEventKind kind{};
-        draco::u32     window = 0;    // source window id (0 = unknown/global)
+        u32     window = 0;    // source window id (0 = unknown/global)
 
         KeyCode        key{};                          // KeyDown/KeyUp
         KeyModifiers   modifiers{};                    // KeyDown/KeyUp
         MouseButton    button{};                       // MouseButtonDown/Up
         GamepadButton  padButton{};                    // GamepadButtonDown/Up
         GamepadAxis    padAxis{};                      // GamepadAxis
-        draco::i32     gamepad = 0;                     // gamepad device index (Gamepad* kinds)
-        draco::f32     x = 0.0f, y = 0.0f;             // window-space pos (MouseMove/Touch*) or wheel delta
-        draco::f32     dx = 0.0f, dy = 0.0f;           // relative movement (MouseMove)
-        draco::f32     value = 0.0f;                    // GamepadAxis value or touch pressure
-        draco::u64     touchId = 0;                     // touch point id (Touch* kinds)
+        i32     gamepad = 0;                     // gamepad device index (Gamepad* kinds)
+        f32     x = 0.0f, y = 0.0f;             // window-space pos (MouseMove/Touch*) or wheel delta
+        f32     dx = 0.0f, dy = 0.0f;           // relative movement (MouseMove)
+        f32     value = 0.0f;                    // GamepadAxis value or touch pressure
+        u64     touchId = 0;                     // touch point id (Touch* kinds)
         char8_t        text[32] = {};                   // TextInput (UTF-8, null-terminated)
     };
 
@@ -199,12 +199,12 @@ export namespace draco::shell
     public:
         virtual ~IMouse() = default;
 
-        [[nodiscard]] virtual draco::f32 x()       const = 0;  // window-space position
-        [[nodiscard]] virtual draco::f32 y()       const = 0;
-        [[nodiscard]] virtual draco::f32 deltaX()  const = 0;  // movement this frame
-        [[nodiscard]] virtual draco::f32 deltaY()  const = 0;
-        [[nodiscard]] virtual draco::f32 scrollX() const = 0;  // wheel this frame
-        [[nodiscard]] virtual draco::f32 scrollY() const = 0;
+        [[nodiscard]] virtual f32 x()       const = 0;  // window-space position
+        [[nodiscard]] virtual f32 y()       const = 0;
+        [[nodiscard]] virtual f32 deltaX()  const = 0;  // movement this frame
+        [[nodiscard]] virtual f32 deltaY()  const = 0;
+        [[nodiscard]] virtual f32 scrollX() const = 0;  // wheel this frame
+        [[nodiscard]] virtual f32 scrollY() const = 0;
 
         [[nodiscard]] virtual bool isButtonDown(MouseButton button)     const = 0;  // held
         [[nodiscard]] virtual bool isButtonPressed(MouseButton button)  const = 0;  // went down this frame
@@ -227,18 +227,18 @@ export namespace draco::shell
     public:
         virtual ~IGamepad() = default;
 
-        [[nodiscard]] virtual draco::i32       index()     const = 0;  // slot in IInputManager's list
+        [[nodiscard]] virtual i32       index()     const = 0;  // slot in IInputManager's list
         [[nodiscard]] virtual std::u8string_view name()    const = 0;
         [[nodiscard]] virtual bool             connected() const = 0;
 
         [[nodiscard]] virtual bool isButtonDown(GamepadButton button)     const = 0;  // held
         [[nodiscard]] virtual bool isButtonPressed(GamepadButton button)  const = 0;  // went down this frame
         [[nodiscard]] virtual bool isButtonReleased(GamepadButton button) const = 0;  // went up this frame
-        [[nodiscard]] virtual draco::f32 axis(GamepadAxis axis)             const = 0;  // sticks [-1,1], triggers [0,1]
+        [[nodiscard]] virtual f32 axis(GamepadAxis axis)             const = 0;  // sticks [-1,1], triggers [0,1]
 
         // Low- and high-frequency motor strengths in [0,1], for durationMs
         // milliseconds. No-op if the gamepad has no rumble.
-        virtual void setRumble(draco::f32 lowFreq, draco::f32 highFreq, draco::u32 durationMs) = 0;
+        virtual void setRumble(f32 lowFreq, f32 highFreq, u32 durationMs) = 0;
     };
 
     // Active touch points for the current frame.
@@ -247,10 +247,10 @@ export namespace draco::shell
     public:
         virtual ~ITouch() = default;
 
-        [[nodiscard]] virtual draco::i32 touchCount() const = 0;
+        [[nodiscard]] virtual i32 touchCount() const = 0;
         // Copy the touch point at `index` (0..touchCount()) into `out`. Returns
         // false (leaving `out` untouched) if the index is out of range.
-        [[nodiscard]] virtual bool getTouchPoint(draco::i32 index, TouchPoint& out) const = 0;
+        [[nodiscard]] virtual bool getTouchPoint(i32 index, TouchPoint& out) const = 0;
         [[nodiscard]] virtual bool hasTouch() const = 0;
     };
 
@@ -268,8 +268,8 @@ export namespace draco::shell
         [[nodiscard]] virtual ITouch*    touch()    = 0;
 
         // Connected gamepads, addressed by index (0..gamepadCount()).
-        [[nodiscard]] virtual draco::i32 gamepadCount() const = 0;
-        [[nodiscard]] virtual IGamepad*  getGamepad(draco::i32 index) = 0;
+        [[nodiscard]] virtual i32 gamepadCount() const = 0;
+        [[nodiscard]] virtual IGamepad*  getGamepad(i32 index) = 0;
 
         // This frame's input events (the event-first source of truth; the device
         // snapshots above are a fold over these). Cleared each frame by update().
@@ -277,8 +277,8 @@ export namespace draco::shell
 
         // Routing authority: the window under the pointer (mouse routing) and the
         // keyboard/gamepad-focused window. 0 means none.
-        [[nodiscard]] virtual draco::u32 hoverWindow()   const = 0;
-        [[nodiscard]] virtual draco::u32 focusedWindow() const = 0;
+        [[nodiscard]] virtual u32 hoverWindow()   const = 0;
+        [[nodiscard]] virtual u32 focusedWindow() const = 0;
 
         // Roll per-frame state (current -> previous, clear deltas and events). The
         // shell calls this once per frame before pumping OS events.

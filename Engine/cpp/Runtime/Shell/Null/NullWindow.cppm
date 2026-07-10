@@ -18,24 +18,24 @@ export namespace draco::shell
     class NullWindow final : public IWindow
     {
     public:
-        NullWindow(draco::u32 id, const WindowSettings& settings) noexcept;
+        NullWindow(u32 id, const WindowSettings& settings) noexcept;
 
-        [[nodiscard]] draco::u32 id() const noexcept override;
-        [[nodiscard]] draco::u32 width() const noexcept override;
-        [[nodiscard]] draco::u32 height() const noexcept override;
+        [[nodiscard]] u32 id() const noexcept override;
+        [[nodiscard]] u32 width() const noexcept override;
+        [[nodiscard]] u32 height() const noexcept override;
         [[nodiscard]] NativeWindow native() const noexcept override;  // headless: no handles
         [[nodiscard]] bool isOpen() const noexcept override;
         [[nodiscard]] bool isMinimized() const noexcept override;
         void close() override;
 
         // --- test/headless controls (no OS to drive these) ---
-        void resize(draco::u32 w, draco::u32 h) noexcept;
+        void resize(u32 w, u32 h) noexcept;
         void setMinimized(bool m) noexcept;
 
     private:
-        draco::u32 m_id;
-        draco::u32 m_width;
-        draco::u32 m_height;
+        u32 m_id;
+        u32 m_width;
+        u32 m_height;
         bool m_open = true;
         bool m_minimized = false;
     };
@@ -50,7 +50,7 @@ export namespace draco::shell
 
         [[nodiscard]] std::span<IWindow* const> windows() const noexcept override;
         [[nodiscard]] IWindow* mainWindow() const noexcept override;
-        [[nodiscard]] IWindow* getWindow(draco::u32 id) const noexcept override;
+        [[nodiscard]] IWindow* getWindow(u32 id) const noexcept override;
         [[nodiscard]] std::span<const WindowEvent> events() const noexcept override;
         void flushDestroyed() override;
 
@@ -61,9 +61,9 @@ export namespace draco::shell
 
         std::vector<std::unique_ptr<NullWindow>> m_owned;
         std::vector<IWindow*> m_live;          // borrowed parallel pointers for the span
-        std::vector<draco::u32> m_pendingDestroy; // window ids
+        std::vector<u32> m_pendingDestroy; // window ids
         std::vector<WindowEvent> m_events;     // always empty (no OS event source)
-        draco::u32 m_nextId = 1;
-        draco::u32 m_mainWindowId = 0;         // id of the main window (first created); 0 = none
+        u32 m_nextId = 1;
+        u32 m_mainWindowId = 0;         // id of the main window (first created); 0 = none
     };
 }

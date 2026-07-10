@@ -18,12 +18,12 @@ namespace draco::shell
     KeyCode mapKeyCode(SDL_Scancode sc) noexcept
     {
         if (sc >= SDL_SCANCODE_A && sc <= SDL_SCANCODE_Z)
-            return static_cast<KeyCode>(static_cast<draco::u32>(KeyCode::A) + (sc - SDL_SCANCODE_A));
+            return static_cast<KeyCode>(static_cast<u32>(KeyCode::A) + (sc - SDL_SCANCODE_A));
         if (sc >= SDL_SCANCODE_1 && sc <= SDL_SCANCODE_9)
-            return static_cast<KeyCode>(static_cast<draco::u32>(KeyCode::Num1) + (sc - SDL_SCANCODE_1));
+            return static_cast<KeyCode>(static_cast<u32>(KeyCode::Num1) + (sc - SDL_SCANCODE_1));
         if (sc == SDL_SCANCODE_0) return KeyCode::Num0;
         if (sc >= SDL_SCANCODE_F1 && sc <= SDL_SCANCODE_F12)
-            return static_cast<KeyCode>(static_cast<draco::u32>(KeyCode::F1) + (sc - SDL_SCANCODE_F1));
+            return static_cast<KeyCode>(static_cast<u32>(KeyCode::F1) + (sc - SDL_SCANCODE_F1));
         switch (sc)
         {
             case SDL_SCANCODE_RETURN:    return KeyCode::Return;
@@ -101,7 +101,7 @@ namespace draco::shell
     }
 
     // SDL mouse button number (1-based) minus 1 -> MouseButton (Left/Middle/Right/X1/X2).
-    MouseButton mapMouseButton(draco::u32 idx) noexcept
+    MouseButton mapMouseButton(u32 idx) noexcept
     {
         switch (idx)
         {
@@ -172,7 +172,7 @@ namespace draco::shell
                     break;
                 case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
                 {
-                    const draco::u32 id = static_cast<draco::u32>(event.window.windowID);
+                    const u32 id = static_cast<u32>(event.window.windowID);
                     m_windows.pushEvent(WindowEvent{ WindowEventType::CloseRequested, id });
                     // Closing the main window stops the shell; the runner
                     // handles secondary-window close via the event queue.
@@ -182,11 +182,11 @@ namespace draco::shell
                 }
                 case SDL_EVENT_WINDOW_RESIZED:
                 {
-                    const draco::u32 id = static_cast<draco::u32>(event.window.windowID);
+                    const u32 id = static_cast<u32>(event.window.windowID);
                     if (SDL3Window* w = m_windows.find(id))
                     {
-                        const draco::u32 nw = static_cast<draco::u32>(event.window.data1);
-                        const draco::u32 nh = static_cast<draco::u32>(event.window.data2);
+                        const u32 nw = static_cast<u32>(event.window.data1);
+                        const u32 nh = static_cast<u32>(event.window.data2);
                         w->onResized(nw, nh);
                         m_windows.pushEvent(WindowEvent{ WindowEventType::Resized, id, nw, nh });
                     }
@@ -194,23 +194,23 @@ namespace draco::shell
                 }
                 case SDL_EVENT_WINDOW_FOCUS_GAINED:
                 {
-                    const draco::u32 id = static_cast<draco::u32>(event.window.windowID);
+                    const u32 id = static_cast<u32>(event.window.windowID);
                     m_input.setFocusWindow(id);   // keyboard/gamepad routing authority
                     m_windows.pushEvent(WindowEvent{ WindowEventType::FocusGained, id });
                     break;
                 }
                 case SDL_EVENT_WINDOW_FOCUS_LOST:
                 {
-                    const draco::u32 id = static_cast<draco::u32>(event.window.windowID);
+                    const u32 id = static_cast<u32>(event.window.windowID);
                     if (m_input.focusedWindow() == id) { m_input.setFocusWindow(0); }
                     m_windows.pushEvent(WindowEvent{ WindowEventType::FocusLost, id });
                     break;
                 }
                 case SDL_EVENT_WINDOW_MOUSE_ENTER:
-                    m_input.setHoverWindow(static_cast<draco::u32>(event.window.windowID));
+                    m_input.setHoverWindow(static_cast<u32>(event.window.windowID));
                     break;
                 case SDL_EVENT_WINDOW_MOUSE_LEAVE:
-                    if (m_input.hoverWindow() == static_cast<draco::u32>(event.window.windowID))
+                    if (m_input.hoverWindow() == static_cast<u32>(event.window.windowID))
                     {
                         m_input.setHoverWindow(0);
                     }
@@ -222,7 +222,7 @@ namespace draco::shell
                 {
                     InputEvent e{};
                     e.kind = event.key.down ? InputEventKind::KeyDown : InputEventKind::KeyUp;
-                    e.window = static_cast<draco::u32>(event.key.windowID);
+                    e.window = static_cast<u32>(event.key.windowID);
                     e.key = mapKeyCode(event.key.scancode);
                     e.modifiers = mapModifiers(event.key.mod);
                     m_input.emitEvent(e);
@@ -234,10 +234,10 @@ namespace draco::shell
                 {
                     InputEvent e{};
                     e.kind = InputEventKind::TextInput;
-                    e.window = static_cast<draco::u32>(event.text.windowID);
+                    e.window = static_cast<u32>(event.text.windowID);
                     if (event.text.text != nullptr)
                     {
-                        draco::usize n = 0;
+                        usize n = 0;
                         while (n + 1 < sizeof(e.text) && event.text.text[n] != '\0')
                         {
                             e.text[n] = static_cast<char8_t>(event.text.text[n]); ++n;
@@ -251,10 +251,10 @@ namespace draco::shell
                 // --- Mouse ---
                 case SDL_EVENT_MOUSE_MOTION:
                 {
-                    m_input.setHoverWindow(static_cast<draco::u32>(event.motion.windowID));
+                    m_input.setHoverWindow(static_cast<u32>(event.motion.windowID));
                     InputEvent e{};
                     e.kind = InputEventKind::MouseMove;
-                    e.window = static_cast<draco::u32>(event.motion.windowID);
+                    e.window = static_cast<u32>(event.motion.windowID);
                     e.x = event.motion.x; e.y = event.motion.y;
                     e.dx = event.motion.xrel; e.dy = event.motion.yrel;
                     m_input.emitEvent(e);
@@ -264,11 +264,11 @@ namespace draco::shell
                 case SDL_EVENT_MOUSE_BUTTON_DOWN:
                 case SDL_EVENT_MOUSE_BUTTON_UP:
                 {
-                    const draco::u32 btn = static_cast<draco::u32>(event.button.button) - 1;
+                    const u32 btn = static_cast<u32>(event.button.button) - 1;
                     const bool down = (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN);
                     InputEvent e{};
                     e.kind = down ? InputEventKind::MouseButtonDown : InputEventKind::MouseButtonUp;
-                    e.window = static_cast<draco::u32>(event.button.windowID);
+                    e.window = static_cast<u32>(event.button.windowID);
                     e.button = mapMouseButton(btn);
                     e.x = event.button.x; e.y = event.button.y;
                     m_input.emitEvent(e);
@@ -279,7 +279,7 @@ namespace draco::shell
                 {
                     InputEvent e{};
                     e.kind = InputEventKind::MouseWheel;
-                    e.window = static_cast<draco::u32>(event.wheel.windowID);
+                    e.window = static_cast<u32>(event.wheel.windowID);
                     e.x = event.wheel.x; e.y = event.wheel.y;
                     m_input.emitEvent(e);
                     m_input.mouseDevice().onWheel(event.wheel.x, event.wheel.y);
@@ -292,8 +292,8 @@ namespace draco::shell
                 {
                     InputEvent e{};
                     e.kind = (event.type == SDL_EVENT_FINGER_DOWN) ? InputEventKind::TouchDown : InputEventKind::TouchMove;
-                    e.window = static_cast<draco::u32>(event.tfinger.windowID);
-                    e.touchId = static_cast<draco::u64>(event.tfinger.fingerID);
+                    e.window = static_cast<u32>(event.tfinger.windowID);
+                    e.touchId = static_cast<u64>(event.tfinger.fingerID);
                     e.x = event.tfinger.x; e.y = event.tfinger.y; e.value = event.tfinger.pressure;
                     m_input.emitEvent(e);
                     m_input.touchDevice().addOrUpdate(TouchPoint{ e.touchId, e.x, e.y, e.value });
@@ -303,8 +303,8 @@ namespace draco::shell
                 {
                     InputEvent e{};
                     e.kind = InputEventKind::TouchUp;
-                    e.window = static_cast<draco::u32>(event.tfinger.windowID);
-                    e.touchId = static_cast<draco::u64>(event.tfinger.fingerID);
+                    e.window = static_cast<u32>(event.tfinger.windowID);
+                    e.touchId = static_cast<u64>(event.tfinger.fingerID);
                     e.x = event.tfinger.x; e.y = event.tfinger.y;
                     m_input.emitEvent(e);
                     m_input.touchDevice().remove(e.touchId);
@@ -345,7 +345,7 @@ namespace draco::shell
                             e.kind = InputEventKind::GamepadAxis;
                             e.window = m_input.focusedWindow();
                             e.gamepad = pad->index(); e.padAxis = a;
-                            e.value = static_cast<draco::f32>(event.gaxis.value) / 32767.0f;   // snapshot reads axes live
+                            e.value = static_cast<f32>(event.gaxis.value) / 32767.0f;   // snapshot reads axes live
                             m_input.emitEvent(e);
                         }
                     }
