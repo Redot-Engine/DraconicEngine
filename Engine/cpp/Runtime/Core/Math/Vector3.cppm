@@ -441,15 +441,19 @@ export namespace draco::math {
         };
     }
 
-    // Returns true if the vectors are approximately equal
-    [[nodiscard]] constexpr bool approx_eq(const Vector3& a, const Vector3& b) noexcept {
-        return distance_sq(a, b) < CMP_EPSILON2;
+    // Component-wise approximate equality against an epsilon.
+    [[nodiscard]] constexpr bool nearlyEqual(const Vector3& a, const Vector3& b, f32 epsilon = CMP_EPSILON) noexcept {
+        return nearlyEqual(a.x, b.x, epsilon) && nearlyEqual(a.y, b.y, epsilon) && nearlyEqual(a.z, b.z, epsilon);
     }
 
     // Returns cross product
     [[nodiscard]] constexpr Vector3 cross(const Vector3& a, const Vector3& b) noexcept {
         return { a.y*b.z - a.z*b.y, a.z*b.x - a.x*b.z, a.x*b.y - a.y*b.x };
     }
+
+    // constant vectors
+    inline constexpr Vector3 Vector3::zero{ 0.0f, 0.0f, 0.0f };
+    inline constexpr Vector3 Vector3::one{ 1.0f, 1.0f, 1.0f };
 }
 
 export namespace std {

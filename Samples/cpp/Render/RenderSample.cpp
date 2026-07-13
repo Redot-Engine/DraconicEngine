@@ -134,13 +134,13 @@ int main(int, char*[])
     scene.renderables.push_back({cylinder_mesh, tr, mat});
     scene.renderables.push_back({capsule_mesh, tr, mat});
 
-    scene.renderables[0].transform.setPosition(-12.0f, 0.0f, 0.0f);
-    scene.renderables[1].transform.setPosition(-6.0f, 0.0f, 0.0f);
-    scene.renderables[2].transform.setPosition(0.0f, 0.0f, 0.0f);
-    scene.renderables[3].transform.setPosition(6.0f, 0.0f, 0.0f);
-    scene.renderables[4].transform.setPosition(12.0f, 0.0f, 0.0f);
+    scene.renderables[0].transform.position = draco::math::Vector3{ -12.0f, 0.0f, 0.0f };
+    scene.renderables[1].transform.position = draco::math::Vector3{ -6.0f, 0.0f, 0.0f };
+    scene.renderables[2].transform.position = draco::math::Vector3{ 0.0f, 0.0f, 0.0f };
+    scene.renderables[3].transform.position = draco::math::Vector3{ 6.0f, 0.0f, 0.0f };
+    scene.renderables[4].transform.position = draco::math::Vector3{ 12.0f, 0.0f, 0.0f };
 
-    scene.renderables[1].transform.setRotation(-bx::kPiHalf, 0.0f, 0.0f);
+    scene.renderables[1].transform.rotation = draco::math::Quaternion::fromAxisAngle(draco::math::Vector3::xAxis(), -bx::kPiHalf);
 
     using clock = std::chrono::steady_clock;
     const auto startTime = clock::now();
