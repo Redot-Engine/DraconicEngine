@@ -6,6 +6,8 @@
   </a>
 </p>
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Redot-Engine/DraconicEngine)
+
 **Draconic Engine is an open-source, multi-purpose game engine designed to bridge the gap between the accessibility of indie tools and the raw power required for AAA production. Built with a "performance-forward" & "modularity" philosophy, it provides a robust alternative to industry giants like Unreal, Unity, and Godot.**
 
 > [!NOTE]
