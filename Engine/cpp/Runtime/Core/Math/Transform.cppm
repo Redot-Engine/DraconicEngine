@@ -10,15 +10,17 @@ export namespace draco::math
     // =======================================================================
     // Transform - position / rotation / scale, composed as S * R * T.
     // =======================================================================
-    struct Transform
+    struct [[nodiscard]] Transform
     {
-        // Direct constexpr construction (not Vector3::zero / Quaternion::identity, which
-        // are static-const constants and so cannot seed a constexpr default member init).
         Vector3 position{ 0.0f, 0.0f, 0.0f };
         Quaternion rotation{ 0.0f, 0.0f, 0.0f, 1.0f };
         Vector3 scale{ 1.0f, 1.0f, 1.0f };
 
-        [[nodiscard]] Matrix4 toMatrix() const noexcept
+        // Identity transform (position 0, rotation identity, scale 1) - the
+        // default-constructed value.
+        static constexpr Transform identity() noexcept { return {}; }
+
+        Matrix4 toMatrix() const noexcept
         {
             Matrix4 result = Matrix4::scale(scale) * rotationMatrix(rotation);
             result.m[3][0] = position.x;
@@ -27,8 +29,16 @@ export namespace draco::math
             return result;
         }
 
+        // Fills a caller-provided 16-float buffer (row-major, matching Matrix4::data()).
+        void toMatrix(f32 out[16]) const noexcept
+        {
+            const Matrix4 m = toMatrix();
+            const f32* src = m.data();
+            for (usize i = 0; i < 16; ++i) { out[i] = src[i]; }
+        }
+
         // Component-wise interpolation: position/scale lerp, rotation slerp.
-        [[nodiscard]] static Transform lerp(const Transform& a, const Transform& b, f32 t) noexcept
+        static Transform lerp(const Transform& a, const Transform& b, f32 t) noexcept
         {
             return Transform{
                 draco::math::lerp(a.position, b.position, t),
@@ -37,8 +47,4 @@ export namespace draco::math
             };
         }
     };
-
-    // Identity transform (position 0, rotation identity, scale 1) - the
-    // default-constructed value.
-    inline constexpr Transform identityTransform{};
 }

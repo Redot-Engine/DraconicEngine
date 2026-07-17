@@ -12,7 +12,6 @@ module rendering.renderer;
 
 import core.stdtypes;
 import core.math.transform;
-import core.math.matrix4;
 import rendering.rhi;
 import rendering.rhi.uniform_registry;
 import rendering.rendergraph;
@@ -109,8 +108,7 @@ namespace draco::rendering::renderer
 
         buildUniforms(material, p.uniforms);
 
-        const draco::math::Matrix4 model = transform.toMatrix();
-        std::memcpy(p.model, model.data(), sizeof(p.model));
+        transform.toMatrix(p.model);
 
         submitEntity(p);
     }

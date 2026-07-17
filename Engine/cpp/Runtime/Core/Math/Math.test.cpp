@@ -1503,7 +1503,7 @@ TEST_SUITE("matrix4") {
         CHECK(nearlyEqual(roundTrip, p, 1.0e-3f));
 
         // Singular matrix: tryInverse reports the failure explicitly (no silent identity).
-        CHECK_FALSE(tryInverse(Matrix4::scale(Vector3::zero)).has_value());
+        CHECK_FALSE(tryInverse(Matrix4::scale(Vector3::zero())).has_value());
 
         // A small-but-invertible scale must NOT be flagged singular by the scale-aware
         // threshold (an absolute-epsilon determinant check would wrongly reject it).
@@ -1529,7 +1529,7 @@ TEST_SUITE("quaternion") {
                           transformDirection(Vector3{ 0.3f, -0.5f, 0.8f }, r)));
 
         // Identity does nothing.
-        CHECK(nearlyEqual(rotateVector(Quaternion::identity, Vector3{ 1.0f, 2.0f, 3.0f }), Vector3{ 1.0f, 2.0f, 3.0f }));
+        CHECK(nearlyEqual(rotateVector(Quaternion::identity(), Vector3{ 1.0f, 2.0f, 3.0f }), Vector3{ 1.0f, 2.0f, 3.0f }));
 
         // Composition: two 45-deg rotations == one 90-deg.
         const Quaternion half = Quaternion::fromAxisAngle(Vector3::zAxis(), degToRad(45.0f));
@@ -1545,7 +1545,7 @@ TEST_SUITE("quaternion") {
 
         // A zero-length axis has no direction to rotate about: fall back to identity
         // rather than divide by zero and produce a NaN quaternion.
-        CHECK(nearlyEqual(Quaternion::fromAxisAngle(Vector3::zero, degToRad(90.0f)), Quaternion::identity));
+        CHECK(nearlyEqual(Quaternion::fromAxisAngle(Vector3::zero(), degToRad(90.0f)), Quaternion::identity()));
 
         // q and -q are the same rotation, so nearlyEqual treats them as equal.
         CHECK(nearlyEqual(q, Quaternion{ -q.x, -q.y, -q.z, -q.w }));
@@ -1553,7 +1553,7 @@ TEST_SUITE("quaternion") {
 
     TEST_CASE("slerp endpoints and midpoint") {
         using namespace draco::math;
-        const Quaternion a = Quaternion::identity;
+        const Quaternion a = Quaternion::identity();
         const Quaternion b = Quaternion::fromAxisAngle(Vector3::zAxis(), degToRad(90.0f));
 
         CHECK(nearlyEqual(slerp(a, b, 0.0f), a));

@@ -21,7 +21,7 @@ export namespace draco::math
     // =======================================================================
     // Matrix4 - 4x4, row-major, row-vector convention.
     // =======================================================================
-    struct Matrix4
+    struct [[nodiscard]] Matrix4
     {
         f32 m[4][4];
 

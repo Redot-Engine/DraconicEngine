@@ -15,7 +15,7 @@ export namespace draco::math
     // =======================================================================
     // Quaternion - unit quaternion rotation (x, y, z, w).
     // =======================================================================
-    struct Quaternion
+    struct [[nodiscard]] Quaternion
     {
         f32 x = 0.0f;
         f32 y = 0.0f;
@@ -39,10 +39,8 @@ export namespace draco::math
             return Quaternion{ a.x * s, a.y * s, a.z * s, cos(half) };
         }
 
-        static const Quaternion identity;
+        [[nodiscard]] static constexpr Quaternion identity() noexcept { return { 0.0f, 0.0f, 0.0f, 1.0f }; }
     };
-
-    inline constexpr Quaternion Quaternion::identity{ 0.0f, 0.0f, 0.0f, 1.0f };
 
     // Hamilton product: applies `b` then `a` to a vector.
     [[nodiscard]] constexpr Quaternion operator*(Quaternion a, Quaternion b) noexcept
@@ -60,7 +58,7 @@ export namespace draco::math
     [[nodiscard]] inline Quaternion inverse(Quaternion q) noexcept
     {
         const f32 lengthSq = dot(q, q);
-        if (lengthSq <= CMP_EPSILON * CMP_EPSILON) { return Quaternion::identity; }
+        if (lengthSq <= CMP_EPSILON * CMP_EPSILON) { return Quaternion::identity(); }
         const f32 inv = 1.0f / lengthSq;
         return { -q.x * inv, -q.y * inv, -q.z * inv, q.w * inv };
     }
@@ -68,7 +66,7 @@ export namespace draco::math
     [[nodiscard]] inline Quaternion normalize(Quaternion q) noexcept
     {
         const f32 lengthSq = dot(q, q);
-        if (lengthSq <= CMP_EPSILON * CMP_EPSILON) { return Quaternion::identity; }
+        if (lengthSq <= CMP_EPSILON * CMP_EPSILON) { return Quaternion::identity(); }
         const f32 inv = 1.0f / sqrt(lengthSq);
         return { q.x * inv, q.y * inv, q.z * inv, q.w * inv };
     }

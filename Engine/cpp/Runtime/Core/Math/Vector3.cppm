@@ -452,8 +452,8 @@ export namespace draco::math {
     }
 
     // constant vectors
-    inline constexpr Vector3 Vector3::zero{ 0.0f, 0.0f, 0.0f };
-    inline constexpr Vector3 Vector3::one{ 1.0f, 1.0f, 1.0f };
+    constexpr Vector3 Vector3::zero() noexcept { return { 0.0f, 0.0f, 0.0f }; }
+    constexpr Vector3 Vector3::one() noexcept { return { 1.0f, 1.0f, 1.0f }; }
 }
 
 export namespace std {
