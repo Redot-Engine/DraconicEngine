@@ -8,6 +8,7 @@ export module core.math.functions;
 import core.math.constants;
 import core.defs;
 import core.stdtypes;
+import core.math.types;
 
 export namespace draco::math {
     template <arithmetic T>

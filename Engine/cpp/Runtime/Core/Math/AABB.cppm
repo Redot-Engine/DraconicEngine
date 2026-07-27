@@ -7,13 +7,14 @@ export module core.math.aabb;
 import core.defs;
 import core.stdtypes;
 import core.math.types;
+import core.math.functions;
 
 export namespace draco::math {
 
     /**
      * @brief An axis-aligned bounding box defined by its minimum and maximum corners.
      */
-    struct AABB
+    struct [[nodiscard]] AABB
     {
         Vector3 min{0.0f, 0.0f, 0.0f};
         Vector3 max{0.0f, 0.0f, 0.0f};

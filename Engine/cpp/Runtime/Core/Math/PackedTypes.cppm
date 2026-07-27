@@ -9,8 +9,8 @@ export module core.math.types:packed;
 
 import core.defs;
 import core.stdtypes;
+import core.math.types;
 import core.math.constants;
-import core.math.functions;
 
 export namespace draco::math {
 
@@ -19,103 +19,6 @@ export namespace draco::math {
     struct Float3;
     struct Float4;
     struct Float4x4;
-
-    // Index selection helpers for runtime/constexpr swizzling
-    template <typename T>
-    constexpr const T &select(const i32 i, const T &v1, const T &v2)
-    {
-        switch (i)
-        {
-        case 0:
-            return v1;
-        case 1:
-            return v2;
-        default:
-            return v1;
-        }
-    }
-
-    template <typename T>
-    constexpr T &select(const i32 i, T &v1, T &v2)
-    {
-        switch (i)
-        {
-        case 0:
-            return v1;
-        case 1:
-            return v2;
-        default:
-            return v1;
-        }
-    }
-
-    template <typename T>
-    constexpr const T &select(const i32 i, const T &v1, const T &v2, const T &v3)
-    {
-        switch (i)
-        {
-        case 0:
-            return v1;
-        case 1:
-            return v2;
-        case 2:
-            return v3;
-        default:
-            return v1;
-        }
-    }
-
-    template <typename T>
-    constexpr T &select(const i32 i, T &v1, T &v2, T &v3)
-    {
-        switch (i)
-        {
-        case 0:
-            return v1;
-        case 1:
-            return v2;
-        case 2:
-            return v3;
-        default:
-            return v1;
-        }
-    }
-
-    template <typename T>
-    constexpr const T &select(const i32 i, const T &v1, const T &v2, const T &v3, const T &v4)
-    {
-        switch (i)
-        {
-        case 0:
-            return v1;
-        case 1:
-            return v2;
-        case 2:
-            return v3;
-        case 3:
-            return v4;
-        default:
-            return v1;
-        }
-    }
-
-    template <typename T>
-    constexpr T &select(const i32 i, T &v1, T &v2, T &v3, T &v4)
-    {
-        switch (i)
-        {
-        case 0:
-            return v1;
-        case 1:
-            return v2;
-        case 2:
-            return v3;
-        case 3:
-            return v4;
-        default:
-            return v1;
-        }
-    }
 
     /**
      * @brief Float2 is a packed 2-component vector of 32-bit floating-point values.
