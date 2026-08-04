@@ -64,42 +64,98 @@ export namespace draco::containers {
                 err.~E();
         }
 
+        constexpr Expected &operator=(Expected const &other)
+        {
+            if (this != &other)
+            {
+                if (isValue && other.isValue)
+                {
+                    val = other.val;
+                }
+                else if (!isValue && !other.isValue)
+                {
+                    err = other.err;
+                }
+                else if (other.isValue)
+                {
+                    err.~E();
+                    ::new (static_cast<void *>(&val)) T(other.val);
+                    isValue = true;
+                }
+                else
+                {
+                    val.~T();
+                    ::new (static_cast<void *>(&err)) E(other.err);
+                    isValue = false;
+                }
+            }
+            return *this;
+        }
+
+        constexpr Expected &operator=(Expected &&other) noexcept(std::is_nothrow_move_assignable_v<T> && std::is_nothrow_move_assignable_v<E> && std::is_nothrow_move_constructible_v<T> && std::is_nothrow_move_constructible_v<E>)
+        {
+            if (this != &other)
+            {
+                if (isValue && other.isValue)
+                {
+                    val = std::move(other.val);
+                }
+                else if (!isValue && !other.isValue)
+                {
+                    err = std::move(other.err);
+                }
+                else if (other.isValue)
+                {
+                    err.~E();
+                    ::new (static_cast<void *>(&val)) T(std::move(other.val));
+                    isValue = true;
+                }
+                else
+                {
+                    val.~T();
+                    ::new (static_cast<void *>(&err)) E(std::move(other.err));
+                    isValue = false;
+                }
+            }
+            return *this;
+        }
+
         /// @brief Checks if the container currently holds a valid functional output value state.
-        constexpr bool HasValue() const { return isValue; }
+        constexpr bool hasValue() const { return isValue; }
         constexpr explicit operator bool() const { return isValue; }
 
         /// @brief Fetches mutable reference to value with assertion triggers on missing state entries.
-        constexpr T &Value()
+        constexpr T &value()
         {
             assert(isValue);
             return val;
         }
 
         /// @brief Fetches constant reference to value with assertion triggers on missing state entries.
-        constexpr T const &Value() const
+        constexpr T const &value() const
         {
             assert(isValue);
             return val;
         }
 
         /// @brief Fetches mutable reference to internal error details with failure check assertions.
-        constexpr E &Error()
+        constexpr E &error()
         {
             assert(!isValue);
             return err;
         }
 
         /// @brief Fetches constant reference to internal error details with failure check assertions.
-        constexpr E const &Error() const
+        constexpr E const &error() const
         {
             assert(!isValue);
             return err;
         }
 
-        constexpr T &operator*() { return Value(); }
-        constexpr T const &operator*() const { return Value(); }
+        constexpr T &operator*() { return value(); }
+        constexpr T const &operator*() const { return value(); }
 
-        constexpr T *operator->() { return &Value(); }
-        constexpr T const *operator->() const { return &Value(); }
+        constexpr T *operator->() { return &value(); }
+        constexpr T const *operator->() const { return &value(); }
     };
 }

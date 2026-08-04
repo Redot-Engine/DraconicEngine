@@ -40,13 +40,13 @@ export namespace draco::containers
         UntypedArray(Allocator alloc) : allocator{alloc}, buffer{nullptr}, size{0}, capacity{0} {}
 
         /// @brief Reserves capacity for at least the specified number of items.
-        /// @param newCapacity Requested element capacity capacity.
+        /// @param newCapacity Requested element capacity.
         /// @param itemSize Size of each element in bytes.
         /// @param itemAlign Alignment requirement of the elements.
         /// @param relocate Callback to move elements to new memory storage.
         /// @param destroy Callback to destruct active elements.
         /// @return Error code indicating success or out of memory conditions.
-        Error Reserve(isize newCapacity, isize itemSize, isize itemAlign, RelocateFn relocate, DestroyFn destroy)
+        Error reserve(isize newCapacity, isize itemSize, isize itemAlign, RelocateFn relocate, DestroyFn destroy)
         {
             if (newCapacity < 0 || itemSize <= 0)
                 return Error::InvalidArgument;
@@ -69,7 +69,15 @@ export namespace draco::containers
             {
                 if (relocate)
                 {
-                    relocate(newDst.data, buffer, size);
+                    try
+                    {
+                        relocate(newDst.data, buffer, size);
+                    }
+                    catch (...)
+                    {
+                        allocator.free(newDst);
+                        throw;
+                    }
                 }
                 else
                 {
@@ -97,12 +105,18 @@ export namespace draco::containers
         /// @param relocate Callback to move elements to new memory storage.
         /// @param destroy Callback to destruct active elements.
         /// @return Error code indicating success or out of memory conditions.
-        Error GrowCapacity(isize minCapacity, isize itemSize, isize itemAlign, RelocateFn relocate, DestroyFn destroy)
+        Error growCapacity(isize minCapacity, isize itemSize, isize itemAlign, RelocateFn relocate, DestroyFn destroy)
         {
             if (capacity >= minCapacity)
                 return Error::Okay;
-            isize newCapacity = capacity + draco::math::max(capacity / 2, minCapacity);
-            return Reserve(newCapacity, itemSize, itemAlign, relocate, destroy);
+
+            isize maxRepresentable = ~((isize)0) & ~(isize)((unsigned long long)1 << (sizeof(isize) * 8 - 1));
+            isize delta = draco::math::max(capacity / 2, minCapacity - capacity);
+            if (maxRepresentable - capacity < delta)
+                return Error::OutOfMemory;
+
+            isize newCapacity = capacity + delta;
+            return reserve(newCapacity, itemSize, itemAlign, relocate, destroy);
         }
     };
 
@@ -111,10 +125,13 @@ export namespace draco::containers
     template <typename T>
     struct Array
     {
+    public:
+        using Error = UntypedArray::Error;
+
     private:
         UntypedArray internal;
 
-        static void RelocateElements(void *dst, void *src, isize count)
+        static void relocateElements(void *dst, void *src, isize count)
         {
             T *dstTyped = static_cast<T *>(dst);
             T *srcTyped = static_cast<T *>(src);
@@ -144,7 +161,7 @@ export namespace draco::containers
             }
         }
 
-        static void DestroyElements(void *data, isize count)
+        static void destroyElements(void *data, isize count)
         {
             if constexpr (!std::is_trivially_destructible_v<T>)
             {
@@ -156,14 +173,62 @@ export namespace draco::containers
             }
         }
 
-    public:
-        using Error = UntypedArray::Error;
+        template <typename... Args>
+        Error emplaceInternal(Args &&...args)
+        {
+            isize maxRepresentable = ~((isize)0) & ~(isize)((unsigned long long)1 << (sizeof(isize) * 8 - 1));
+            if (internal.size >= maxRepresentable)
+                return Error::OutOfMemory;
 
+            isize reqCapacity = internal.size + 1;
+            if (reqCapacity <= internal.capacity)
+            {
+                ::new (static_cast<void *>(static_cast<T *>(internal.buffer) + internal.size)) T(std::forward<Args>(args)...);
+                internal.size++;
+                return Error::Okay;
+            }
+
+            UntypedArray newStorage(internal.allocator);
+            Error err = newStorage.growCapacity(reqCapacity, sizeof(T), alignof(T), nullptr, nullptr);
+            if (err != Error::Okay)
+                return err;
+
+            T *newBuf = static_cast<T *>(newStorage.buffer);
+            T *oldBuf = static_cast<T *>(internal.buffer);
+
+            ::new (static_cast<void *>(newBuf + internal.size)) T(std::forward<Args>(args)...);
+
+            if (internal.buffer)
+            {
+                try
+                {
+                    relocateElements(newBuf, oldBuf, internal.size);
+                }
+                catch (...)
+                {
+                    newBuf[internal.size].~T();
+                    Slice newSlice = {.data = newStorage.buffer, .size = (usize)newStorage.capacity * sizeof(T)};
+                    newStorage.allocator.free(newSlice);
+                    throw;
+                }
+
+                destroyElements(oldBuf, internal.size);
+                Slice oldSlice = {.data = internal.buffer, .size = (usize)internal.capacity * sizeof(T)};
+                internal.allocator.free(oldSlice);
+            }
+
+            internal.buffer = newStorage.buffer;
+            internal.capacity = newStorage.capacity;
+            internal.size++;
+            return Error::Okay;
+        }
+
+    public:
         Array(Allocator allocator) : internal(allocator) {}
 
         ~Array()
         {
-            Clear();
+            clear();
             if (internal.buffer)
             {
                 Slice oldDst = {.data = internal.buffer, .size = (usize)internal.capacity * sizeof(T)};
@@ -189,7 +254,7 @@ export namespace draco::containers
         {
             if (this != &other)
             {
-                Clear();
+                clear();
                 if (internal.buffer)
                 {
                     Slice oldDst = {.data = internal.buffer, .size = (usize)internal.capacity * sizeof(T)};
@@ -222,66 +287,32 @@ export namespace draco::containers
         }
 
         /// @brief Reserves space manually for future modifications.
-        Error Reserve(isize newCapacity)
+        Error reserve(isize newCapacity)
         {
-            return internal.Reserve(newCapacity, sizeof(T), alignof(T), RelocateElements, DestroyElements);
+            return internal.reserve(newCapacity, sizeof(T), alignof(T), relocateElements, destroyElements);
         }
 
         /// @brief Pushes a copy of an element onto the back of the array.
-        Error Push(T const &value)
+        Error push(T const &value)
         {
-            T tmp(value);
-            Error err = internal.GrowCapacity(internal.size + 1, sizeof(T), alignof(T), RelocateElements, DestroyElements);
-            if (err != Error::Okay)
-                return err;
-
-            ::new (static_cast<void *>(static_cast<T *>(internal.buffer) + internal.size)) T(std::move(tmp));
-            internal.size++;
-            return Error::Okay;
+            return emplaceInternal(value);
         }
 
         /// @brief Pushes a moved element onto the back of the array.
-        Error Push(T &&value)
+        Error push(T &&value)
         {
-            T tmp(std::move(value));
-            Error err = internal.GrowCapacity(internal.size + 1, sizeof(T), alignof(T), RelocateElements, DestroyElements);
-            if (err != Error::Okay)
-                return err;
-
-            ::new (static_cast<void *>(static_cast<T *>(internal.buffer) + internal.size)) T(std::move(tmp));
-            internal.size++;
-            return Error::Okay;
+            return emplaceInternal(std::move(value));
         }
 
         /// @brief Constructs an element directly at the back of the array in place.
         template <typename... Args>
-        Error Emplace(Args &&...args)
+        Error emplace(Args &&...args)
         {
-            if constexpr ((std::is_same_v<std::decay_t<Args>, T> || ...))
-            {
-                T tmp(std::forward<Args>(args)...);
-                Error err = internal.GrowCapacity(internal.size + 1, sizeof(T), alignof(T), RelocateElements, DestroyElements);
-                if (err != Error::Okay)
-                    return err;
-
-                ::new (static_cast<void *>(static_cast<T *>(internal.buffer) + internal.size)) T(std::move(tmp));
-                internal.size++;
-                return Error::Okay;
-            }
-            else
-            {
-                Error err = internal.GrowCapacity(internal.size + 1, sizeof(T), alignof(T), RelocateElements, DestroyElements);
-                if (err != Error::Okay)
-                    return err;
-
-                ::new (static_cast<void *>(static_cast<T *>(internal.buffer) + internal.size)) T(std::forward<Args>(args)...);
-                internal.size++;
-                return Error::Okay;
-            }
+            return emplaceInternal(std::forward<Args>(args)...);
         }
 
-        /// @brief Removals the final item of the array & calls destructor logic if applicable.
-        void Pop()
+        /// @brief Removes the final item of the array & calls destructor logic if applicable.
+        void pop()
         {
             if (internal.size > 0)
             {
@@ -294,21 +325,21 @@ export namespace draco::containers
         }
 
         /// @brief Clear out all elements without altering capacity parameters.
-        void Clear()
+        void clear()
         {
-            DestroyElements(internal.buffer, internal.size);
+            destroyElements(internal.buffer, internal.size);
             internal.size = 0;
         }
 
-        T *Data() { return static_cast<T *>(internal.buffer); }
-        T const *Data() const { return static_cast<T const *>(internal.buffer); }
-        isize Size() const { return internal.size; }
-        isize Capacity() const { return internal.capacity; }
-        bool Empty() const { return internal.size == 0; }
+        T *data() { return static_cast<T *>(internal.buffer); }
+        T const *data() const { return static_cast<T const *>(internal.buffer); }
+        isize size() const { return internal.size; }
+        isize capacity() const { return internal.capacity; }
+        bool empty() const { return internal.size == 0; }
 
-        T *begin() { return Data(); }
-        T *end() { return internal.size == 0 ? Data() : Data() + internal.size; }
-        T const *begin() const { return Data(); }
-        T const *end() const { return internal.size == 0 ? Data() : Data() + internal.size; }
+        T *begin() { return data(); }
+        T *end() { return internal.size == 0 ? data() : data() + internal.size; }
+        T const *begin() const { return data(); }
+        T const *end() const { return internal.size == 0 ? data() : data() + internal.size; }
     };
 }

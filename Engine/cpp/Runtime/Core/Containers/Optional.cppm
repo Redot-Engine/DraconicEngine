@@ -24,34 +24,34 @@ export namespace draco::containers {
             T valueStorage;
             char dummy;
         };
-        bool hasValue;
+        bool hasVal;
 
     public:
-        constexpr Optional() : dummy{}, hasValue(false) {}
-        constexpr Optional(NullOpt) : dummy{}, hasValue(false) {}
+        constexpr Optional() : dummy{}, hasVal(false) {}
+        constexpr Optional(NullOpt) : dummy{}, hasVal(false) {}
 
-        constexpr Optional(T const &value) : hasValue(true)
+        constexpr Optional(T const &val) : hasVal(true)
         {
-            ::new (static_cast<void *>(&valueStorage)) T(value);
+            ::new (static_cast<void *>(&valueStorage)) T(val);
         }
 
-        constexpr Optional(T &&value) : hasValue(true)
+        constexpr Optional(T &&val) : hasVal(true)
         {
-            ::new (static_cast<void *>(&valueStorage)) T(std::move(value));
+            ::new (static_cast<void *>(&valueStorage)) T(std::move(val));
         }
 
-        constexpr Optional(Optional const &other) : hasValue(other.hasValue)
+        constexpr Optional(Optional const &other) : hasVal(other.hasVal)
         {
-            if (hasValue)
+            if (hasVal)
             {
                 ::new (static_cast<void *>(&valueStorage)) T(other.valueStorage);
             }
         }
 
         constexpr Optional(Optional &&other) noexcept(std::is_nothrow_move_constructible_v<T>)
-            : hasValue(other.hasValue)
+            : hasVal(other.hasVal)
         {
-            if (hasValue)
+            if (hasVal)
             {
                 ::new (static_cast<void *>(&valueStorage)) T(std::move(other.valueStorage));
             }
@@ -59,12 +59,12 @@ export namespace draco::containers {
 
         ~Optional()
         {
-            Reset();
+            reset();
         }
 
         constexpr Optional &operator=(NullOpt)
         {
-            Reset();
+            reset();
             return *this;
         }
 
@@ -72,11 +72,11 @@ export namespace draco::containers {
         {
             if (this != &combat)
             {
-                Reset();
-                if (combat.hasValue)
+                reset();
+                if (combat.hasVal)
                 {
                     ::new (static_cast<void *>(&valueStorage)) T(combat.valueStorage);
-                    hasValue = true;
+                    hasVal = true;
                 }
             }
             return *this;
@@ -86,53 +86,60 @@ export namespace draco::containers {
         {
             if (this != &combat)
             {
-                Reset();
-                if (combat.hasValue)
+                reset();
+                if (combat.hasVal)
                 {
                     ::new (static_cast<void *>(&valueStorage)) T(std::move(combat.valueStorage));
-                    hasValue = true;
+                    hasVal = true;
                 }
             }
             return *this;
         }
 
         /// @brief Validates if an initialized object entry value is valid & configured.
-        constexpr bool HasValue() const { return hasValue; }
-        constexpr explicit operator bool() const { return hasValue; }
+        constexpr bool hasValue() const { return hasVal; }
+        constexpr explicit operator bool() const { return hasVal; }
 
         /// @brief Returns reference to contained type with checking asset triggers.
-        constexpr T &Value()
+        constexpr T &value()
         {
-            assert(hasValue);
+            assert(hasVal);
             return valueStorage;
         }
 
         /// @brief Returns constant reference to contained type with checking asset triggers.
-        constexpr T const &Value() const
+        constexpr T const &value() const
         {
-            assert(hasValue);
+            assert(hasVal);
             return valueStorage;
         }
 
-        constexpr T &operator*() { return Value(); }
-        constexpr T const &operator*() const { return Value(); }
+        constexpr T &operator*() { return value(); }
+        constexpr T const &operator*() const { return value(); }
 
-        constexpr T *operator->() { return &Value(); }
-        constexpr T const *operator->() const { return &Value(); }
+        constexpr T *operator->() { return &value(); }
+        constexpr T const *operator->() const { return &value(); }
 
         /// @brief Unwraps the object, falling back to a custom default reference configuration if empty.
-        constexpr T ValueOr(T &&defaultValue) const &
+        template <typename U>
+        constexpr T valueOr(U &&defaultValue) const &
         {
-            return hasValue ? valueStorage : std::forward<T>(defaultValue);
+            return hasVal ? valueStorage : static_cast<T>(std::forward<U>(defaultValue));
+        }
+
+        template <typename U>
+        constexpr T valueOr(U &&defaultValue) &&
+        {
+            return hasVal ? std::move(valueStorage) : static_cast<T>(std::forward<U>(defaultValue));
         }
 
         /// @brief Destructs active values & returns optional wrapper interface context back to null state.
-        constexpr void Reset()
+        constexpr void reset()
         {
-            if (hasValue)
+            if (hasVal)
             {
                 valueStorage.~T();
-                hasValue = false;
+                hasVal = false;
             }
         }
     };

@@ -1,7 +1,6 @@
 module;
 
 #include <cassert>
-#include <stddef.h>
 
 export module core.containers.span;
 export import core.stdtypes;
@@ -13,20 +12,22 @@ export namespace draco::containers {
     template <typename T>
     struct Span
     {
+    private:
         T *buffer;
         isize count;
 
+    public:
         constexpr Span() : buffer(nullptr), count(0) {}
-        constexpr Span(T *ptr, isize size) : buffer(ptr), count(size) 
+        constexpr Span(T *ptr, isize size) : buffer(size == 0 ? nullptr : ptr), count(size) 
         {
             assert(size >= 0);
         }
-        constexpr Span(T *first, T *last) : buffer(first), count(static_cast<isize>(last - first)) 
+        constexpr Span(T *first, T *last) : buffer(first == last ? nullptr : first), count(static_cast<isize>(last - first)) 
         {
             assert(count >= 0);
         }
 
-        template <size_t N>
+        template <usize N>
         constexpr Span(T (&arr)[N]) : buffer(arr), count(static_cast<isize>(N)) {}
 
         /// @brief Access data item at sequence index location. Bound validated.
@@ -60,13 +61,13 @@ export namespace draco::containers {
         /// @brief Pulls a subview span section range from tracking window space.
         /// @param offset Origin boundary skip value index position pointer.
         /// @param length Subspan capacity tracker scale indicator. -1 computes automatic tracking sizes.
-        constexpr Span<T> Subspan(isize offset, isize length = -1) const
+        constexpr Span<T> subspan(isize offset, isize length = -1) const
         {
             assert(offset >= 0 && offset <= count);
             assert(length >= -1);
             isize realLength = (length == -1) ? (count - offset) : length;
             assert(realLength <= count - offset);
-            return Span<T>(buffer + offset, realLength);
+            return realLength == 0 ? Span<T>() : Span<T>(buffer ? buffer + offset : nullptr, realLength);
         }
     };
 }
