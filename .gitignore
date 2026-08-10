@@ -1,10 +1,13 @@
 .vscode/
 .idea/
+.junie/
 
 bits/
 cmake-build-*/
 bin/
 build/
 graph/
+obj/
 
 CMakeUserPresets.json
+*.DotSettings.user

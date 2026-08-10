@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/SolutionFolder/">
+    <File Path=".github\workflows\linux_build.yml" />
+    <File Path=".gitignore" />
+    <File Path=".gitmodules" />
+    <File Path="AUTHORS.md" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Engine/csharp/Draconic.Engine.Tests/Draconic.Engine.Tests.csproj" />
+  <Project Path="Engine/csharp/Draconic.Engine/Draconic.Engine.csproj" />
+  <Project Path="SourceGenerators/Draconic.Dynamics/Draconic.Dynamics.Tests/Draconic.Dynamics.Tests.csproj" />
+  <Project Path="SourceGenerators\Draconic.Dynamics\Draconic.Dynamics.Sourcegen\Draconic.Dynamics.Sourcegen.csproj" />
+</Solution>
