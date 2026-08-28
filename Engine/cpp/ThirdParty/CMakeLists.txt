@@ -1,23 +1,14 @@
-set(BGFX_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_SHADER ON CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_TEXTURE OFF CACHE BOOL "" FORCE)
-set(BGFX_BUILD_TOOLS_GEOMETRY OFF CACHE BOOL "" FORCE)
-
-set(BGFX_INSTALL OFF CACHE BOOL "" FORCE)
-set(BGFX_LIBRARY_TYPE "STATIC")
-
 set(SDL_SHARED OFF CACHE BOOL "" FORCE)
 set(SDL_STATIC ON CACHE BOOL "" FORCE)
 set(SDL_MAIN_HANDLED ON CACHE BOOL "" FORCE)
 set(SDL_STATIC_PIC ON CACHE BOOL "" FORCE)
 set(SDL_TEST OFF CACHE BOOL "" FORCE)
 
-set(SDL_AUDIO OFF CACHE BOOL "" FORCE)       
-set(SDL_VIDEO ON CACHE BOOL "" FORCE)        
-set(SDL_RENDER OFF CACHE BOOL "" FORCE)      # Off because bgfx handles the rendering!
-set(SDL_CAMERA OFF CACHE BOOL "" FORCE)      
-set(SDL_JOYSTICK ON CACHE BOOL "" FORCE)     # Required by SDL_INIT_GAMEPAD (shell.desktop input)
+set(SDL_AUDIO OFF CACHE BOOL "" FORCE)
+set(SDL_VIDEO ON CACHE BOOL "" FORCE)
+set(SDL_RENDER OFF CACHE BOOL "" FORCE)       # Off: the engine owns rendering
+set(SDL_CAMERA OFF CACHE BOOL "" FORCE)
+set(SDL_JOYSTICK ON CACHE BOOL "" FORCE)      # Required by SDL_INIT_GAMEPAD (shell.desktop input)
 set(SDL_HAPTIC OFF CACHE BOOL "" FORCE)       # Not needed: gamepad rumble uses SDL_RumbleGamepad (joystick), not the haptic subsystem
 set(SDL_HIDAPI ON CACHE BOOL "" FORCE)        # Controller backends (PS/Switch/Xbox over USB/BT)
 
@@ -32,7 +23,7 @@ elseif(WIN32)
     set(SDL_X11 OFF CACHE BOOL "" FORCE)
 else()
     set(SDL_WAYLAND ON CACHE BOOL "" FORCE)
-    set(SDL_LIBDECOR ON CACHE BOOL "" FORCE) 
+    set(SDL_LIBDECOR ON CACHE BOOL "" FORCE)
     set(SDL_X11 ON CACHE BOOL "" FORCE)
     set(SDL_X11_XSCRNSAVER OFF CACHE BOOL "" FORCE)
     set(SDL_WAYLAND_SHARED OFF CACHE BOOL "" FORCE)
@@ -41,14 +32,5 @@ else()
     set(SDL_PULSEAUDIO_SHARED OFF CACHE BOOL "" FORCE)
 endif()
 
-set(BX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bx CACHE STRING "" FORCE) 
-set(BIMG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bimg CACHE STRING "" FORCE) 
-set(BGFX_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bgfx CACHE STRING "" FORCE) 
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bx bx-build)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bimg bimg-build)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/cmake/bgfx bgfx-build)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/sdl sdl-build)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/stb)
-
-target_link_libraries(bgfx PUBLIC bx bimg)

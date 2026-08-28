@@ -1,7 +1,5 @@
 add_modules_library(Core PIC)
 add_modules_library(Shell)
-add_modules_library(Rendering PIC)
-add_modules_library(Scene)
 
 target_link_libraries(Core PUBLIC Definitions Math IO Memory Logging)
 
@@ -33,5 +31,3 @@ if(CMAKE_TESTING_ENABLED)
         add_test(NAME ${SHELL_TEST_TARGET} COMMAND ${SHELL_TEST_TARGET} --reporter junit --out "Testing/${SHELL_TEST_TARGET}.xml")
     endforeach()
 endif()
-target_link_libraries(Rendering PUBLIC RHI RenderGraph Mesh Material QuadRenderer Renderer)
-target_link_libraries(Scene PUBLIC Renderable TransformComponent Camera)
