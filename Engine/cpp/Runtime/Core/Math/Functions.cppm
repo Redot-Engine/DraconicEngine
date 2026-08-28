@@ -1,5 +1,6 @@
 module;
 
+#include <numbers>
 #include <cmath>
 #include <concepts>
 #include <limits>
@@ -112,6 +113,21 @@ export namespace draco::math {
     template <std::floating_point T>
     T pow(T x, T y) {
         return static_cast<T>(std::pow(x, y));
+    }
+
+    // Trigonometry (radians) and square root.
+    [[nodiscard]] inline f32 sin(f32 x) noexcept { return std::sin(x); }
+    [[nodiscard]] inline f32 cos(f32 x) noexcept { return std::cos(x); }
+    [[nodiscard]] inline f32 tan(f32 x) noexcept { return std::tan(x); }
+    [[nodiscard]] inline f32 acos(f32 x) noexcept { return std::acos(x); }
+    [[nodiscard]] inline f32 sqrt(f32 x) noexcept { return std::sqrt(x); }
+
+    // Approximate comparisons against an epsilon (defaults to CMP_EPSILON).
+    [[nodiscard]] constexpr bool nearlyEqual(f32 a, f32 b, f32 epsilon = CMP_EPSILON) noexcept {
+        return abs(a - b) <= epsilon;
+    }
+    [[nodiscard]] constexpr bool nearlyZero(f32 v, f32 epsilon = CMP_EPSILON) noexcept {
+        return abs(v) <= epsilon;
     }
 
     template <std::floating_point T>
