@@ -1,0 +1,1 @@
+draco_add_rhi_sample(Sample026_DynamicOffsets)

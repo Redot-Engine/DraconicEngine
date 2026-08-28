@@ -1,70 +1,44 @@
-module;
-
 export module core.math.transform;
-import core.math.types;
+
 import core.stdtypes;
+import core.math.types;
+import core.math.matrix4;
+import core.math.quaternion;
 
 export namespace draco::math
 {
+    // =======================================================================
+    // Transform - position / rotation / scale, composed as S * R * T.
+    // =======================================================================
     struct Transform
     {
-        f32 position[3] = { 0.0f, 0.0f, 0.0f };
-        f32 rotation[3] = { 0.0f, 0.0f, 0.0f }; // Euler (radians)
-        f32 scale[3]    = { 1.0f, 1.0f, 1.0f };
+        // Direct constexpr construction (not Vector3::zero / Quaternion::identity, which
+        // are static-const constants and so cannot seed a constexpr default member init).
+        Vector3 position{ 0.0f, 0.0f, 0.0f };
+        Quaternion rotation{ 0.0f, 0.0f, 0.0f, 1.0f };
+        Vector3 scale{ 1.0f, 1.0f, 1.0f };
 
-        constexpr void setPosition(f32 x, f32 y, f32 z) noexcept {
-            position[0] = x;
-            position[1] = y;
-            position[2] = z;
-        }
-
-        constexpr void setPosition(const Vector3& v) noexcept {
-            position[0] = v.x;
-            position[1] = v.y;
-            position[2] = v.z;
-        }
-
-        [[nodiscard]] constexpr Vector3 getPosition() const noexcept {
-            return Vector3{position[0], position[1], position[2]};
-        }
-
-        constexpr void setRotation(const f32 x, const f32 y, const f32 z) noexcept
+        [[nodiscard]] Matrix4 toMatrix() const noexcept
         {
-            rotation[0] = x;
-            rotation[1] = y;
-            rotation[2] = z;
+            Matrix4 result = Matrix4::scale(scale) * rotationMatrix(rotation);
+            result.m[3][0] = position.x;
+            result.m[3][1] = position.y;
+            result.m[3][2] = position.z;
+            return result;
         }
 
-        constexpr void setRotation(const Vector3& v) noexcept
+        // Component-wise interpolation: position/scale lerp, rotation slerp.
+        [[nodiscard]] static Transform lerp(const Transform& a, const Transform& b, f32 t) noexcept
         {
-            rotation[0] = v.x;
-            rotation[1] = v.y;
-            rotation[2] = v.z;
+            return Transform{
+                draco::math::lerp(a.position, b.position, t),
+                slerp(a.rotation, b.rotation, t),
+                draco::math::lerp(a.scale, b.scale, t),
+            };
         }
-
-        [[nodiscard]] constexpr Vector3 getRotation() const noexcept {
-            return Vector3{rotation[0], rotation[1], rotation[2]};
-        }
-
-        constexpr void setScale(const f32 x, const f32 y, const f32 z) noexcept
-        {
-            scale[0] = x;
-            scale[1] = y;
-            scale[2] = z;
-        }
-
-        constexpr void setScale(const Vector3& v) noexcept
-        {
-            scale[0] = v.x;
-            scale[1] = v.y;
-            scale[2] = v.z;
-        }
-
-        [[nodiscard]] constexpr Vector3 getScale() const noexcept {
-            return Vector3{scale[0], scale[1], scale[2]};
-        }
-
-        // Compute column-major matrix from transform
-        void toMatrix(f32 out[16]) const;
     };
+
+    // Identity transform (position 0, rotation identity, scale 1) - the
+    // default-constructed value.
+    inline constexpr Transform identityTransform{};
 }
