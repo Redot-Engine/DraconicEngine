@@ -1,0 +1,2 @@
+draco_add_rhi_sample(Smoketest)
+target_link_libraries(Smoketest PRIVATE Rendering_RHI_Null)
