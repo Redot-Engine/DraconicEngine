@@ -4,6 +4,7 @@ module;
 
 export module core.defs;
 export import core.stdtypes;
+export import core.status;
 
 static_assert(__cplusplus >= 202207L, "Minimum of C++23 required.");
 
