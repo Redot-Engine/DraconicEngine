@@ -63,6 +63,10 @@ export namespace draco::math {
         [[nodiscard]] static Vector3 spherical(f32 azimuth, f32 inclination, f32 radius = 1.0f) noexcept;
         [[nodiscard]] static Vector3 cylindrical(f32 angle, f32 radius = 1.0f, f32 height = 0.0f) noexcept;
 
+        // constant vectors (defined in Vector3.cppm)
+        static const Vector3 zero;
+        static const Vector3 one;
+
         // element access
         [[nodiscard]] constexpr f32& operator[](i32 i) noexcept;
         [[nodiscard]] constexpr const f32& operator[](i32 i) const noexcept;
