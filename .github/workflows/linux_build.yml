@@ -8,9 +8,19 @@ on:
     branches:
       - '**'
 
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-linux:
+    name: Linux
     runs-on: ${{ format('ubuntu-24.04{0}', matrix.arch == 'arm64' && '-arm' || '') }}
+
+    permissions:
+      contents: read
 
     strategy:
       fail-fast: false
@@ -25,24 +35,25 @@ jobs:
 
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           submodules: recursive
           persist-credentials: false
       
       - name: Set up Clang Compiler
-        uses: egor-tensin/setup-clang@v2
+        uses: egor-tensin/setup-clang@23bc15cd4207e45f1566447deb48f4ff3ef932cb # v2.3
         with:
           version: 20
 
       - name: Install System Dependencies
+        env:
+          REL_ARCH: ${{ matrix.arch == 'x64' && 'x86_64' || 'aarch64' }}
         run: |
-          REL_ARCH=${{ matrix.arch == 'x64' && 'x86_64' || 'aarch64' }}
-          wget https://github.com/Kitware/CMake/releases/download/v4.4.2/cmake-4.4.2-linux-${REL_ARCH}.tar.gz
-          wget https://github.com/Kitware/CMake/releases/download/v4.4.2/cmake-4.4.2-SHA-256.txt
-          grep -F "  cmake-4.4.2-linux-${REL_ARCH}.tar.gz" cmake-4.4.2-SHA-256.txt | sha256sum --check -
-          tar -xzf cmake-4.4.2-linux-${REL_ARCH}.tar.gz
-          echo "$(pwd)/cmake-4.4.2-linux-${REL_ARCH}/bin" >> $GITHUB_PATH
+          wget https://github.com/Kitware/CMake/releases/download/v4.4.3/cmake-4.4.3-linux-${REL_ARCH}.tar.gz
+          wget https://github.com/Kitware/CMake/releases/download/v4.4.3/cmake-4.4.3-SHA-256.txt
+          grep -F "  cmake-4.4.3-linux-${REL_ARCH}.tar.gz" cmake-4.4.3-SHA-256.txt | sha256sum --check -
+          tar -xzf cmake-4.4.3-linux-${REL_ARCH}.tar.gz
+          echo "$(pwd)/cmake-4.4.3-linux-${REL_ARCH}/bin" >> $GITHUB_PATH
 
           sudo apt-get update
           sudo apt-get install -y \
@@ -81,7 +92,7 @@ jobs:
           clang-scan-deps --version
 
       - name: Cache Build Artifacts
-        uses: hendrikmuhs/ccache-action@v1.2.23
+        uses: hendrikmuhs/ccache-action@d62db5f07c26379fc4b4e0916f098a92573c3b03 # v1.2.23
         with:
           key: ${{ runner.os }}-${{ matrix.arch }}-ccache-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake') }}
           restore-keys: |
@@ -106,7 +117,7 @@ jobs:
           ctest --test-dir build/debug --output-on-failure -j$(nproc)
 
       - name: Upload Engine Artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: linux_${{ matrix.arch }}_debug
           path: build/debug/
